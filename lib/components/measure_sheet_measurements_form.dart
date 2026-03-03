@@ -172,27 +172,6 @@ class _MeasureSheetMeasurementsFormState
       return;
     }
 
-    // todo: remove this after we move it to the proper place
-    // FormArray measurementsArray =
-    //     measurementInfoForm.control('measurements')
-    //         as FormArray<Map<String, dynamic>>;
-    // var fgs =
-    //     measurementsArray.controls
-    //         as List<AbstractControl<Map<String, dynamic>>>;
-    // var measurementsToAdd = fgs.map((fg) {
-    //   MeasurementRecord record = MeasurementRecord();
-    //   record.openingNumber = (fg as FormGroup).control('openingNumber').value;
-    //   record.openingType = (fg as FormGroup).control('openingType').value;
-    //   record.level = (fg).control('level').value;
-    //   record.product = (fg).control('product').value;
-    //   record.spanDirection = (fg).control('spanDirection').value;
-    //   record.span = (fg).control('span').value;
-    //   record.nSpan = (fg).control('nSpan').value;
-    //   return record;
-    // }).toList();
-    //
-    // measureSheetState.measurementInfo.measurementRecords = measurementsToAdd;
-
     await IsarService.isarDatabase.writeTxn(
       () => IsarService.isarDatabase.measureSheets.put(measureSheetState),
     );
