@@ -172,33 +172,26 @@ class _MeasureSheetMeasurementsFormState
       return;
     }
 
-    // save notes because I don't know a better way to do this
-    FormArray<String> notesArray =
-        measurementInfoForm.controls['notes'] as FormArray<String>;
-    List<String> notesToSave = notesArray.controls
-        .map((elem) => elem.value!)
-        .toList();
-    measureSheetState.measurementInfo.notes = notesToSave;
-
-    FormArray measurementsArray =
-        measurementInfoForm.control('measurements')
-            as FormArray<Map<String, dynamic>>;
-    var fgs =
-        measurementsArray.controls
-            as List<AbstractControl<Map<String, dynamic>>>;
-    var measurementsToAdd = fgs.map((fg) {
-      MeasurementRecord record = MeasurementRecord();
-      record.openingNumber = (fg as FormGroup).control('openingNumber').value;
-      record.openingType = (fg).control('openingType').value;
-      record.level = (fg).control('level').value;
-      record.product = (fg).control('product').value;
-      record.spanDirection = (fg).control('spanDirection').value;
-      record.span = (fg).control('span').value;
-      record.nSpan = (fg).control('nSpan').value;
-      return record;
-    }).toList();
-
-    measureSheetState.measurementInfo.measurementRecords = measurementsToAdd;
+    // todo: remove this after we move it to the proper place
+    // FormArray measurementsArray =
+    //     measurementInfoForm.control('measurements')
+    //         as FormArray<Map<String, dynamic>>;
+    // var fgs =
+    //     measurementsArray.controls
+    //         as List<AbstractControl<Map<String, dynamic>>>;
+    // var measurementsToAdd = fgs.map((fg) {
+    //   MeasurementRecord record = MeasurementRecord();
+    //   record.openingNumber = (fg as FormGroup).control('openingNumber').value;
+    //   record.openingType = (fg as FormGroup).control('openingType').value;
+    //   record.level = (fg).control('level').value;
+    //   record.product = (fg).control('product').value;
+    //   record.spanDirection = (fg).control('spanDirection').value;
+    //   record.span = (fg).control('span').value;
+    //   record.nSpan = (fg).control('nSpan').value;
+    //   return record;
+    // }).toList();
+    //
+    // measureSheetState.measurementInfo.measurementRecords = measurementsToAdd;
 
     await IsarService.isarDatabase.writeTxn(
       () => IsarService.isarDatabase.measureSheets.put(measureSheetState),
@@ -417,19 +410,7 @@ class _MeasureSheetMeasurementsFormState
 
   Step _notesStep() {
     return Step(
-      title: Row(
-        children: [
-          Text('Notes'),
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              var formArray =
-                  measurementInfoForm.control('notes') as FormArray<String>;
-              formArray.add(FormControl<String>(value: ''));
-            },
-          ),
-        ],
-      ),
+      title: Row(children: [Text('Notes')]),
       content: Container(
         alignment: Alignment.centerLeft,
         child: Padding(
@@ -439,7 +420,34 @@ class _MeasureSheetMeasurementsFormState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 10.0,
-              children: <Widget>[_notes()],
+              children: <Widget>[
+                _notes(),
+                // Create new blank note
+                GestureDetector(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: BoxBorder.all(color: Colors.red),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Align(
+                        alignment: AlignmentGeometry.center,
+                        child: Text('Add new note'),
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    // for ui
+                    var formArray =
+                        measurementInfoForm.control('notes')
+                            as FormArray<String>;
+                    formArray.add(FormControl<String>(value: ''));
+
+                    _scrollToBottom();
+                  },
+                ),
+              ],
             ),
           ),
         ),
@@ -473,7 +481,6 @@ class _MeasureSheetMeasurementsFormState
                 ),
               ],
             ),
-
             _measurements(),
             GestureDetector(
               child: Container(
@@ -490,13 +497,6 @@ class _MeasureSheetMeasurementsFormState
                 ),
               ),
               onTap: () {
-                // for data
-                setState(() {
-                  measureSheetState.measurementInfo.measurementRecords = [
-                    ...measureSheetState.measurementInfo.measurementRecords,
-                    MeasurementRecord.defaults(),
-                  ];
-                });
                 // for ui
                 var formArray =
                     measurementInfoForm.control('measurements')
@@ -504,6 +504,16 @@ class _MeasureSheetMeasurementsFormState
                 formArray.add(
                   _measurementRecordFg(MeasurementRecord.defaults()),
                 );
+
+                // add to data structure
+                setState(() {
+                  measureSheetState.measurementInfo.measurementRecords = [
+                    ...measureSheetState.measurementInfo.measurementRecords,
+                    MeasurementRecord.defaults(),
+                  ];
+                });
+
+                _scrollToBottom();
               },
             ),
           ],
@@ -518,7 +528,6 @@ class _MeasureSheetMeasurementsFormState
       formArrayName: 'notes',
       builder: (context, formArray, child) {
         int length = formArray.controls.length;
-        // all notes
         return ListView.builder(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
@@ -532,17 +541,40 @@ class _MeasureSheetMeasurementsFormState
             return Row(
               key: uniqueKey,
               children: [
-                Expanded(
-                  child: ReactiveTextField(
-                    formControlName: index.toString(),
-                    decoration: InputDecoration(labelText: 'Note'),
-                  ),
-                ),
                 IconButton(
                   onPressed: () {
+                    // from ui
                     formArray.removeAt(index);
+                    // from data structure
+                    setState(() {
+                      var newList = measureSheetState.measurementInfo.notes
+                          .toList();
+                      newList.removeAt(index);
+                      measureSheetState.measurementInfo.notes = newList;
+                    });
                   },
-                  icon: Icon(Icons.remove),
+                  icon: Icon(Icons.delete_sharp, color: Colors.red[900]),
+                ),
+                Expanded(
+                  child: ReactiveTextField<String>(
+                    formControlName: index.toString(),
+                    decoration: InputDecoration(labelText: 'Note'),
+                    onChanged: (control) {
+                      setState(() {
+                        if (measureSheetState.measurementInfo.notes.length <=
+                            index) {
+                          setState(() {
+                            measureSheetState.measurementInfo.notes = [
+                              ...measureSheetState.measurementInfo.notes,
+                              '',
+                            ];
+                          });
+                        }
+                        measureSheetState.measurementInfo.notes[index] =
+                            control.value!;
+                      });
+                    },
+                  ),
                 ),
               ],
             );
@@ -568,6 +600,8 @@ class _MeasureSheetMeasurementsFormState
             return _buildMeasurementNoteContainer(
               ValueKey(formGroup.value),
               formArray,
+              // I'm not sure this is right, passing the array in when we only
+              // really need the group other than delete
               index,
             );
           },
@@ -654,8 +688,27 @@ class _MeasureSheetMeasurementsFormState
         border: Border.all(color: Colors.black, width: 1),
       ),
       child: ExpansionTile(
+        onExpansionChanged: (value) async {
+          // todo: i'm not sure this is the best idea
+          if (value) {
+            _scrollToBottom();
+          }
+          if (!value) {
+            // print('collapsed');
+          }
+        },
         leading: IconButton(
-          onPressed: () => {formArray.removeAt(index)},
+          onPressed: () {
+            // for ui
+            formArray.removeAt(index);
+            // for data structure
+            setState(() {
+              var newList = measureSheetState.measurementInfo.measurementRecords
+                  .toList();
+              newList.removeAt(index);
+              measureSheetState.measurementInfo.measurementRecords = newList;
+            });
+          },
           icon: Icon(Icons.delete_sharp, color: Colors.red[900]),
         ),
         title: Row(
@@ -663,7 +716,7 @@ class _MeasureSheetMeasurementsFormState
           children: [
             Flexible(
               flex: 1,
-              child: ReactiveTextField(
+              child: ReactiveTextField<int>(
                 formControlName: '${index.toString()}.openingNumber',
                 decoration: InputDecoration(
                   labelText: 'Opening #',
@@ -671,17 +724,31 @@ class _MeasureSheetMeasurementsFormState
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                 ),
                 keyboardType: TextInputType.number,
+                onChanged: (control) {
+                  measureSheetState
+                          .measurementInfo
+                          .measurementRecords[index]
+                          .openingNumber =
+                      control.value!;
+                },
               ),
             ),
             Flexible(
               flex: 1,
-              child: ReactiveTextField(
+              child: ReactiveTextField<String>(
                 formControlName: '${index.toString()}.openingType',
                 decoration: InputDecoration(
                   labelText: 'Opening Type',
                   border: OutlineInputBorder(),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                 ),
+                onChanged: (control) {
+                  measureSheetState
+                          .measurementInfo
+                          .measurementRecords[index]
+                          .openingType =
+                      control.value!;
+                },
               ),
             ),
             Flexible(
@@ -694,6 +761,13 @@ class _MeasureSheetMeasurementsFormState
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                 ),
                 items: _buildLevelsDropdown(measureSheetState.activeLevels),
+                onChanged: (control) {
+                  measureSheetState
+                          .measurementInfo
+                          .measurementRecords[index]
+                          .level =
+                      control.value!;
+                },
               ),
             ),
           ],
@@ -718,9 +792,14 @@ class _MeasureSheetMeasurementsFormState
                     labelText: 'Product',
                     border: OutlineInputBorder(),
                   ),
-                  onChanged: (control) {},
+                  onChanged: (control) {
+                    measureSheetState
+                            .measurementInfo
+                            .measurementRecords[index]
+                            .product =
+                        control.value!;
+                  },
                 ),
-
                 ReactiveDropdownField<String>(
                   formControlName: '${index.toString()}.spanDirection',
                   items: [
@@ -733,61 +812,87 @@ class _MeasureSheetMeasurementsFormState
                     border: OutlineInputBorder(),
                   ),
                   onChanged: (control) {
-                    setState(() {
-                      if (measureSheetState
-                          .measurementInfo
-                          .measurementRecords
-                          .isEmpty) {
-                        measureSheetState.measurementInfo.measurementRecords
-                            .add(MeasurementRecord.defaults());
-                      }
-                      measureSheetState
-                              .measurementInfo
-                              .measurementRecords[index]
-                              .spanDirection =
-                          control.value;
-                    });
+                    measureSheetState
+                            .measurementInfo
+                            .measurementRecords[index]
+                            .spanDirection =
+                        control.value;
                   },
                 ),
-                ReactiveTextField(
+                ReactiveTextField<String>(
                   formControlName: '${index.toString()}.span',
                   decoration: InputDecoration(
                     labelText: 'Span',
                     constraints: BoxConstraints.loose(Size.fromWidth(150.0)),
                     border: OutlineInputBorder(),
                   ),
+                  onChanged: (control) {
+                    measureSheetState
+                            .measurementInfo
+                            .measurementRecords[index]
+                            .span =
+                        control.value;
+                  },
                 ),
-                ReactiveTextField(
+                ReactiveTextField<String>(
                   formControlName: '${index.toString()}.nSpan',
                   decoration: InputDecoration(
                     labelText: 'NSpan',
                     constraints: BoxConstraints.loose(Size.fromWidth(150.0)),
                     border: OutlineInputBorder(),
                   ),
+                  onChanged: (control) {
+                    measureSheetState
+                            .measurementInfo
+                            .measurementRecords[index]
+                            .nSpan =
+                        control.value;
+                  },
                 ),
-                ReactiveTextField(
+                ReactiveTextField<String>(
                   formControlName: '${index.toString()}.buildOutTop',
                   decoration: InputDecoration(
                     labelText: 'BO Top',
                     constraints: BoxConstraints.loose(Size.fromWidth(150.0)),
                     border: OutlineInputBorder(),
                   ),
+                  onChanged: (control) {
+                    measureSheetState
+                            .measurementInfo
+                            .measurementRecords[index]
+                            .buildOutTop =
+                        control.value;
+                  },
                 ),
-                ReactiveTextField(
+                ReactiveTextField<String>(
                   formControlName: '${index.toString()}.buildOutSides',
                   decoration: InputDecoration(
                     labelText: 'BO Sides',
                     constraints: BoxConstraints.loose(Size.fromWidth(150.0)),
                     border: OutlineInputBorder(),
                   ),
+                  onChanged: (control) {
+                    measureSheetState
+                            .measurementInfo
+                            .measurementRecords[index]
+                            .buildOutSides =
+                        control.value;
+                  },
                 ),
-                ReactiveTextField(
+                ReactiveTextField<String>(
                   formControlName: '${index.toString()}.buildOutBot',
                   decoration: InputDecoration(
                     labelText: 'BO Bot',
                     constraints: BoxConstraints.loose(Size.fromWidth(150.0)),
                     border: OutlineInputBorder(),
                   ),
+                  onChanged: (control) {
+                    measureSheetState
+                            .measurementInfo
+                            .measurementRecords[index]
+                            .buildOutBot =
+                        control.value;
+                  },
                 ),
               ],
             ),
@@ -795,5 +900,19 @@ class _MeasureSheetMeasurementsFormState
         ],
       ),
     );
+  }
+
+  void _scrollToBottom() {
+    if (scrollController.hasClients) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        final double maxScrollExtent =
+            scrollController.position.maxScrollExtent;
+        await scrollController.animateTo(
+          maxScrollExtent,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      });
+    }
   }
 }
