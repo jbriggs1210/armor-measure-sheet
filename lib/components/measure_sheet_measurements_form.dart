@@ -643,7 +643,10 @@ class _MeasureSheetMeasurementsFormState
     ProductOptions productOptions,
   ) {
     return productOptions.productsToMeasure().map((pTM) {
-      return DropdownMenuItem(value: pTM, child: Text(pTM));
+      return DropdownMenuItem(
+        value: pTM,
+        child: Text(pTM, overflow: TextOverflow.ellipsis),
+      );
     }).toList();
   }
 
@@ -754,124 +757,143 @@ class _MeasureSheetMeasurementsFormState
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Wrap(
-              runSpacing: 10.0,
+            child: Row(
               spacing: 10.0,
-              alignment: WrapAlignment.start,
-              crossAxisAlignment: WrapCrossAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                ReactiveDropdownField<String>(
-                  formControlName: '${index.toString()}.product',
-                  isExpanded: true,
-                  items: _buildProductsDropdown(
-                    measureSheetState.productOptions,
+                Flexible(
+                  flex: 2,
+                  child: ReactiveDropdownField<String>(
+                    formControlName: '${index.toString()}.product',
+                    isExpanded: true,
+                    items: _buildProductsDropdown(
+                      measureSheetState.productOptions,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Product',
+                      border: OutlineInputBorder(),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                    onChanged: (control) {
+                      measureSheetState
+                              .measurementInfo
+                              .measurementRecords[index]
+                              .product =
+                          control.value!;
+                    },
                   ),
-                  decoration: InputDecoration(
-                    constraints: BoxConstraints.loose(Size.fromWidth(400.0)),
-                    labelText: 'Product',
-                    border: OutlineInputBorder(),
-                  ),
-                  onChanged: (control) {
-                    measureSheetState
-                            .measurementInfo
-                            .measurementRecords[index]
-                            .product =
-                        control.value!;
-                  },
                 ),
-                ReactiveDropdownField<String>(
-                  formControlName: '${index.toString()}.spanDirection',
-                  items: [
-                    DropdownMenuItem(value: 'T/L', child: Text('T/L')),
-                    DropdownMenuItem(value: 'R/B', child: Text('R/B')),
-                  ],
-                  decoration: InputDecoration(
-                    constraints: BoxConstraints.loose(Size.fromWidth(250.0)),
-                    labelText: 'Direction',
-                    border: OutlineInputBorder(),
+                Flexible(
+                  flex: 1,
+                  child: ReactiveDropdownField<String>(
+                    formControlName: '${index.toString()}.spanDirection',
+                    items: [
+                      DropdownMenuItem(value: 'T/L', child: Text('T/L')),
+                      DropdownMenuItem(value: 'R/B', child: Text('R/B')),
+                    ],
+                    decoration: InputDecoration(
+                      labelText: 'Direction',
+                      border: OutlineInputBorder(),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                    onChanged: (control) {
+                      measureSheetState
+                              .measurementInfo
+                              .measurementRecords[index]
+                              .spanDirection =
+                          control.value;
+                    },
                   ),
-                  onChanged: (control) {
-                    measureSheetState
-                            .measurementInfo
-                            .measurementRecords[index]
-                            .spanDirection =
-                        control.value;
-                  },
                 ),
-                ReactiveTextField<String>(
-                  formControlName: '${index.toString()}.span',
-                  decoration: InputDecoration(
-                    labelText: 'Span',
-                    constraints: BoxConstraints.loose(Size.fromWidth(150.0)),
-                    border: OutlineInputBorder(),
+                Flexible(
+                  flex: 1,
+                  child: ReactiveTextField<String>(
+                    formControlName: '${index.toString()}.span',
+                    decoration: InputDecoration(
+                      labelText: 'Span',
+                      border: OutlineInputBorder(),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                    onChanged: (control) {
+                      measureSheetState
+                              .measurementInfo
+                              .measurementRecords[index]
+                              .span =
+                          control.value;
+                    },
                   ),
-                  onChanged: (control) {
-                    measureSheetState
-                            .measurementInfo
-                            .measurementRecords[index]
-                            .span =
-                        control.value;
-                  },
                 ),
-                ReactiveTextField<String>(
-                  formControlName: '${index.toString()}.nSpan',
-                  decoration: InputDecoration(
-                    labelText: 'NSpan',
-                    constraints: BoxConstraints.loose(Size.fromWidth(150.0)),
-                    border: OutlineInputBorder(),
+                Flexible(
+                  flex: 1,
+                  child: ReactiveTextField<String>(
+                    formControlName: '${index.toString()}.nSpan',
+                    decoration: InputDecoration(
+                      labelText: 'NSpan',
+                      border: OutlineInputBorder(),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                    onChanged: (control) {
+                      measureSheetState
+                              .measurementInfo
+                              .measurementRecords[index]
+                              .nSpan =
+                          control.value;
+                    },
                   ),
-                  onChanged: (control) {
-                    measureSheetState
-                            .measurementInfo
-                            .measurementRecords[index]
-                            .nSpan =
-                        control.value;
-                  },
                 ),
-                ReactiveTextField<String>(
-                  formControlName: '${index.toString()}.buildOutTop',
-                  decoration: InputDecoration(
-                    labelText: 'BO Top',
-                    constraints: BoxConstraints.loose(Size.fromWidth(150.0)),
-                    border: OutlineInputBorder(),
+                Flexible(
+                  flex: 1,
+                  child: ReactiveTextField<String>(
+                    formControlName: '${index.toString()}.buildOutTop',
+                    decoration: InputDecoration(
+                      labelText: 'BO Top',
+                      border: OutlineInputBorder(),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                    onChanged: (control) {
+                      measureSheetState
+                              .measurementInfo
+                              .measurementRecords[index]
+                              .buildOutTop =
+                          control.value;
+                    },
                   ),
-                  onChanged: (control) {
-                    measureSheetState
-                            .measurementInfo
-                            .measurementRecords[index]
-                            .buildOutTop =
-                        control.value;
-                  },
                 ),
-                ReactiveTextField<String>(
-                  formControlName: '${index.toString()}.buildOutSides',
-                  decoration: InputDecoration(
-                    labelText: 'BO Sides',
-                    constraints: BoxConstraints.loose(Size.fromWidth(150.0)),
-                    border: OutlineInputBorder(),
+                Flexible(
+                  flex: 1,
+                  child: ReactiveTextField<String>(
+                    formControlName: '${index.toString()}.buildOutSides',
+                    decoration: InputDecoration(
+                      labelText: 'BO Sides',
+                      border: OutlineInputBorder(),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                    onChanged: (control) {
+                      measureSheetState
+                              .measurementInfo
+                              .measurementRecords[index]
+                              .buildOutSides =
+                          control.value;
+                    },
                   ),
-                  onChanged: (control) {
-                    measureSheetState
-                            .measurementInfo
-                            .measurementRecords[index]
-                            .buildOutSides =
-                        control.value;
-                  },
                 ),
-                ReactiveTextField<String>(
-                  formControlName: '${index.toString()}.buildOutBot',
-                  decoration: InputDecoration(
-                    labelText: 'BO Bot',
-                    constraints: BoxConstraints.loose(Size.fromWidth(150.0)),
-                    border: OutlineInputBorder(),
+                Flexible(
+                  flex: 1,
+                  child: ReactiveTextField<String>(
+                    formControlName: '${index.toString()}.buildOutBot',
+                    decoration: InputDecoration(
+                      labelText: 'BO Bot',
+                      border: OutlineInputBorder(),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                    onChanged: (control) {
+                      measureSheetState
+                              .measurementInfo
+                              .measurementRecords[index]
+                              .buildOutBot =
+                          control.value;
+                    },
                   ),
-                  onChanged: (control) {
-                    measureSheetState
-                            .measurementInfo
-                            .measurementRecords[index]
-                            .buildOutBot =
-                        control.value;
-                  },
                 ),
               ],
             ),
