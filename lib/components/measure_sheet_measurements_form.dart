@@ -480,15 +480,20 @@ class _MeasureSheetMeasurementsFormState
                 var formArray =
                     measurementInfoForm.control('measurements')
                         as FormArray<Map<String, dynamic>>;
-                formArray.add(
-                  _measurementRecordFg(MeasurementRecord.defaults()),
-                );
+                var record = MeasurementRecord.defaults();
+                var nextOpeningNumber = 1;
+                if (formArray.value!.isNotEmpty) {
+                  nextOpeningNumber =
+                      formArray.value!.last!['openingNumber'] + 1;
+                }
+                record.openingNumber = nextOpeningNumber;
+                formArray.add(_measurementRecordFg(record));
 
                 // add to data structure
                 setState(() {
                   measureSheetState.measurementInfo.measurementRecords = [
                     ...measureSheetState.measurementInfo.measurementRecords,
-                    MeasurementRecord.defaults(),
+                    record,
                   ];
                 });
 
@@ -539,19 +544,15 @@ class _MeasureSheetMeasurementsFormState
                     formControlName: index.toString(),
                     decoration: InputDecoration(labelText: 'Note'),
                     onChanged: (control) {
-                      setState(() {
                         if (measureSheetState.measurementInfo.notes.length <=
                             index) {
-                          setState(() {
                             measureSheetState.measurementInfo.notes = [
                               ...measureSheetState.measurementInfo.notes,
                               '',
                             ];
-                          });
                         }
                         measureSheetState.measurementInfo.notes[index] =
                             control.value!;
-                      });
                     },
                   ),
                 ),
@@ -636,6 +637,7 @@ class _MeasureSheetMeasurementsFormState
       'buildOutTop': FormControl<String>(value: record.buildOutTop),
       'buildOutSides': FormControl<String>(value: record.buildOutSides),
       'buildOutBot': FormControl<String>(value: record.buildOutBot),
+      'noteReference': FormControl<String>(value: record.noteReference),
     });
   }
 
@@ -663,6 +665,9 @@ class _MeasureSheetMeasurementsFormState
     FormArray formArray,
     int index,
   ) {
+    TextEditingController textController = TextEditingController
+        .fromValue(TextEditingValue(text: '${index + 1}'));
+
     return Container(
       key: uniqueKey,
       decoration: BoxDecoration(
@@ -671,7 +676,6 @@ class _MeasureSheetMeasurementsFormState
       ),
       child: ExpansionTile(
         onExpansionChanged: (value) async {
-          // todo: i'm not sure this is the best idea
           if (value) {
             _scrollToBottom();
           }
@@ -693,26 +697,23 @@ class _MeasureSheetMeasurementsFormState
           },
           icon: Icon(Icons.delete_sharp, color: Colors.red[900]),
         ),
-        title: Row(
+        title:
+        // header, shows up when collapsed
+        Row(
           spacing: 6.0,
           children: [
             Flexible(
               flex: 1,
               child: ReactiveTextField<int>(
                 formControlName: '${index.toString()}.openingNumber',
+                readOnly: true,
+                controller: textController,
                 decoration: InputDecoration(
                   labelText: 'Opening #',
                   border: OutlineInputBorder(),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                 ),
                 keyboardType: TextInputType.number,
-                onChanged: (control) {
-                  measureSheetState
-                          .measurementInfo
-                          .measurementRecords[index]
-                          .openingNumber =
-                      control.value!;
-                },
               ),
             ),
             Flexible(
@@ -754,6 +755,7 @@ class _MeasureSheetMeasurementsFormState
             ),
           ],
         ),
+        // rows that show after expanding
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -898,6 +900,21 @@ class _MeasureSheetMeasurementsFormState
               ],
             ),
           ),
+          Padding(padding: EdgeInsetsGeometry.all(12),
+            child: Row(children: [
+              Flexible(
+                  flex: 1,
+                  child: ReactiveDropdownField<String>(
+                    formControlName: '${index.toString()}.noteReference',
+                    items: _buildNotesDropdown(),
+                    onChanged: (control) {
+                      measureSheetState.measurementInfo
+                          .measurementRecords[index].noteReference =
+                          control.value;
+                    },
+                  )
+              ),
+            ],),),
         ],
       ),
     );
@@ -915,5 +932,16 @@ class _MeasureSheetMeasurementsFormState
         );
       });
     }
+  }
+
+  List<DropdownMenuItem<String>> _buildNotesDropdown() {
+    List<String> notes = measureSheetState.measurementInfo.notes.toList();
+
+    return notes.map((note) {
+      return DropdownMenuItem<String>(
+        value: note,
+        child: Text(note),
+      );
+    }).toList();
   }
 }
