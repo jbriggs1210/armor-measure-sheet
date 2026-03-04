@@ -95,14 +95,19 @@ class ProductOptions {
   bool fabric = false;
   bool accordions = false;
   bool rolldown = false;
-  bool bahCol = false;
-  bool lexan = false;
+  bool clearPanels = false;
   bool screenUnder = false;
   bool retractableScreen = false;
   bool poolEnclosure = false;
   bool paintedCaps = false;
   bool bahArticulating = false;
-  bool decoBahDecoCol = false;
+  bool decoBahama = false;
+  bool decoColonial = false;
+  bool ratedBahama2Inch = false;
+  bool ratedBahama4Inch = false;
+  bool ratedColonialLouvered = false;
+  bool ratedColonialBoardAndBatten = false;
+
   bool composite = false;
   String? compositeSpecifics;
   String? cutout;
@@ -132,11 +137,8 @@ class ProductOptions {
     if (rolldown) {
       products.add('Rolldown (R)');
     }
-    if (bahCol) {
-      products.add('Bah (B)/Col (C)');
-    }
-    if (lexan) {
-      products.add('Lexan (L)');
+    if (clearPanels) {
+      products.add('Clear Panels');
     }
     if (screenUnder) {
       products.add('Screen Under');
@@ -150,8 +152,23 @@ class ProductOptions {
     if (bahArticulating) {
       products.add('Bah Articulating (BA)');
     }
-    if (decoBahDecoCol) {
-      products.add('Deco Bah (DB)/Deco Col (DC)');
+    if (decoBahama) {
+      products.add('Deco Bahama');
+    }
+    if (decoColonial) {
+      products.add('Deco Colonial');
+    }
+    if (ratedBahama2Inch) {
+      products.add('Rated Bahama 2"');
+    }
+    if (ratedBahama4Inch) {
+      products.add('Rated Bahama 4"');
+    }
+    if (ratedColonialLouvered) {
+      products.add('Rated Colonial Louvered');
+    }
+    if (ratedColonialBoardAndBatten) {
+      products.add('Rated Colonial B&B');
     }
     if (composite) {
       products.add('Composite - $compositeSpecifics');

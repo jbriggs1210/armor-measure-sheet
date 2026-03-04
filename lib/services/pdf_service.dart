@@ -406,12 +406,13 @@ class PdfService {
     widgetsToWrap.add(
       _buildLabelAndCheckmark('Rolldown (R)', productOptions.rolldown),
     );
-    widgetsToWrap.add(
-      _buildLabelAndCheckmark('Bah (B)/Col (C)', productOptions.bahCol),
-    );
-    widgetsToWrap.add(
-      _buildLabelAndCheckmark('Lexan (L)', productOptions.lexan),
-    );
+    // todo: updated products from model
+    // widgetsToWrap.add(
+    //   _buildLabelAndCheckmark('Bah (B)/Col (C)', productOptions.bahCol),
+    // );
+    // widgetsToWrap.add(
+    //   _buildLabelAndCheckmark('Lexan (L)', productOptions.lexan),
+    // );
     widgetsToWrap.add(
       _buildLabelAndCheckmark('Screen Under', productOptions.screenUnder),
     );
@@ -427,12 +428,12 @@ class PdfService {
         productOptions.bahArticulating,
       ),
     );
-    widgetsToWrap.add(
-      _buildLabelAndCheckmark(
-        'Deco Bah (DB)/Deco Col(DC)',
-        productOptions.decoBahDecoCol,
-      ),
-    );
+    // widgetsToWrap.add(
+    //   _buildLabelAndCheckmark(
+    //     'Deco Bah (DB)/Deco Col(DC)',
+    //     productOptions.decoBahDecoCol,
+    //   ),
+    // );
     widgetsToWrap.add(
       _buildLabelAndCheckmark('Composite', productOptions.composite),
     );

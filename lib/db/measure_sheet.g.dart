@@ -5872,9 +5872,9 @@ const ProductOptionsSchema = Schema(
       name: r'bahArticulating',
       type: IsarType.bool,
     ),
-    r'bahCol': PropertySchema(
+    r'clearPanels': PropertySchema(
       id: 4,
-      name: r'bahCol',
+      name: r'clearPanels',
       type: IsarType.bool,
     ),
     r'composite': PropertySchema(
@@ -5892,39 +5892,39 @@ const ProductOptionsSchema = Schema(
       name: r'cutout',
       type: IsarType.string,
     ),
-    r'decoBahDecoCol': PropertySchema(
+    r'decoBahama': PropertySchema(
       id: 8,
-      name: r'decoBahDecoCol',
+      name: r'decoBahama',
+      type: IsarType.bool,
+    ),
+    r'decoColonial': PropertySchema(
+      id: 9,
+      name: r'decoColonial',
       type: IsarType.bool,
     ),
     r'directMount': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'directMount',
       type: IsarType.bool,
     ),
     r'fabric': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'fabric',
       type: IsarType.bool,
     ),
     r'flatTrack': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'flatTrack',
       type: IsarType.bool,
     ),
     r'galv': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'galv',
       type: IsarType.bool,
     ),
     r'hHeader': PropertySchema(
-      id: 13,
-      name: r'hHeader',
-      type: IsarType.bool,
-    ),
-    r'lexan': PropertySchema(
       id: 14,
-      name: r'lexan',
+      name: r'hHeader',
       type: IsarType.bool,
     ),
     r'osb': PropertySchema(
@@ -5957,18 +5957,38 @@ const ProductOptionsSchema = Schema(
       name: r'poolEnclosure',
       type: IsarType.bool,
     ),
-    r'retractableScreen': PropertySchema(
+    r'ratedBahama2Inch': PropertySchema(
       id: 21,
+      name: r'ratedBahama2Inch',
+      type: IsarType.bool,
+    ),
+    r'ratedBahama4Inch': PropertySchema(
+      id: 22,
+      name: r'ratedBahama4Inch',
+      type: IsarType.bool,
+    ),
+    r'ratedColonialBoardAndBatten': PropertySchema(
+      id: 23,
+      name: r'ratedColonialBoardAndBatten',
+      type: IsarType.bool,
+    ),
+    r'ratedColonialLouvered': PropertySchema(
+      id: 24,
+      name: r'ratedColonialLouvered',
+      type: IsarType.bool,
+    ),
+    r'retractableScreen': PropertySchema(
+      id: 25,
       name: r'retractableScreen',
       type: IsarType.bool,
     ),
     r'rolldown': PropertySchema(
-      id: 22,
+      id: 26,
       name: r'rolldown',
       type: IsarType.bool,
     ),
     r'screenUnder': PropertySchema(
-      id: 23,
+      id: 27,
       name: r'screenUnder',
       type: IsarType.bool,
     )
@@ -6028,26 +6048,30 @@ void _productOptionsSerialize(
   writer.writeBool(offsets[1], object.alum);
   writer.writeBool(offsets[2], object.armorTrack);
   writer.writeBool(offsets[3], object.bahArticulating);
-  writer.writeBool(offsets[4], object.bahCol);
+  writer.writeBool(offsets[4], object.clearPanels);
   writer.writeBool(offsets[5], object.composite);
   writer.writeString(offsets[6], object.compositeSpecifics);
   writer.writeString(offsets[7], object.cutout);
-  writer.writeBool(offsets[8], object.decoBahDecoCol);
-  writer.writeBool(offsets[9], object.directMount);
-  writer.writeBool(offsets[10], object.fabric);
-  writer.writeBool(offsets[11], object.flatTrack);
-  writer.writeBool(offsets[12], object.galv);
-  writer.writeBool(offsets[13], object.hHeader);
-  writer.writeBool(offsets[14], object.lexan);
+  writer.writeBool(offsets[8], object.decoBahama);
+  writer.writeBool(offsets[9], object.decoColonial);
+  writer.writeBool(offsets[10], object.directMount);
+  writer.writeBool(offsets[11], object.fabric);
+  writer.writeBool(offsets[12], object.flatTrack);
+  writer.writeBool(offsets[13], object.galv);
+  writer.writeBool(offsets[14], object.hHeader);
   writer.writeBool(offsets[15], object.osb);
   writer.writeString(offsets[16], object.otherBrandSpecify);
   writer.writeString(offsets[17], object.paintBrand);
   writer.writeString(offsets[18], object.paintCode);
   writer.writeBool(offsets[19], object.paintedCaps);
   writer.writeBool(offsets[20], object.poolEnclosure);
-  writer.writeBool(offsets[21], object.retractableScreen);
-  writer.writeBool(offsets[22], object.rolldown);
-  writer.writeBool(offsets[23], object.screenUnder);
+  writer.writeBool(offsets[21], object.ratedBahama2Inch);
+  writer.writeBool(offsets[22], object.ratedBahama4Inch);
+  writer.writeBool(offsets[23], object.ratedColonialBoardAndBatten);
+  writer.writeBool(offsets[24], object.ratedColonialLouvered);
+  writer.writeBool(offsets[25], object.retractableScreen);
+  writer.writeBool(offsets[26], object.rolldown);
+  writer.writeBool(offsets[27], object.screenUnder);
 }
 
 ProductOptions _productOptionsDeserialize(
@@ -6061,26 +6085,30 @@ ProductOptions _productOptionsDeserialize(
   object.alum = reader.readBool(offsets[1]);
   object.armorTrack = reader.readBool(offsets[2]);
   object.bahArticulating = reader.readBool(offsets[3]);
-  object.bahCol = reader.readBool(offsets[4]);
+  object.clearPanels = reader.readBool(offsets[4]);
   object.composite = reader.readBool(offsets[5]);
   object.compositeSpecifics = reader.readStringOrNull(offsets[6]);
   object.cutout = reader.readStringOrNull(offsets[7]);
-  object.decoBahDecoCol = reader.readBool(offsets[8]);
-  object.directMount = reader.readBool(offsets[9]);
-  object.fabric = reader.readBool(offsets[10]);
-  object.flatTrack = reader.readBool(offsets[11]);
-  object.galv = reader.readBool(offsets[12]);
-  object.hHeader = reader.readBool(offsets[13]);
-  object.lexan = reader.readBool(offsets[14]);
+  object.decoBahama = reader.readBool(offsets[8]);
+  object.decoColonial = reader.readBool(offsets[9]);
+  object.directMount = reader.readBool(offsets[10]);
+  object.fabric = reader.readBool(offsets[11]);
+  object.flatTrack = reader.readBool(offsets[12]);
+  object.galv = reader.readBool(offsets[13]);
+  object.hHeader = reader.readBool(offsets[14]);
   object.osb = reader.readBool(offsets[15]);
   object.otherBrandSpecify = reader.readStringOrNull(offsets[16]);
   object.paintBrand = reader.readStringOrNull(offsets[17]);
   object.paintCode = reader.readStringOrNull(offsets[18]);
   object.paintedCaps = reader.readBool(offsets[19]);
   object.poolEnclosure = reader.readBool(offsets[20]);
-  object.retractableScreen = reader.readBool(offsets[21]);
-  object.rolldown = reader.readBool(offsets[22]);
-  object.screenUnder = reader.readBool(offsets[23]);
+  object.ratedBahama2Inch = reader.readBool(offsets[21]);
+  object.ratedBahama4Inch = reader.readBool(offsets[22]);
+  object.ratedColonialBoardAndBatten = reader.readBool(offsets[23]);
+  object.ratedColonialLouvered = reader.readBool(offsets[24]);
+  object.retractableScreen = reader.readBool(offsets[25]);
+  object.rolldown = reader.readBool(offsets[26]);
+  object.screenUnder = reader.readBool(offsets[27]);
   return object;
 }
 
@@ -6139,6 +6167,14 @@ P _productOptionsDeserializeProp<P>(
       return (reader.readBool(offset)) as P;
     case 23:
       return (reader.readBool(offset)) as P;
+    case 24:
+      return (reader.readBool(offset)) as P;
+    case 25:
+      return (reader.readBool(offset)) as P;
+    case 26:
+      return (reader.readBool(offset)) as P;
+    case 27:
+      return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -6187,10 +6223,10 @@ extension ProductOptionsQueryFilter
   }
 
   QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
-      bahColEqualTo(bool value) {
+      clearPanelsEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'bahCol',
+        property: r'clearPanels',
         value: value,
       ));
     });
@@ -6515,10 +6551,20 @@ extension ProductOptionsQueryFilter
   }
 
   QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
-      decoBahDecoColEqualTo(bool value) {
+      decoBahamaEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'decoBahDecoCol',
+        property: r'decoBahama',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+      decoColonialEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'decoColonial',
         value: value,
       ));
     });
@@ -6569,16 +6615,6 @@ extension ProductOptionsQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'hHeader',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
-      lexanEqualTo(bool value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'lexan',
         value: value,
       ));
     });
@@ -7071,6 +7107,46 @@ extension ProductOptionsQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'poolEnclosure',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+      ratedBahama2InchEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'ratedBahama2Inch',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+      ratedBahama4InchEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'ratedBahama4Inch',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+      ratedColonialBoardAndBattenEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'ratedColonialBoardAndBatten',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+      ratedColonialLouveredEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'ratedColonialLouvered',
         value: value,
       ));
     });

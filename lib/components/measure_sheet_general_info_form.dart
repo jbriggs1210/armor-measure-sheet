@@ -160,10 +160,8 @@ class _MeasureSheetGeneralInfoFormState
       'rolldown': FormControl<bool>(
         value: measureSheetState.productOptions.rolldown,
       ),
-      'bahCol': FormControl<bool>(
-        value: measureSheetState.productOptions.bahCol,
-      ),
-      'lexan': FormControl<bool>(value: measureSheetState.productOptions.lexan),
+      'clearPanels': FormControl<bool>(
+          value: measureSheetState.productOptions.clearPanels),
       'screenUnder': FormControl<bool>(
         value: measureSheetState.productOptions.screenUnder,
       ),
@@ -179,9 +177,21 @@ class _MeasureSheetGeneralInfoFormState
       'bahArticulating': FormControl<bool>(
         value: measureSheetState.productOptions.bahArticulating,
       ),
-      'decoBahDecoCol': FormControl<bool>(
-        value: measureSheetState.productOptions.decoBahDecoCol,
+      'decoBahama': FormControl<bool>(
+        value: measureSheetState.productOptions.decoBahama,
       ),
+      'decoColonial': FormControl<bool>(
+        value: measureSheetState.productOptions.decoColonial,
+      ),
+      'ratedBahama2Inch': FormControl<bool>(
+        value: measureSheetState.productOptions.ratedBahama2Inch,
+      ), 'ratedBahama4Inch': FormControl<bool>(
+      value: measureSheetState.productOptions.ratedBahama4Inch,
+    ), 'ratedColonialLouvered': FormControl<bool>(
+      value: measureSheetState.productOptions.ratedColonialLouvered,
+    ), 'ratedColonialBoardAndBatten': FormControl<bool>(
+      value: measureSheetState.productOptions.ratedColonialBoardAndBatten,
+    ),
       'composite': FormControl<bool>(
         value: measureSheetState.productOptions.composite,
       ),
@@ -1376,29 +1386,13 @@ class _MeasureSheetGeneralInfoFormState
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('Bah (B)/Col (C)'),
+                        Text('Clear Panels'),
                         ReactiveSwitch.adaptive(
-                          formControlName: 'bahCol',
+                          formControlName: 'clearPanels',
                           activeColor: Colors.red[900],
                           onChanged: (control) {
                             setState(() {
-                              measureSheetState.productOptions.bahCol =
-                                  control.value!;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Lexan (L)'),
-                        ReactiveSwitch.adaptive(
-                          formControlName: 'lexan',
-                          activeColor: Colors.red[900],
-                          onChanged: (control) {
-                            setState(() {
-                              measureSheetState.productOptions.lexan =
+                              measureSheetState.productOptions.clearPanels =
                                   control.value!;
                             });
                           },
@@ -1490,14 +1484,94 @@ class _MeasureSheetGeneralInfoFormState
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('Deco Bah (DB)/Deco Col (DC)'),
+                        Text('Deco Bahama'),
                         ReactiveSwitch.adaptive(
-                          formControlName: 'decoBahDecoCol',
+                          formControlName: 'decoBahama',
                           activeColor: Colors.red[900],
                           onChanged: (control) {
                             setState(() {
-                              measureSheetState.productOptions.decoBahDecoCol =
+                              measureSheetState.productOptions.decoBahama =
                                   control.value!;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Deco Colonial'),
+                        ReactiveSwitch.adaptive(
+                          formControlName: 'decoColonial',
+                          activeColor: Colors.red[900],
+                          onChanged: (control) {
+                            setState(() {
+                              measureSheetState.productOptions.decoColonial =
+                              control.value!;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Rated Bahama 2"'),
+                        ReactiveSwitch.adaptive(
+                          formControlName: 'ratedBahama2Inch',
+                          activeColor: Colors.red[900],
+                          onChanged: (control) {
+                            setState(() {
+                              measureSheetState.productOptions.ratedBahama2Inch =
+                              control.value!;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Rated Bahama 4"'),
+                        ReactiveSwitch.adaptive(
+                          formControlName: 'ratedBahama4Inch',
+                          activeColor: Colors.red[900],
+                          onChanged: (control) {
+                            setState(() {
+                              measureSheetState.productOptions.ratedBahama4Inch =
+                              control.value!;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Rated Colonial Louvered'),
+                        ReactiveSwitch.adaptive(
+                          formControlName: 'ratedColonialLouvered',
+                          activeColor: Colors.red[900],
+                          onChanged: (control) {
+                            setState(() {
+                              measureSheetState.productOptions.ratedColonialLouvered =
+                              control.value!;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Rated Colonial B&B'),
+                        ReactiveSwitch.adaptive(
+                          formControlName: 'ratedColonialBoardAndBatten',
+                          activeColor: Colors.red[900],
+                          onChanged: (control) {
+                            setState(() {
+                              measureSheetState.productOptions.ratedColonialBoardAndBatten =
+                              control.value!;
                             });
                           },
                         ),

@@ -647,7 +647,11 @@ class _MeasureSheetMeasurementsFormState
     return productOptions.productsToMeasure().map((pTM) {
       return DropdownMenuItem(
         value: pTM,
-        child: Text(pTM, overflow: TextOverflow.ellipsis),
+          child: GestureDetector(child: Text(
+            pTM, softWrap: true, overflow: TextOverflow.ellipsis,),
+              onLongPress: () {
+                print(pTM);
+              })
       );
     }).toList();
   }
@@ -706,7 +710,6 @@ class _MeasureSheetMeasurementsFormState
               flex: 1,
               child: ReactiveTextField<int>(
                 formControlName: '${index.toString()}.openingNumber',
-                readOnly: true,
                 controller: textController,
                 decoration: InputDecoration(
                   labelText: 'Opening #',
@@ -714,6 +717,10 @@ class _MeasureSheetMeasurementsFormState
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                 ),
                 keyboardType: TextInputType.number,
+                onChanged: (control) {
+                  measureSheetState.measurementInfo.measurementRecords[index]
+                      .openingNumber = control.value;
+                },
               ),
             ),
             Flexible(
@@ -901,12 +908,20 @@ class _MeasureSheetMeasurementsFormState
             ),
           ),
           Padding(padding: EdgeInsetsGeometry.all(12),
-            child: Row(children: [
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
               Flexible(
                   flex: 1,
                   child: ReactiveDropdownField<String>(
                     formControlName: '${index.toString()}.noteReference',
+                    isExpanded: true,
                     items: _buildNotesDropdown(),
+                    decoration: InputDecoration(
+                      labelText: 'Opening Note',
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      border: OutlineInputBorder(),
+                    ),
                     onChanged: (control) {
                       measureSheetState.measurementInfo
                           .measurementRecords[index].noteReference =
@@ -940,7 +955,7 @@ class _MeasureSheetMeasurementsFormState
     return notes.map((note) {
       return DropdownMenuItem<String>(
         value: note,
-        child: Text(note),
+        child: Text(note, softWrap: true,),
       );
     }).toList();
   }
