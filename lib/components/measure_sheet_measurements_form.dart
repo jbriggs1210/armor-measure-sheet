@@ -796,6 +796,7 @@ class _MeasureSheetMeasurementsFormState
                   flex: 1,
                   child: ReactiveDropdownField<String>(
                     formControlName: '${index.toString()}.spanDirection',
+                    isExpanded: true,
                     items: [
                       DropdownMenuItem(value: 'T/L',
                           child: Text('T/L', softWrap: true,
