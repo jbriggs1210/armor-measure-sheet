@@ -78,12 +78,14 @@ class _MeasureSheetCardsPageState extends State<MeasureSheetCardsPage> {
         backgroundColor: Colors.red[900],
       ),
       body: SafeArea(
+        // todo: need ability to switch between card view and list view of jobs
+        // todo: list view could be slidables with their options behind the slide
         child: GridView.builder(
           shrinkWrap: true,
           itemCount: _filteredMeasureSheets.length,
           padding: EdgeInsets.all(4),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
+            crossAxisCount: 2,
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
           ),

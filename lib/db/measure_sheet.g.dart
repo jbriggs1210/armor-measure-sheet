@@ -5927,68 +5927,78 @@ const ProductOptionsSchema = Schema(
       name: r'hHeader',
       type: IsarType.bool,
     ),
-    r'osb': PropertySchema(
+    r'leftStack': PropertySchema(
       id: 15,
+      name: r'leftStack',
+      type: IsarType.string,
+    ),
+    r'osb': PropertySchema(
+      id: 16,
       name: r'osb',
       type: IsarType.bool,
     ),
     r'otherBrandSpecify': PropertySchema(
-      id: 16,
+      id: 17,
       name: r'otherBrandSpecify',
       type: IsarType.string,
     ),
     r'paintBrand': PropertySchema(
-      id: 17,
+      id: 18,
       name: r'paintBrand',
       type: IsarType.string,
     ),
     r'paintCode': PropertySchema(
-      id: 18,
+      id: 19,
       name: r'paintCode',
       type: IsarType.string,
     ),
     r'paintedCaps': PropertySchema(
-      id: 19,
+      id: 20,
       name: r'paintedCaps',
       type: IsarType.bool,
     ),
     r'poolEnclosure': PropertySchema(
-      id: 20,
+      id: 21,
       name: r'poolEnclosure',
       type: IsarType.bool,
     ),
     r'ratedBahama2Inch': PropertySchema(
-      id: 21,
+      id: 22,
       name: r'ratedBahama2Inch',
       type: IsarType.bool,
     ),
     r'ratedBahama4Inch': PropertySchema(
-      id: 22,
+      id: 23,
       name: r'ratedBahama4Inch',
       type: IsarType.bool,
     ),
     r'ratedColonialBoardAndBatten': PropertySchema(
-      id: 23,
+      id: 24,
       name: r'ratedColonialBoardAndBatten',
       type: IsarType.bool,
     ),
     r'ratedColonialLouvered': PropertySchema(
-      id: 24,
+      id: 25,
       name: r'ratedColonialLouvered',
       type: IsarType.bool,
     ),
     r'retractableScreen': PropertySchema(
-      id: 25,
+      id: 26,
       name: r'retractableScreen',
       type: IsarType.bool,
     ),
+    r'rightStack': PropertySchema(
+      id: 27,
+      name: r'rightStack',
+      type: IsarType.string,
+    ),
     r'rolldown': PropertySchema(
-      id: 26,
+      id: 28,
       name: r'rolldown',
       type: IsarType.bool,
     ),
     r'screenUnder': PropertySchema(
-      id: 27,
+      id: 29,
       name: r'screenUnder',
       type: IsarType.bool,
     )
@@ -6018,6 +6028,12 @@ int _productOptionsEstimateSize(
     }
   }
   {
+    final value = object.leftStack;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.otherBrandSpecify;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -6031,6 +6047,12 @@ int _productOptionsEstimateSize(
   }
   {
     final value = object.paintCode;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.rightStack;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -6059,19 +6081,21 @@ void _productOptionsSerialize(
   writer.writeBool(offsets[12], object.flatTrack);
   writer.writeBool(offsets[13], object.galv);
   writer.writeBool(offsets[14], object.hHeader);
-  writer.writeBool(offsets[15], object.osb);
-  writer.writeString(offsets[16], object.otherBrandSpecify);
-  writer.writeString(offsets[17], object.paintBrand);
-  writer.writeString(offsets[18], object.paintCode);
-  writer.writeBool(offsets[19], object.paintedCaps);
-  writer.writeBool(offsets[20], object.poolEnclosure);
-  writer.writeBool(offsets[21], object.ratedBahama2Inch);
-  writer.writeBool(offsets[22], object.ratedBahama4Inch);
-  writer.writeBool(offsets[23], object.ratedColonialBoardAndBatten);
-  writer.writeBool(offsets[24], object.ratedColonialLouvered);
-  writer.writeBool(offsets[25], object.retractableScreen);
-  writer.writeBool(offsets[26], object.rolldown);
-  writer.writeBool(offsets[27], object.screenUnder);
+  writer.writeString(offsets[15], object.leftStack);
+  writer.writeBool(offsets[16], object.osb);
+  writer.writeString(offsets[17], object.otherBrandSpecify);
+  writer.writeString(offsets[18], object.paintBrand);
+  writer.writeString(offsets[19], object.paintCode);
+  writer.writeBool(offsets[20], object.paintedCaps);
+  writer.writeBool(offsets[21], object.poolEnclosure);
+  writer.writeBool(offsets[22], object.ratedBahama2Inch);
+  writer.writeBool(offsets[23], object.ratedBahama4Inch);
+  writer.writeBool(offsets[24], object.ratedColonialBoardAndBatten);
+  writer.writeBool(offsets[25], object.ratedColonialLouvered);
+  writer.writeBool(offsets[26], object.retractableScreen);
+  writer.writeString(offsets[27], object.rightStack);
+  writer.writeBool(offsets[28], object.rolldown);
+  writer.writeBool(offsets[29], object.screenUnder);
 }
 
 ProductOptions _productOptionsDeserialize(
@@ -6096,19 +6120,21 @@ ProductOptions _productOptionsDeserialize(
   object.flatTrack = reader.readBool(offsets[12]);
   object.galv = reader.readBool(offsets[13]);
   object.hHeader = reader.readBool(offsets[14]);
-  object.osb = reader.readBool(offsets[15]);
-  object.otherBrandSpecify = reader.readStringOrNull(offsets[16]);
-  object.paintBrand = reader.readStringOrNull(offsets[17]);
-  object.paintCode = reader.readStringOrNull(offsets[18]);
-  object.paintedCaps = reader.readBool(offsets[19]);
-  object.poolEnclosure = reader.readBool(offsets[20]);
-  object.ratedBahama2Inch = reader.readBool(offsets[21]);
-  object.ratedBahama4Inch = reader.readBool(offsets[22]);
-  object.ratedColonialBoardAndBatten = reader.readBool(offsets[23]);
-  object.ratedColonialLouvered = reader.readBool(offsets[24]);
-  object.retractableScreen = reader.readBool(offsets[25]);
-  object.rolldown = reader.readBool(offsets[26]);
-  object.screenUnder = reader.readBool(offsets[27]);
+  object.leftStack = reader.readStringOrNull(offsets[15]);
+  object.osb = reader.readBool(offsets[16]);
+  object.otherBrandSpecify = reader.readStringOrNull(offsets[17]);
+  object.paintBrand = reader.readStringOrNull(offsets[18]);
+  object.paintCode = reader.readStringOrNull(offsets[19]);
+  object.paintedCaps = reader.readBool(offsets[20]);
+  object.poolEnclosure = reader.readBool(offsets[21]);
+  object.ratedBahama2Inch = reader.readBool(offsets[22]);
+  object.ratedBahama4Inch = reader.readBool(offsets[23]);
+  object.ratedColonialBoardAndBatten = reader.readBool(offsets[24]);
+  object.ratedColonialLouvered = reader.readBool(offsets[25]);
+  object.retractableScreen = reader.readBool(offsets[26]);
+  object.rightStack = reader.readStringOrNull(offsets[27]);
+  object.rolldown = reader.readBool(offsets[28]);
+  object.screenUnder = reader.readBool(offsets[29]);
   return object;
 }
 
@@ -6150,15 +6176,15 @@ P _productOptionsDeserializeProp<P>(
     case 14:
       return (reader.readBool(offset)) as P;
     case 15:
-      return (reader.readBool(offset)) as P;
-    case 16:
       return (reader.readStringOrNull(offset)) as P;
+    case 16:
+      return (reader.readBool(offset)) as P;
     case 17:
       return (reader.readStringOrNull(offset)) as P;
     case 18:
       return (reader.readStringOrNull(offset)) as P;
     case 19:
-      return (reader.readBool(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 20:
       return (reader.readBool(offset)) as P;
     case 21:
@@ -6174,6 +6200,10 @@ P _productOptionsDeserializeProp<P>(
     case 26:
       return (reader.readBool(offset)) as P;
     case 27:
+      return (reader.readStringOrNull(offset)) as P;
+    case 28:
+      return (reader.readBool(offset)) as P;
+    case 29:
       return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -6616,6 +6646,154 @@ extension ProductOptionsQueryFilter
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'hHeader',
         value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  leftStackIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'leftStack',
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  leftStackIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'leftStack',
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  leftStackEqualTo(String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'leftStack',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  leftStackGreaterThan(String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'leftStack',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  leftStackLessThan(String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'leftStack',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  leftStackBetween(String? lower,
+      String? upper, {
+        bool includeLower = true,
+        bool includeUpper = true,
+        bool caseSensitive = true,
+      }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'leftStack',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  leftStackStartsWith(String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'leftStack',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  leftStackEndsWith(String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'leftStack',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  leftStackContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'leftStack',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  leftStackMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'leftStack',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  leftStackIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'leftStack',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  leftStackIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'leftStack',
+        value: '',
       ));
     });
   }
@@ -7158,6 +7336,154 @@ extension ProductOptionsQueryFilter
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'retractableScreen',
         value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  rightStackIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'rightStack',
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  rightStackIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'rightStack',
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  rightStackEqualTo(String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'rightStack',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  rightStackGreaterThan(String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'rightStack',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  rightStackLessThan(String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'rightStack',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  rightStackBetween(String? lower,
+      String? upper, {
+        bool includeLower = true,
+        bool includeUpper = true,
+        bool caseSensitive = true,
+      }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'rightStack',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  rightStackStartsWith(String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'rightStack',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  rightStackEndsWith(String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'rightStack',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  rightStackContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'rightStack',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  rightStackMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'rightStack',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  rightStackIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'rightStack',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
+  rightStackIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'rightStack',
+        value: '',
       ));
     });
   }

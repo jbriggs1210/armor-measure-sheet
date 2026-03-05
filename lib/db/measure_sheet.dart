@@ -94,6 +94,9 @@ class ProductOptions {
   bool alum = false;
   bool fabric = false;
   bool accordions = false;
+  String? leftStack;
+  String? rightStack;
+
   bool rolldown = false;
   bool clearPanels = false;
   bool screenUnder = false;
@@ -115,6 +118,11 @@ class ProductOptions {
   bool armorTrack = false;
   bool hHeader = false;
   bool flatTrack = false;
+
+  // For opening info
+  static bool requiresLeftRightStack(String productToCheck) {
+    return productToCheck == 'Accordions (Ac)';
+  }
 
   List<String> productsToMeasure() {
     List<String> products = [];

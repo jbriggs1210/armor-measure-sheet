@@ -513,7 +513,10 @@ class _MeasureSheetMeasurementsFormState
       formArrayName: 'notes',
       builder: (context, formArray, child) {
         int length = formArray.controls.length;
-        return ListView.builder(
+        return ListView.separated(
+          separatorBuilder: (context, index) {
+            return SizedBox.fromSize(size: Size.fromHeight(4.00));
+          },
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: length,
@@ -523,41 +526,56 @@ class _MeasureSheetMeasurementsFormState
             final uniqueKey = ValueKey(control.value);
 
             // single note
-            return Row(
-              key: uniqueKey,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    // from ui
-                    formArray.removeAt(index);
-                    // from data structure
-                    setState(() {
-                      var newList = measureSheetState.measurementInfo.notes
-                          .toList();
-                      newList.removeAt(index);
-                      measureSheetState.measurementInfo.notes = newList;
-                    });
-                  },
-                  icon: Icon(Icons.delete_sharp, color: Colors.red[900]),
-                ),
-                Expanded(
-                  child: ReactiveTextField<String>(
-                    formControlName: index.toString(),
-                    decoration: InputDecoration(labelText: 'Note'),
-                    onChanged: (control) {
-                        if (measureSheetState.measurementInfo.notes.length <=
-                            index) {
+            return PhysicalModel(
+              color: ThemeData
+                  .light()
+                  .canvasColor,
+              shadowColor: ThemeData
+                  .dark()
+                  .canvasColor,
+              elevation: 2.0,
+              child: Container(
+                decoration: BoxDecoration(
+                    border: BoxBorder.all(color: Colors.black),
+                    borderRadius: BorderRadiusGeometry.circular(5.0)),
+                child: Row(
+                  key: uniqueKey,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        // from ui
+                        formArray.removeAt(index);
+                        // from data structure
+                        setState(() {
+                          var newList = measureSheetState.measurementInfo.notes
+                              .toList();
+                          newList.removeAt(index);
+                          measureSheetState.measurementInfo.notes = newList;
+                        });
+                      },
+                      icon: Icon(Icons.delete_sharp, color: Colors.red[900]),
+                    ),
+                    Expanded(
+                      child: ReactiveTextField<String>(
+                        formControlName: index.toString(),
+                        decoration: InputDecoration(labelText: 'Note',
+                            border: InputBorder.none),
+                        onChanged: (control) {
+                          if (measureSheetState.measurementInfo.notes.length <=
+                              index) {
                             measureSheetState.measurementInfo.notes = [
                               ...measureSheetState.measurementInfo.notes,
                               '',
                             ];
-                        }
-                        measureSheetState.measurementInfo.notes[index] =
-                            control.value!;
-                    },
-                  ),
+                          }
+                          measureSheetState.measurementInfo.notes[index] =
+                          control.value!;
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             );
           },
         );
@@ -633,15 +651,15 @@ class _MeasureSheetMeasurementsFormState
       'spanDirection': FormControl<String>(value: record.spanDirection),
       'span': FormControl<String>(
           value: record.span, validators: [ _ValueMustBeDivisibleByPoint25()]),
-      // todo: add 1/4 inch validator???
       'nSpan': FormControl<String>(
           value: record.nSpan, validators: [ _ValueMustBeDivisibleByPoint25()]),
-      // todo: add 1/4 inch validator???
+      'leftStack': FormControl<String>(value: record.stackLeft),
+      'rightStack': FormControl<String>(value: record.stackRight),
       'buildOutTop': FormControl<String>(value: record.buildOutTop),
       'buildOutSides': FormControl<String>(value: record.buildOutSides),
       'buildOutBot': FormControl<String>(value: record.buildOutBot),
       'noteReference': FormControl<String>(value: record.noteReference),
-    });
+    }, validators: [_IfAccordionStacksMustNotBeNullOrEmpty()]);
   }
 
   List<DropdownMenuItem<String>> _buildProductsDropdown(
@@ -675,110 +693,110 @@ class _MeasureSheetMeasurementsFormState
     TextEditingController textController = TextEditingController
         .fromValue(TextEditingValue(text: '${index + 1}'));
 
-    return Container(
-      key: uniqueKey,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadiusGeometry.circular(5.0),
-        border: Border.all(color: Colors.black, width: 1),
-      ),
-      child: ExpansionTile(
-        onExpansionChanged: (value) async {
-          if (value) {
-            _scrollToBottom();
-          }
-          if (!value) {
-            // print('collapsed');
-          }
-        },
-        leading: IconButton(
-          onPressed: () {
-            // for ui
-            formArray.removeAt(index);
-            // for data structure
-            setState(() {
-              var newList = measureSheetState.measurementInfo.measurementRecords
-                  .toList();
-              newList.removeAt(index);
-              measureSheetState.measurementInfo.measurementRecords = newList;
-            });
+    return PhysicalModel(
+      color: ThemeData
+          .light()
+          .canvasColor,
+      shadowColor: ThemeData
+          .dark()
+          .canvasColor,
+      elevation: 4.0,
+      child: Container(
+        key: uniqueKey,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadiusGeometry.circular(5.0),
+          border: Border.all(color: Colors.black, width: 1),
+        ),
+        child: ExpansionTile(
+          // todo: add an error status flag based on validation errors????
+          onExpansionChanged: (value) async {
+            if (value) {
+              _scrollToBottom();
+            }
+            if (!value) {
+              // print('collapsed');
+            }
           },
-          icon: Icon(Icons.delete_sharp, color: Colors.red[900]),
-        ),
-        title:
-        // header, shows up when collapsed
-        Padding(
-          padding: const EdgeInsets.only(top: 10),
-          child: Row(
-            spacing: 6.0,
-            children: [
-              Flexible(
-                flex: 1,
-                child: ReactiveTextField<int>(
-                  formControlName: '${index.toString()}.openingNumber',
-                  controller: textController,
-                  decoration: InputDecoration(
-                    helperText: '',
-                    labelText: 'Opening #',
-                    border: OutlineInputBorder(),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                  ),
-                  keyboardType: TextInputType.number,
-                  onChanged: (control) {
-                    measureSheetState.measurementInfo.measurementRecords[index]
-                        .openingNumber = control.value;
-                  },
-                ),
-              ),
-              Flexible(
-                flex: 1,
-                child: ReactiveTextField<String>(
-                  formControlName: '${index.toString()}.openingType',
-                  decoration: InputDecoration(
-                    helperText: '',
-                    labelText: 'Opening Type',
-                    border: OutlineInputBorder(),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                  ),
-                  onChanged: (control) {
-                    measureSheetState
-                        .measurementInfo
-                        .measurementRecords[index]
-                        .openingType =
-                    control.value!;
-                  },
-                ),
-              ),
-              Flexible(
-                flex: 1,
-                child: ReactiveDropdownField<String>(
-                  formControlName: '${index.toString()}.level',
-                  decoration: InputDecoration(
-                    helperText: '',
-                    labelText: 'Level',
-                    border: OutlineInputBorder(),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                  ),
-                  items: _buildLevelsDropdown(measureSheetState.activeLevels),
-                  onChanged: (control) {
-                    measureSheetState
-                        .measurementInfo
-                        .measurementRecords[index]
-                        .level =
-                    control.value!;
-                  },
-                ),
-              ),
-            ],
+          leading: IconButton(
+            onPressed: () {
+              // for ui
+              formArray.removeAt(index);
+              // for data structure
+              setState(() {
+                var newList = measureSheetState.measurementInfo
+                    .measurementRecords
+                    .toList();
+                newList.removeAt(index);
+                measureSheetState.measurementInfo.measurementRecords = newList;
+              });
+            },
+            icon: Icon(Icons.delete_sharp, color: Colors.red[900]),
           ),
-        ),
-        // rows that show after expanding
-        children: [
+          title:
+          // header, shows up when collapsed
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(top: 10),
             child: Row(
-              spacing: 10.0,
-              mainAxisAlignment: MainAxisAlignment.start,
+              spacing: 6.0,
               children: [
+                Flexible(
+                  flex: 1,
+                  child: ReactiveTextField<int>(
+                    formControlName: '${index.toString()}.openingNumber',
+                    controller: textController,
+                    decoration: InputDecoration(
+                      helperText: '',
+                      labelText: 'Opening #',
+                      border: OutlineInputBorder(),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                    keyboardType: TextInputType.number,
+                    onChanged: (control) {
+                      measureSheetState.measurementInfo
+                          .measurementRecords[index]
+                          .openingNumber = control.value;
+                    },
+                  ),
+                ),
+                Flexible(
+                  flex: 1,
+                  child: ReactiveTextField<String>(
+                    formControlName: '${index.toString()}.openingType',
+                    decoration: InputDecoration(
+                      helperText: '',
+                      labelText: 'Opening Type',
+                      border: OutlineInputBorder(),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                    onChanged: (control) {
+                      measureSheetState
+                          .measurementInfo
+                          .measurementRecords[index]
+                          .openingType =
+                      control.value!;
+                    },
+                  ),
+                ),
+                Flexible(
+                  flex: 1,
+                  child: ReactiveDropdownField<String>(
+                    formControlName: '${index.toString()}.level',
+                    decoration: InputDecoration(
+                      helperText: '',
+                      labelText: 'Level',
+                      border: OutlineInputBorder(),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                    items: _buildLevelsDropdown(measureSheetState.activeLevels),
+                    onChanged: (control) {
+                      measureSheetState
+                          .measurementInfo
+                          .measurementRecords[index]
+                          .level =
+                      control.value!;
+                    },
+                  ),
+                ),
                 Flexible(
                   flex: 2,
                   child: ReactiveDropdownField<String>(
@@ -795,164 +813,191 @@ class _MeasureSheetMeasurementsFormState
                     ),
                     onChanged: (control) {
                       measureSheetState
-                              .measurementInfo
-                              .measurementRecords[index]
-                              .product =
-                          control.value!;
-                    },
-                  ),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: ReactiveDropdownField<String>(
-                    formControlName: '${index.toString()}.spanDirection',
-                    isExpanded: true,
-                    items: [
-                      DropdownMenuItem(value: 'T/L',
-                          child: Text('T/L', softWrap: true,
-                            overflow: TextOverflow.ellipsis,)),
-                      DropdownMenuItem(value: 'R/B',
-                          child: Text('R/B', softWrap: true,
-                              overflow: TextOverflow.ellipsis,)),
-                    ],
-                    decoration: InputDecoration(
-                      helperText: '',
-                      labelText: 'Direction',
-                      border: OutlineInputBorder(),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
-                    onChanged: (control) {
-                      measureSheetState
-                              .measurementInfo
-                              .measurementRecords[index]
-                              .spanDirection =
-                          control.value;
-                    },
-                  ),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: ReactiveTextField<String>(
-                    formControlName: '${index.toString()}.span',
-                    decoration: InputDecoration(
-                      helperText: '',
-                      labelText: 'Span',
-                      border: OutlineInputBorder(),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
-                    onChanged: (control) {
-                      measureSheetState
-                              .measurementInfo
-                              .measurementRecords[index]
-                              .span =
-                          control.value;
-                    },
-                  ),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: ReactiveTextField<String>(
-                    formControlName: '${index.toString()}.nSpan',
-                    decoration: InputDecoration(
-                      helperText: '',
-                      labelText: 'NSpan',
-                      border: OutlineInputBorder(),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
-                    onChanged: (control) {
-                      measureSheetState
-                              .measurementInfo
-                              .measurementRecords[index]
-                              .nSpan =
-                          control.value;
-                    },
-                  ),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: ReactiveTextField<String>(
-                    formControlName: '${index.toString()}.buildOutTop',
-                    decoration: InputDecoration(
-                      helperText: '',
-                      labelText: 'BO Top',
-                      border: OutlineInputBorder(),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
-                    onChanged: (control) {
-                      measureSheetState
-                              .measurementInfo
-                              .measurementRecords[index]
-                              .buildOutTop =
-                          control.value;
-                    },
-                  ),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: ReactiveTextField<String>(
-                    formControlName: '${index.toString()}.buildOutSides',
-                    decoration: InputDecoration(
-                      helperText: '',
-                      labelText: 'BO Sides',
-                      border: OutlineInputBorder(),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
-                    onChanged: (control) {
-                      measureSheetState
-                              .measurementInfo
-                              .measurementRecords[index]
-                              .buildOutSides =
-                          control.value;
-                    },
-                  ),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: ReactiveTextField<String>(
-                    formControlName: '${index.toString()}.buildOutBot',
-                    decoration: InputDecoration(
-                      helperText: '',
-                      labelText: 'BO Bot',
-                      border: OutlineInputBorder(),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
-                    onChanged: (control) {
-                      measureSheetState
-                              .measurementInfo
-                              .measurementRecords[index]
-                              .buildOutBot =
-                          control.value;
+                          .measurementInfo
+                          .measurementRecords[index]
+                          .product =
+                      control.value!;
                     },
                   ),
                 ),
               ],
             ),
           ),
-          Padding(padding: EdgeInsetsGeometry.all(8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-              Flexible(
-                  flex: 1,
-                  child: ReactiveDropdownField<String>(
-                    formControlName: '${index.toString()}.noteReference',
-                    isExpanded: true,
-                    items: _buildNotesDropdown(),
-                    decoration: InputDecoration(
-                      helperText: '',
-                      labelText: 'Opening Note',
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      border: OutlineInputBorder(),
+          // rows that show after expanding
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                spacing: 10.0,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: ReactiveDropdownField<String>(
+                      formControlName: '${index.toString()}.spanDirection',
+                      isExpanded: true,
+                      items: [
+                        DropdownMenuItem(value: 'T/B',
+                            child: Text('T/B', softWrap: true,
+                              overflow: TextOverflow.ellipsis,)),
+                        DropdownMenuItem(value: 'L/R',
+                            child: Text('L/R', softWrap: true,
+                              overflow: TextOverflow.ellipsis,)),
+                      ],
+                      decoration: InputDecoration(
+                        helperText: '',
+                        labelText: 'Direction',
+                        border: OutlineInputBorder(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      onChanged: (control) {
+                        measureSheetState
+                            .measurementInfo
+                            .measurementRecords[index]
+                            .spanDirection =
+                            control.value;
+                      },
                     ),
-                    onChanged: (control) {
-                      measureSheetState.measurementInfo
-                          .measurementRecords[index].noteReference =
-                          control.value;
-                    },
-                  )
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: ReactiveTextField<String>(
+                      formControlName: '${index.toString()}.span',
+                      decoration: InputDecoration(
+                        helperText: '',
+                        labelText: 'Span',
+                        border: OutlineInputBorder(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      onChanged: (control) {
+                        measureSheetState
+                            .measurementInfo
+                            .measurementRecords[index]
+                            .span =
+                            control.value;
+                      },
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: ReactiveTextField<String>(
+                      formControlName: '${index.toString()}.nSpan',
+                      decoration: InputDecoration(
+                        helperText: '',
+                        labelText: 'NSpan',
+                        border: OutlineInputBorder(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      onChanged: (control) {
+                        measureSheetState
+                            .measurementInfo
+                            .measurementRecords[index]
+                            .nSpan =
+                            control.value;
+                      },
+                    ),
+                  ),
+                  // todo: these cause an issue with spacing, not sure how to resolve
+                  ReactiveValueListenableBuilder(
+                      formControlName: '${index.toString()}.product',
+                      builder: (context, control, child) {
+                        return _addLeftStackOrEmptyContainer(
+                            index, measureSheetState
+                            .measurementInfo.measurementRecords[index].product);
+                      }),
+                  ReactiveValueListenableBuilder(
+                      formControlName: '${index.toString()}.product',
+                      builder: (context, control, child) {
+                        return _addRightStackOrEmptyContainer(
+                            index, measureSheetState
+                            .measurementInfo.measurementRecords[index].product);
+                      }),
+                  Flexible(
+                    flex: 1,
+                    child: ReactiveTextField<String>(
+                      formControlName: '${index.toString()}.buildOutTop',
+                      decoration: InputDecoration(
+                        helperText: '',
+                        labelText: 'BO Top',
+                        border: OutlineInputBorder(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      onChanged: (control) {
+                        measureSheetState
+                            .measurementInfo
+                            .measurementRecords[index]
+                            .buildOutTop =
+                            control.value;
+                      },
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: ReactiveTextField<String>(
+                      formControlName: '${index.toString()}.buildOutSides',
+                      decoration: InputDecoration(
+                        helperText: '',
+                        labelText: 'BO Sides',
+                        border: OutlineInputBorder(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      onChanged: (control) {
+                        measureSheetState
+                            .measurementInfo
+                            .measurementRecords[index]
+                            .buildOutSides =
+                            control.value;
+                      },
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: ReactiveTextField<String>(
+                      formControlName: '${index.toString()}.buildOutBot',
+                      decoration: InputDecoration(
+                        helperText: '',
+                        labelText: 'BO Bot',
+                        border: OutlineInputBorder(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      onChanged: (control) {
+                        measureSheetState
+                            .measurementInfo
+                            .measurementRecords[index]
+                            .buildOutBot =
+                            control.value;
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ],),),
-        ],
+            ),
+            Padding(padding: EdgeInsetsGeometry.all(8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Flexible(
+                      flex: 1,
+                      child: ReactiveDropdownField<String>(
+                        formControlName: '${index.toString()}.noteReference',
+                        isExpanded: true,
+                        items: _buildNotesDropdown(),
+                        decoration: InputDecoration(
+                          helperText: '',
+                          labelText: 'Opening Note',
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (control) {
+                          measureSheetState.measurementInfo
+                              .measurementRecords[index].noteReference =
+                              control.value;
+                        },
+                      )
+                  ),
+                ],),),
+          ],
+        ),
       ),
     );
   }
@@ -980,6 +1025,187 @@ class _MeasureSheetMeasurementsFormState
         child: Text(note, softWrap: true,),
       );
     }).toList();
+  }
+
+  Widget _addLeftStackOrEmptyContainer(int index, String? product) {
+    Container emptyContainer = Container();
+    if (product == null) {
+      return emptyContainer;
+    }
+
+    if (ProductOptions.requiresLeftRightStack(product)) {
+      return Flexible(flex: 1, child: ReactiveDropdownField<String>(
+        formControlName: '${index.toString()}.leftStack',
+        isExpanded: true,
+        items: _stackPercentageDropdownItems(),
+        decoration: InputDecoration(
+          helperText: '',
+          labelText: 'Left Stack',
+          border: OutlineInputBorder(),
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+        ),
+        onChanged: (control) {
+          measureSheetState
+              .measurementInfo
+              .measurementRecords[index]
+              .stackLeft =
+              control.value;
+
+          // this is pretty bad but for now it works
+          var fg = control.parent as FormGroup;
+          var opposite = '';
+
+          switch (control.value) {
+            case '10':
+              opposite = '90';
+            case '20':
+              opposite = '80';
+            case '25':
+              opposite = '75';
+            case '30':
+              opposite = '70';
+            case '40':
+              opposite = '60';
+            case '50':
+              opposite = '50';
+            case '60':
+              opposite = '40';
+            case '70':
+              opposite = '30';
+            case '75':
+              opposite = '25';
+            case '80':
+              opposite = '20';
+            case '90':
+              opposite = '90';
+          }
+
+          fg
+              .control('rightStack')
+              .value = opposite;
+
+          measureSheetState.measurementInfo.measurementRecords[index]
+              .stackRight = opposite;
+        },
+      ),
+      );
+    }
+
+    return emptyContainer;
+  }
+
+  Widget _addRightStackOrEmptyContainer(int index, String? product) {
+    Container emptyContainer = Container();
+    if (product == null) {
+      return emptyContainer;
+    }
+
+    if (ProductOptions.requiresLeftRightStack(product)) {
+      return Flexible(flex: 1, child: ReactiveDropdownField<String>(
+        formControlName: '${index.toString()}.rightStack',
+        isExpanded: true,
+        items: _stackPercentageDropdownItems(),
+        decoration: InputDecoration(
+          helperText: '',
+          labelText: 'Right Stack',
+          border: OutlineInputBorder(),
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+        ),
+        onChanged: (control) {
+          measureSheetState
+              .measurementInfo
+              .measurementRecords[index]
+              .stackRight =
+              control.value;
+
+          // this is pretty bad but for now it works
+          var fg = control.parent as FormGroup;
+          var opposite = '';
+
+          switch (control.value) {
+            case '10':
+              opposite = '90';
+            case '20':
+              opposite = '80';
+            case '25':
+              opposite = '75';
+            case '30':
+              opposite = '70';
+            case '40':
+              opposite = '60';
+            case '50':
+              opposite = '50';
+            case '60':
+              opposite = '40';
+            case '70':
+              opposite = '30';
+            case '75':
+              opposite = '25';
+            case '80':
+              opposite = '20';
+            case '90':
+              opposite = '90';
+          }
+
+          fg
+              .control('leftStack')
+              .value = opposite;
+
+          measureSheetState.measurementInfo.measurementRecords[index]
+              .stackLeft = opposite;
+        },
+      ),
+      );
+    }
+
+    return emptyContainer;
+  }
+
+  List<DropdownMenuItem<String>> _stackPercentageDropdownItems() {
+    return ['10', '20', '25', '30', '40', '50', '60', '70', '75', '80', '90']
+        .map((percentage) {
+      return DropdownMenuItem(value: percentage,
+          child: Text('$percentage%', softWrap: true,
+            overflow: TextOverflow.ellipsis,));
+    }).toList();
+  }
+}
+
+class _IfAccordionStacksMustNotBeNullOrEmpty extends Validator<dynamic> {
+
+  _IfAccordionStacksMustNotBeNullOrEmpty() : super();
+
+  @override
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
+    var measurementRecordFg = control as FormGroup;
+    String? product = measurementRecordFg
+        .control('product')
+        .value;
+    var lStack = measurementRecordFg
+        .control('leftStack') as FormControl<String>;
+    var rStack = measurementRecordFg
+        .control('rightStack') as FormControl<String>;
+    if (product == null || product.isEmpty) {
+      return null;
+    }
+    if (ProductOptions.requiresLeftRightStack(product)) {
+      if (lStack.value == null || lStack.value!.isEmpty) {
+        lStack.setErrors({'Required': true});
+      }
+      if (rStack.value == null || rStack.value!.isEmpty) {
+        rStack.setErrors({'Required': true});
+      }
+      // return {
+      //   'Required': true
+      // };
+    }
+    // if (lStack.value != null) {
+    //   lStack.removeError('Required');
+    // }
+    // if (rStack.value != null) {
+    //   rStack.removeError('Required');
+    // }
+    return null;
   }
 }
 
