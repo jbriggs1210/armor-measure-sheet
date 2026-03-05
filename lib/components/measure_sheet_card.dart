@@ -59,7 +59,7 @@ class MeasureSheetCard extends StatelessWidget {
                   _delete();
                 }
               },
-              icon: Icon(Icons.close_sharp, color: Colors.red[900]),
+              icon: Icon(Icons.delete_sharp, color: Colors.red[900]),
             ),
           ),
           ListTile(

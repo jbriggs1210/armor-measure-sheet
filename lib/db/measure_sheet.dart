@@ -143,6 +143,9 @@ class ProductOptions {
     if (screenUnder) {
       products.add('Screen Under');
     }
+    if (retractableScreen) {
+      products.add('Retractable Screen');
+    }
     if (poolEnclosure) {
       products.add('Pool Enclosure');
     }

@@ -272,6 +272,7 @@ class _MeasureSheetGeneralInfoFormState
                   customerInfoForm.control('jobNumber').setErrors({
                     'jobNumberExists': true,
                   });
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text(
@@ -292,6 +293,9 @@ class _MeasureSheetGeneralInfoFormState
                   behavior: SnackBarBehavior.floating,
                 ),
               );
+              setState(() {
+                _index = 0;
+              });
               return;
             }
           }
@@ -340,6 +344,7 @@ class _MeasureSheetGeneralInfoFormState
         onStepTapped: (int index) {
           setState(() {
             _index = index;
+            _scrollToBottom();
           });
         },
         steps: steps,
@@ -444,6 +449,10 @@ class _MeasureSheetGeneralInfoFormState
             ),
           ),
         );
+        setState(() {
+          _index = 0;
+          _scrollToTop();
+        });
       }
     } else {
       await IsarService.isarDatabase.writeTxn(
@@ -1205,86 +1214,104 @@ class _MeasureSheetGeneralInfoFormState
               spacing: 10.0,
               runSpacing: 16.0,
               children: <Widget>[
-                ReactiveDropdownField<String>(
-                  formControlName: 'paintBrand',
-                  items: [
-                    DropdownMenuItem(
-                      value: 'Sherwin Williams',
-                      child: Text('Sherwin Williams'),
-                    ),
-                    DropdownMenuItem(value: 'PPG', child: Text('PPG')),
-                    DropdownMenuItem(
-                      value: 'Benjamin Moore',
-                      child: Text('Benjamin Moore'),
-                    ),
-                    DropdownMenuItem(value: 'Other', child: Text('Other')),
-                  ],
-                  decoration: InputDecoration(
-                    constraints: BoxConstraints.loose(Size.fromWidth(250.0)),
-                    labelText: 'Paint Brand',
-                    border: OutlineInputBorder(),
-                  ),
-                  onChanged: (control) {
-                    setState(() {
-                      measureSheetState.productOptions.paintBrand =
-                          control.value!;
-                    });
-                  },
-                ),
-                ReactiveValueListenableBuilder(
-                  formControlName: 'paintBrand',
-                  builder: (context, control, child) {
-                    if (control.value == 'Other') {
-                      var otherBrand = ReactiveTextField<String?>(
-                        formControlName: 'otherBrandSpecify',
-                        decoration: InputDecoration(
-                          constraints: BoxConstraints.loose(
-                            Size.fromWidth(250.0),
+                Row(
+                  spacing: 10.0,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child: ReactiveDropdownField<String>(
+                        formControlName: 'paintBrand',
+                        items: [
+                          DropdownMenuItem(
+                            value: 'Sherwin Williams',
+                            child: Text('Sherwin Williams'),
                           ),
-                          labelText: 'Other (Specify)',
+                          DropdownMenuItem(value: 'PPG', child: Text('PPG')),
+                          DropdownMenuItem(
+                            value: 'Benjamin Moore',
+                            child: Text('Benjamin Moore'),
+                          ),
+                          DropdownMenuItem(value: 'Other', child: Text(
+                              'Other')),
+                        ],
+                        decoration: InputDecoration(
+                          constraints: BoxConstraints.loose(Size.fromWidth(
+                              250.0)),
+                          labelText: 'Paint Brand',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (control) {
+                          setState(() {
+                            measureSheetState.productOptions.paintBrand =
+                          control.value!;
+                          });
+                        },
+                      ),
+                    ),
+                    ReactiveValueListenableBuilder(
+                      formControlName: 'paintBrand',
+                      builder: (context, control, child) {
+                        if (control.value == 'Other') {
+                          var otherBrand = ReactiveTextField<String?>(
+                            formControlName: 'otherBrandSpecify',
+                            decoration: InputDecoration(
+                              constraints: BoxConstraints.loose(
+                                Size.fromWidth(250.0),
+                              ),
+                              labelText: 'Other (Specify)',
+                              border: OutlineInputBorder(),
+                              floatingLabelBehavior: FloatingLabelBehavior
+                                  .always,
+                            ),
+                            validationMessages: {
+                              ValidationMessage.required: (_) =>
+                              MeasureSheetFormConstants
+                                  .productsOtherBrandRequired,
+                            },
+                            onChanged: (control) =>
+                            {
+                              setState(() {
+                                measureSheetState.productOptions
+                                    .otherBrandSpecify =
+                                    control.value;
+                              }),
+                            },
+                          );
+
+                          otherBrand.formControl?.markAsTouched();
+
+                          return Flexible(flex: 1, child: otherBrand);
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
+                    Flexible(
+                      flex: 1,
+                      child: ReactiveTextField<String?>(
+                        formControlName: 'paintCode',
+                        decoration: InputDecoration(
+                          constraints: BoxConstraints.loose(Size.fromWidth(
+                              250.0)),
+                          labelText: 'Paint Code',
                           border: OutlineInputBorder(),
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                         ),
                         validationMessages: {
                           ValidationMessage.required: (_) =>
-                              MeasureSheetFormConstants
-                                  .productsOtherBrandRequired,
+                        MeasureSheetFormConstants.productsOtherBrandRequired,
                         },
-                        onChanged: (control) => {
+                        onChanged: (control) =>
+                        {
                           setState(() {
-                            measureSheetState.productOptions.otherBrandSpecify =
+                            measureSheetState.productOptions.paintCode =
                                 control.value;
                           }),
                         },
-                      );
-
-                      otherBrand.formControl?.markAsTouched();
-
-                      return otherBrand;
-                    } else {
-                      return Container();
-                    }
-                  },
-                ),
-                ReactiveTextField<String?>(
-                  formControlName: 'paintCode',
-                  decoration: InputDecoration(
-                    constraints: BoxConstraints.loose(Size.fromWidth(250.0)),
-                    labelText: 'Paint Code',
-                    border: OutlineInputBorder(),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                  ),
-                  validationMessages: {
-                    ValidationMessage.required: (_) =>
-                        MeasureSheetFormConstants.productsOtherBrandRequired,
-                  },
-                  onChanged: (control) => {
-                    setState(() {
-                      measureSheetState.productOptions.paintCode =
-                          control.value;
-                    }),
-                  },
-                ),
+                      ),
+                    ),
+                  ],),
                 Wrap(
                   children: [
                     Row(
@@ -1734,13 +1761,23 @@ class _MeasureSheetGeneralInfoFormState
 
   void _scrollToTop() async {
     if (scrollController.hasClients) {
-      // await Scrollable.ensureVisible(context,
-      // duration: Duration(milliseconds: 500),
-      //   curve: Curves.easeInOut
-      // );
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         await scrollController.animateTo(
           0.0,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      });
+    }
+  }
+
+  void _scrollToBottom() {
+    if (scrollController.hasClients) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        final double maxScrollExtent =
+            scrollController.position.maxScrollExtent;
+        await scrollController.animateTo(
+          maxScrollExtent,
           duration: Duration(milliseconds: 500),
           curve: Curves.easeInOut,
         );
