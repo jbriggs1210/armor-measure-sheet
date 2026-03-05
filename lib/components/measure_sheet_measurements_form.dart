@@ -1077,7 +1077,7 @@ class _MeasureSheetMeasurementsFormState
             case '80':
               opposite = '20';
             case '90':
-              opposite = '90';
+              opposite = '10';
           }
 
           fg
@@ -1144,7 +1144,7 @@ class _MeasureSheetMeasurementsFormState
             case '80':
               opposite = '20';
             case '90':
-              opposite = '90';
+              opposite = '10';
           }
 
           fg
