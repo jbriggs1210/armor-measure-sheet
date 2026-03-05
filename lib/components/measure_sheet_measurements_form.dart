@@ -150,6 +150,7 @@ class _MeasureSheetMeasurementsFormState
     bool doSave = true;
     int indexToGoTo = 0;
 
+    // todo: this needs some tidying up for sure
     // check each step is valid before we try to save / create
     if (!measurementInfoForm.valid) {
       measurementInfoForm.markAllAsTouched();
@@ -630,9 +631,11 @@ class _MeasureSheetMeasurementsFormState
       'level': FormControl<String>(value: record.level),
       'product': FormControl<String>(value: record.product),
       'spanDirection': FormControl<String>(value: record.spanDirection),
-      'span': FormControl<String>(value: record.span, validators: []),
+      'span': FormControl<String>(
+          value: record.span, validators: [ _ValueMustBeDivisibleByPoint25()]),
       // todo: add 1/4 inch validator???
-      'nSpan': FormControl<String>(value: record.nSpan, validators: []),
+      'nSpan': FormControl<String>(
+          value: record.nSpan, validators: [ _ValueMustBeDivisibleByPoint25()]),
       // todo: add 1/4 inch validator???
       'buildOutTop': FormControl<String>(value: record.buildOutTop),
       'buildOutSides': FormControl<String>(value: record.buildOutSides),
@@ -703,64 +706,70 @@ class _MeasureSheetMeasurementsFormState
         ),
         title:
         // header, shows up when collapsed
-        Row(
-          spacing: 6.0,
-          children: [
-            Flexible(
-              flex: 1,
-              child: ReactiveTextField<int>(
-                formControlName: '${index.toString()}.openingNumber',
-                controller: textController,
-                decoration: InputDecoration(
-                  labelText: 'Opening #',
-                  border: OutlineInputBorder(),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
+        Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: Row(
+            spacing: 6.0,
+            children: [
+              Flexible(
+                flex: 1,
+                child: ReactiveTextField<int>(
+                  formControlName: '${index.toString()}.openingNumber',
+                  controller: textController,
+                  decoration: InputDecoration(
+                    helperText: '',
+                    labelText: 'Opening #',
+                    border: OutlineInputBorder(),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  ),
+                  keyboardType: TextInputType.number,
+                  onChanged: (control) {
+                    measureSheetState.measurementInfo.measurementRecords[index]
+                        .openingNumber = control.value;
+                  },
                 ),
-                keyboardType: TextInputType.number,
-                onChanged: (control) {
-                  measureSheetState.measurementInfo.measurementRecords[index]
-                      .openingNumber = control.value;
-                },
               ),
-            ),
-            Flexible(
-              flex: 1,
-              child: ReactiveTextField<String>(
-                formControlName: '${index.toString()}.openingType',
-                decoration: InputDecoration(
-                  labelText: 'Opening Type',
-                  border: OutlineInputBorder(),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
+              Flexible(
+                flex: 1,
+                child: ReactiveTextField<String>(
+                  formControlName: '${index.toString()}.openingType',
+                  decoration: InputDecoration(
+                    helperText: '',
+                    labelText: 'Opening Type',
+                    border: OutlineInputBorder(),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  ),
+                  onChanged: (control) {
+                    measureSheetState
+                        .measurementInfo
+                        .measurementRecords[index]
+                        .openingType =
+                    control.value!;
+                  },
                 ),
-                onChanged: (control) {
-                  measureSheetState
-                          .measurementInfo
-                          .measurementRecords[index]
-                          .openingType =
-                      control.value!;
-                },
               ),
-            ),
-            Flexible(
-              flex: 1,
-              child: ReactiveDropdownField<String>(
-                formControlName: '${index.toString()}.level',
-                decoration: InputDecoration(
-                  labelText: 'Level',
-                  border: OutlineInputBorder(),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
+              Flexible(
+                flex: 1,
+                child: ReactiveDropdownField<String>(
+                  formControlName: '${index.toString()}.level',
+                  decoration: InputDecoration(
+                    helperText: '',
+                    labelText: 'Level',
+                    border: OutlineInputBorder(),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  ),
+                  items: _buildLevelsDropdown(measureSheetState.activeLevels),
+                  onChanged: (control) {
+                    measureSheetState
+                        .measurementInfo
+                        .measurementRecords[index]
+                        .level =
+                    control.value!;
+                  },
                 ),
-                items: _buildLevelsDropdown(measureSheetState.activeLevels),
-                onChanged: (control) {
-                  measureSheetState
-                          .measurementInfo
-                          .measurementRecords[index]
-                          .level =
-                      control.value!;
-                },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         // rows that show after expanding
         children: [
@@ -779,6 +788,7 @@ class _MeasureSheetMeasurementsFormState
                       measureSheetState.productOptions,
                     ),
                     decoration: InputDecoration(
+                      helperText: '',
                       labelText: 'Product',
                       border: OutlineInputBorder(),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -806,6 +816,7 @@ class _MeasureSheetMeasurementsFormState
                               overflow: TextOverflow.ellipsis,)),
                     ],
                     decoration: InputDecoration(
+                      helperText: '',
                       labelText: 'Direction',
                       border: OutlineInputBorder(),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -824,6 +835,7 @@ class _MeasureSheetMeasurementsFormState
                   child: ReactiveTextField<String>(
                     formControlName: '${index.toString()}.span',
                     decoration: InputDecoration(
+                      helperText: '',
                       labelText: 'Span',
                       border: OutlineInputBorder(),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -842,6 +854,7 @@ class _MeasureSheetMeasurementsFormState
                   child: ReactiveTextField<String>(
                     formControlName: '${index.toString()}.nSpan',
                     decoration: InputDecoration(
+                      helperText: '',
                       labelText: 'NSpan',
                       border: OutlineInputBorder(),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -860,6 +873,7 @@ class _MeasureSheetMeasurementsFormState
                   child: ReactiveTextField<String>(
                     formControlName: '${index.toString()}.buildOutTop',
                     decoration: InputDecoration(
+                      helperText: '',
                       labelText: 'BO Top',
                       border: OutlineInputBorder(),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -878,6 +892,7 @@ class _MeasureSheetMeasurementsFormState
                   child: ReactiveTextField<String>(
                     formControlName: '${index.toString()}.buildOutSides',
                     decoration: InputDecoration(
+                      helperText: '',
                       labelText: 'BO Sides',
                       border: OutlineInputBorder(),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -896,6 +911,7 @@ class _MeasureSheetMeasurementsFormState
                   child: ReactiveTextField<String>(
                     formControlName: '${index.toString()}.buildOutBot',
                     decoration: InputDecoration(
+                      helperText: '',
                       labelText: 'BO Bot',
                       border: OutlineInputBorder(),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -912,7 +928,7 @@ class _MeasureSheetMeasurementsFormState
               ],
             ),
           ),
-          Padding(padding: EdgeInsetsGeometry.all(12),
+          Padding(padding: EdgeInsetsGeometry.all(8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -923,6 +939,7 @@ class _MeasureSheetMeasurementsFormState
                     isExpanded: true,
                     items: _buildNotesDropdown(),
                     decoration: InputDecoration(
+                      helperText: '',
                       labelText: 'Opening Note',
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       border: OutlineInputBorder(),
@@ -964,4 +981,37 @@ class _MeasureSheetMeasurementsFormState
       );
     }).toList();
   }
+}
+
+class _ValueMustBeDivisibleByPoint25 extends Validator<String> {
+
+  _ValueMustBeDivisibleByPoint25() : super();
+
+  @override
+  Map<String, dynamic>? validate(AbstractControl<String> control) {
+    print('${control.value}');
+    if (control.value == null || control.value!.isEmpty) {
+      return null;
+    }
+    String value = control.value!;
+    double? convertedValue = double.tryParse(value);
+
+    if (convertedValue == null) {
+      return {
+        MeasureSheetFormConstants.valueMustBeDecimal: true
+      };
+    }
+
+    bool hasNoRemainder = convertedValue % .25 == 0;
+
+    // passes validation
+    if (hasNoRemainder) {
+      return null;
+    }
+
+    return {
+      MeasureSheetFormConstants.valueMustBeToQuarterInch: true
+    };
+  }
+
 }
