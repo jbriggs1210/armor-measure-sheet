@@ -797,8 +797,12 @@ class _MeasureSheetMeasurementsFormState
                   child: ReactiveDropdownField<String>(
                     formControlName: '${index.toString()}.spanDirection',
                     items: [
-                      DropdownMenuItem(value: 'T/L', child: Text('T/L')),
-                      DropdownMenuItem(value: 'R/B', child: Text('R/B')),
+                      DropdownMenuItem(value: 'T/L',
+                          child: Text('T/L', softWrap: true,
+                            overflow: TextOverflow.ellipsis,)),
+                      DropdownMenuItem(value: 'R/B',
+                          child: Text('R/B', softWrap: true,
+                              overflow: TextOverflow.ellipsis,)),
                     ],
                     decoration: InputDecoration(
                       labelText: 'Direction',
