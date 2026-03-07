@@ -99,7 +99,6 @@ class _MeasureSheetMeasurementsFormState
         },
         onStepContinue: () {
           if (_index == 3) {
-            // todo: validate span / nSpan increments of .25
           }
 
           // when we are "saving"
@@ -151,8 +150,6 @@ class _MeasureSheetMeasurementsFormState
     bool doSave = true;
     int indexToGoTo = 0;
 
-    // todo: this needs some tidying up for sure
-    // check each step is valid before we try to save / create
     if (!measurementInfoForm.valid) {
       measurementInfoForm.markAllAsTouched();
       ScaffoldMessenger.of(context).showSnackBar(
@@ -454,10 +451,8 @@ class _MeasureSheetMeasurementsFormState
                 ReactiveCheckbox(
                   formControlName: 'addOnMeasurements',
                   onChanged: (control) {
-                    setState(() {
                       measureSheetState.measurementInfo.addOnMeasurements =
                           control.value!;
-                    });
                   },
                 ),
               ],
@@ -678,13 +673,6 @@ class _MeasureSheetMeasurementsFormState
     }).toList();
   }
 
-  List<DropdownMenuItem<String>> _buildLevelsDropdown(
-    ActiveLevels activeLevels,
-  ) {
-    return activeLevels.levelsForMeasure().map((pTM) {
-      return DropdownMenuItem(value: pTM, child: Text(pTM));
-    }).toList();
-  }
 
   Widget _buildMeasurementNoteContainer(
     ValueKey uniqueKey,
@@ -754,16 +742,7 @@ class _IfAccordionStacksMustNotBeNullOrEmpty extends Validator<dynamic> {
       if (rStack.value == null || rStack.value!.isEmpty) {
         rStack.setErrors({'Required': true});
       }
-      // return {
-      //   'Required': true
-      // };
     }
-    // if (lStack.value != null) {
-    //   lStack.removeError('Required');
-    // }
-    // if (rStack.value != null) {
-    //   rStack.removeError('Required');
-    // }
     return null;
   }
 }
@@ -774,7 +753,6 @@ class _ValueMustBeDivisibleByPoint25 extends Validator<String> {
 
   @override
   Map<String, dynamic>? validate(AbstractControl<String> control) {
-    print('${control.value}');
     if (control.value == null || control.value!.isEmpty) {
       return null;
     }
