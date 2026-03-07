@@ -658,22 +658,6 @@ class _MeasureSheetMeasurementsFormState
     }, validators: [_IfAccordionStacksMustNotBeNullOrEmpty()]);
   }
 
-  List<DropdownMenuItem<String>> _buildProductsDropdown(
-    ProductOptions productOptions,
-  ) {
-    return productOptions.productsToMeasure().map((pTM) {
-      return DropdownMenuItem(
-        value: pTM,
-          child: GestureDetector(child: Text(
-            pTM, softWrap: true, overflow: TextOverflow.ellipsis,),
-              onLongPress: () {
-                print(pTM);
-              })
-      );
-    }).toList();
-  }
-
-
   Widget _buildMeasurementNoteContainer(
     ValueKey uniqueKey,
     FormArray formArray,
