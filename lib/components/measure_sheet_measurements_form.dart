@@ -6,7 +6,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 import '../db/measure_sheet.dart';
 import '../services/isar_service.dart';
-import 'measure_sheet_form_constants.dart';
+import 'measure_sheet_constants.dart';
 
 class MeasureSheetMeasurementsForm extends StatefulWidget {
   final MeasureSheet measureSheet;
@@ -155,7 +155,7 @@ class _MeasureSheetMeasurementsFormState
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-            MeasureSheetFormConstants.snackbarMeasurementInformationErrors,
+            SnackbarConstants.snackbarMeasurementInformationErrors,
           ),
           behavior: SnackBarBehavior.floating,
         ),
@@ -745,7 +745,7 @@ class _ValueMustBeDivisibleByPoint25 extends Validator<String> {
 
     if (convertedValue == null) {
       return {
-        MeasureSheetFormConstants.valueMustBeDecimal: true
+        FormConstants.valueMustBeDecimal: true
       };
     }
 
@@ -757,7 +757,7 @@ class _ValueMustBeDivisibleByPoint25 extends Validator<String> {
     }
 
     return {
-      MeasureSheetFormConstants.valueMustBeToQuarterInch: true
+      FormConstants.valueMustBeToQuarterInch: true
     };
   }
 

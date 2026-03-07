@@ -3,7 +3,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 import '../db/measure_sheet.dart';
 import '../services/isar_service.dart';
-import 'measure_sheet_form_constants.dart';
+import 'measure_sheet_constants.dart';
 
 class MeasureSheetEquipmentForm extends StatefulWidget {
   final MeasureSheet measureSheet;
@@ -175,7 +175,7 @@ class _MeasureSheetEquipmentFormState extends State<MeasureSheetEquipmentForm> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-            MeasureSheetFormConstants.snackbarEquipmentInformationErrors,
+            SnackbarConstants.snackbarCustomerInformationErrors,
           ),
           behavior: SnackBarBehavior.floating,
         ),

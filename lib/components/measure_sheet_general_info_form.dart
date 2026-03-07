@@ -6,7 +6,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 import '../db/measure_sheet.dart';
 import '../services/isar_service.dart';
-import 'measure_sheet_form_constants.dart';
+import 'measure_sheet_constants.dart';
 
 class MeasureSheetGeneralInfoForm extends StatefulWidget {
   final MeasureSheet measureSheet;
@@ -219,7 +219,6 @@ class _MeasureSheetGeneralInfoFormState
 
   @override
   void initState() {
-    // if fresh measure sheet initialize nested objects
     setState(() {
       measureSheetState = widget.measureSheet;
       scrollController = ScrollController();
@@ -276,8 +275,7 @@ class _MeasureSheetGeneralInfoFormState
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text(
-                        MeasureSheetFormConstants
-                            .snackbarCustomerInformationErrors,
+                        SnackbarConstants.snackbarCustomerInformationErrors,
                       ),
                       behavior: SnackBarBehavior.floating,
                     ),
@@ -288,7 +286,7 @@ class _MeasureSheetGeneralInfoFormState
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text(
-                    MeasureSheetFormConstants.snackbarCustomerInformationErrors,
+                    SnackbarConstants.snackbarCustomerInformationErrors,
                   ),
                   behavior: SnackBarBehavior.floating,
                 ),
@@ -306,7 +304,7 @@ class _MeasureSheetGeneralInfoFormState
               sidingForm.markAllAsTouched();
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text(MeasureSheetFormConstants.snackbarSidingErrors),
+                  content: Text(SnackbarConstants.snackbarSidingErrors),
                   behavior: SnackBarBehavior.floating,
                 ),
               );
@@ -321,7 +319,7 @@ class _MeasureSheetGeneralInfoFormState
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text(
-                    MeasureSheetFormConstants.snackbarProductErrors,
+                    SnackbarConstants.snackbarProductErrors,
                   ),
                   behavior: SnackBarBehavior.floating,
                 ),
@@ -385,7 +383,7 @@ class _MeasureSheetGeneralInfoFormState
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-            MeasureSheetFormConstants.snackbarCustomerInformationErrors,
+            SnackbarConstants.snackbarCustomerInformationErrors,
           ),
           behavior: SnackBarBehavior.floating,
         ),
@@ -398,7 +396,7 @@ class _MeasureSheetGeneralInfoFormState
       sidingForm.markAllAsTouched();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(MeasureSheetFormConstants.snackbarSidingErrors),
+          content: Text(SnackbarConstants.snackbarSidingErrors),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -410,7 +408,7 @@ class _MeasureSheetGeneralInfoFormState
       productOptionsForm.markAllAsTouched();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(MeasureSheetFormConstants.snackbarProductErrors),
+          content: Text(SnackbarConstants.snackbarProductErrors),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -445,7 +443,7 @@ class _MeasureSheetGeneralInfoFormState
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
-              MeasureSheetFormConstants.snackbarJobNumberAlreadyExists,
+              SnackbarConstants.snackbarJobNumberAlreadyExists,
             ),
           ),
         );
@@ -494,9 +492,9 @@ class _MeasureSheetGeneralInfoFormState
                   ),
                   validationMessages: {
                     ValidationMessage.required: (_) =>
-                        MeasureSheetFormConstants.jobNumberIsRequired,
+                    FormConstants.jobNumberIsRequired,
                     'jobNumberExists': (_) =>
-                        MeasureSheetFormConstants.jobNumberAlreadyExists,
+                    FormConstants.jobNumberAlreadyExists,
                   },
                   keyboardType: TextInputType.text,
                   onChanged: (control) => {
@@ -515,7 +513,7 @@ class _MeasureSheetGeneralInfoFormState
                   ),
                   validationMessages: {
                     ValidationMessage.required: (_) =>
-                        MeasureSheetFormConstants.salesRepIsRequired,
+                    FormConstants.salesRepIsRequired,
                   },
                   onChanged: (control) => {
                     setState(() {
@@ -930,7 +928,7 @@ class _MeasureSheetGeneralInfoFormState
                     ),
                     validationMessages: {
                       ValidationMessage.required: (_) =>
-                          MeasureSheetFormConstants
+                      FormConstants
                               .sidingOtherSpecificsRequired,
                     },
                     onChanged: (control) => {
@@ -1266,7 +1264,7 @@ class _MeasureSheetGeneralInfoFormState
                             ),
                             validationMessages: {
                               ValidationMessage.required: (_) =>
-                              MeasureSheetFormConstants
+                              FormConstants
                                   .productsOtherBrandRequired,
                             },
                             onChanged: (control) =>
@@ -1300,7 +1298,7 @@ class _MeasureSheetGeneralInfoFormState
                         ),
                         validationMessages: {
                           ValidationMessage.required: (_) =>
-                        MeasureSheetFormConstants.productsOtherBrandRequired,
+                          FormConstants.productsOtherBrandRequired,
                         },
                         onChanged: (control) =>
                         {
