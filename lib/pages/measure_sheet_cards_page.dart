@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:armor_measure_sheet/components/measure_sheet_list_item.dart';
 import 'package:armor_measure_sheet/services/isar_service.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
@@ -17,10 +18,12 @@ class MeasureSheetCardsPage extends StatefulWidget {
 
 class _MeasureSheetCardsPageState extends State<MeasureSheetCardsPage> {
   final TextEditingController _filterController = TextEditingController();
+  late Stream<void> measureSheetsChanged;
+
+  bool _isCardViewOrList = true; //default to card fornow
   String _filterText = "";
   List<MeasureSheet> measureSheets = [];
   List<MeasureSheet> _filteredMeasureSheets = [];
-  late Stream<void> measureSheetsChanged;
 
   @override
   void initState() {
@@ -80,17 +83,43 @@ class _MeasureSheetCardsPageState extends State<MeasureSheetCardsPage> {
       body: SafeArea(
         // todo: need ability to switch between card view and list view of jobs
         // todo: list view could be slidables with their options behind the slide
-        child: GridView.builder(
-          shrinkWrap: true,
-          itemCount: _filteredMeasureSheets.length,
-          padding: EdgeInsets.all(4),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-          ),
-          itemBuilder: (context, index) =>
-              MeasureSheetCard(measureSheet: _filteredMeasureSheets[index]),
+        child: Column(
+          children: [
+            Row(children: [
+              IconButton.filledTonal(
+                color: Colors.red[900],
+                icon: Icon(_isCardViewOrList ? Icons.list_outlined : Icons
+                    .grid_on_outlined, color: Colors.red[900]),
+                onPressed: () {
+                  setState(() {
+                    _isCardViewOrList = !_isCardViewOrList;
+                  });
+                },)
+            ],),
+            _isCardViewOrList ? GridView.builder(
+              shrinkWrap: true,
+              itemCount: _filteredMeasureSheets.length,
+              padding: EdgeInsets.all(4),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+              ),
+              itemBuilder: (context, index) =>
+                  MeasureSheetCard(measureSheet: _filteredMeasureSheets[index]),
+            ) : ListView.separated(
+              shrinkWrap: true,
+              itemCount: _filteredMeasureSheets.length,
+              itemBuilder: (context, index) {
+                return MeasureSheetListItem(
+                    measureSheet: _filteredMeasureSheets[index]);
+              }, separatorBuilder: (context, index) {
+              return Divider(
+                color: Colors.grey,
+                thickness: 1,
+              );
+            },)
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
