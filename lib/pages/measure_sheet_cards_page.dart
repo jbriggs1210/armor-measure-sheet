@@ -85,7 +85,7 @@ class _MeasureSheetCardsPageState extends State<MeasureSheetCardsPage> {
           itemCount: _filteredMeasureSheets.length,
           padding: EdgeInsets.all(4),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
+            crossAxisCount: 3,
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
           ),

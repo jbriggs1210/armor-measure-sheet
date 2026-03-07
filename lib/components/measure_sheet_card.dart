@@ -17,81 +17,76 @@ class MeasureSheetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PhysicalModel(
-      color: ThemeData
-          .light()
-          .cardColor,
-      shadowColor: ThemeData
-          .dark()
-          .cardColor,
-      elevation: 2.0,
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              Align(
+    return Card(
+      elevation: 4.0,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Align(
+              alignment: AlignmentGeometry.topLeft,
+              child: IconButton(
+                tooltip: 'Delete',
                 alignment: AlignmentGeometry.topLeft,
-                child: IconButton(
-                  tooltip: 'Delete',
-                  alignment: AlignmentGeometry.topLeft,
-                  onPressed: () async {
-                    bool? isConfirmed = await showDialog<bool>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text('Delete Measure Sheet'),
-                          content: const Text(
-                            style: TextStyle(fontWeight: FontWeight.w800),
-                            'Are you sure you want to delete?  You will permanently lose all data for this sheet!',
+                onPressed: () async {
+                  bool? isConfirmed = await showDialog<bool>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Delete Measure Sheet'),
+                        content: const Text(
+                          style: TextStyle(fontWeight: FontWeight.w800),
+                          'Are you sure you want to delete?  You will permanently lose all data for this sheet!',
+                        ),
+                        actions: [
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.of(context).pop(false);
+                            },
+                            icon: Icon(Icons.arrow_back_ios_sharp),
+                            label: const Text('No'),
                           ),
-                          actions: [
-                            ElevatedButton.icon(
-                              onPressed: () {
-                                Navigator.of(context).pop(false);
-                              },
-                              icon: Icon(Icons.arrow_back_ios_sharp),
-                              label: const Text('No'),
-                            ),
-                            ElevatedButton.icon(
-                              onPressed: () {
-                                Navigator.of(context).pop(true);
-                              },
-                              icon: Icon(Icons.delete_sharp),
-                              label: const Text('Yes'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.of(context).pop(true);
+                            },
+                            icon: Icon(Icons.delete_sharp),
+                            label: const Text('Yes'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
 
-                    if (isConfirmed != null && isConfirmed) {
-                      _delete();
-                    }
-                  },
-                  icon: Icon(Icons.delete_sharp, color: Colors.red[900]),
-                ),
+                  if (isConfirmed != null && isConfirmed) {
+                    _delete();
+                  }
+                },
+                icon: Icon(Icons.delete_sharp, color: Colors.red[900]),
               ),
-              ListTile(
-                title: Text(
-                  'Measure Sheet: ${measureSheet.jobNumber}',
-                  style: TextStyle(fontSize: 14.0),
-                ),
-                subtitle: Text(
-                  measureSheet.salesRep.toString(),
-                  style: TextStyle(color: Colors.black, fontSize: 12.0),
-                ),
+            ),
+            ListTile(
+              title: Text(
+                'Measure Sheet: ${measureSheet.jobNumber}',
+                style: TextStyle(fontSize: 14.0),
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 20.0),
-                  child: Align(
-                    alignment: AlignmentGeometry.bottomCenter,
-                    child: Row(
-                      spacing: 4,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        IconButton(
+              subtitle: Text(
+                measureSheet.salesRep.toString(),
+                style: TextStyle(color: Colors.black, fontSize: 12.0),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: Align(
+                  alignment: AlignmentGeometry.bottomCenter,
+                  child: Row(
+                    spacing: 4,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        child: IconButton(
                           tooltip: 'General Information',
                           onPressed: () {
                             Navigator.of(context).push(
@@ -104,7 +99,10 @@ class MeasureSheetCard extends StatelessWidget {
                           },
                           icon: Icon(Icons.home_sharp),
                         ),
-                        IconButton(
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: IconButton(
                           tooltip: 'Equipment Information',
                           onPressed: () {
                             Navigator.of(context).push(
@@ -117,7 +115,10 @@ class MeasureSheetCard extends StatelessWidget {
                           },
                           icon: Icon(Icons.construction_sharp),
                         ),
-                        IconButton(
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: IconButton(
                           tooltip: 'Measurement Information',
                           onPressed: () {
                             Navigator.of(context).push(
@@ -130,7 +131,10 @@ class MeasureSheetCard extends StatelessWidget {
                           },
                           icon: Icon(Icons.square_foot_sharp),
                         ),
-                        IconButton(
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: IconButton(
                           tooltip: 'Create/Save PDF',
                           onPressed: () async {
                             var pdfService = PdfService();
@@ -152,13 +156,13 @@ class MeasureSheetCard extends StatelessWidget {
                           },
                           icon: Icon(Icons.picture_as_pdf_sharp),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

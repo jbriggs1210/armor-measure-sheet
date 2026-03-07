@@ -41,6 +41,29 @@ class _MeasurementRecordExpansionTileState
         child: Row(
           spacing: 6.0,
           children: [
+            ReactiveValueListenableBuilder(
+                formControl: widget.formArray.control(_index.toString()),
+                builder: (context, control, builder) {
+                  print('inside listener');
+                  Color statusColor = _buildStatusColor(control);
+
+                  return SizedBox(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 14.0, bottom: 8.0),
+                      child: Center(
+                        child: Container(
+                          height: 20,
+                          width: 20,
+                          decoration: BoxDecoration(
+                              border: BoxBorder.all(color: Colors.black),
+                              borderRadius: BorderRadiusGeometry.circular(100),
+                              color: statusColor
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
             Flexible(
               flex: 1,
               child: ReactiveTextField<int>(
@@ -105,6 +128,9 @@ class _MeasurementRecordExpansionTileState
                 ),
                 onChanged: (control) {
                   _measurementRecord.product = control.value!;
+                  // this might be better somewhere else
+                  _resetFields(widget.formArray.control(_index.toString()),
+                      _measurementRecord.product);
                 },
               ),
             ),
@@ -474,5 +500,27 @@ class _MeasurementRecordExpansionTileState
         child: Text(note, softWrap: true),
       );
     }).toList();
+  }
+
+  Color _buildStatusColor(AbstractControl<dynamic> control) {
+    var fg = control as FormGroup;
+
+    if (fg.hasErrors) {
+      // print(fg.control('openingNumber').value);
+      // print(fg.errors);
+      return Colors.red;
+    }
+
+    return Colors.green;
+  }
+
+  // Should be form group for measurement record
+  void _resetFields(AbstractControl<dynamic> control, String? product) {
+    // if product is not Accordions (Ac) we reset stack field errors and values
+    var fg = control as FormGroup;
+    if (product != null && product != 'Accordions (Ac)') {
+      fg.control('leftStack').removeError('Required');
+      fg.control('rightStack').removeError('Required');
+    }
   }
 }
