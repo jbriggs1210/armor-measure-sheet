@@ -30,33 +30,44 @@ class _MeasureSheetGeneralInfoFormState
 
   // customer information form
   late final FormGroup customerInfoForm = FormGroup({
-    'jobNumber': FormControl<String>(
+    FormConstants.formControlJobNumber: FormControl<String>(
       value: measureSheetState.jobNumber,
       disabled: _doDisableJobNumber(),
       validators: [Validators.required],
     ),
-    'salesRep': FormControl<String>(
+    FormConstants.formControlSalesRep: FormControl<String>(
       value: measureSheetState.salesRep,
       validators: [Validators.required],
     ),
-    'jobDate': FormControl<DateTime>(
+    FormConstants.formControlJobDate: FormControl<DateTime>(
       value: measureSheetState.jobDate ?? DateTime.now(),
     ),
-    'customerName': FormControl<String>(value: measureSheetState.customerName),
-    'streetNumber': FormControl<String>(value: measureSheetState.streetNumber),
-    'streetName': FormControl<String>(value: measureSheetState.streetName),
-    'lotNumber': FormControl<String>(value: measureSheetState.lotNumber),
-    'cityTown': FormControl<String>(value: measureSheetState.cityTown),
-    'state': FormControl<String>(value: measureSheetState.state),
-    'zipCode': FormControl<String>(value: measureSheetState.zipCode),
-    'plantation': FormControl<String>(value: measureSheetState.plantation),
-    'mobile1': FormControl<String>(value: measureSheetState.mobile1),
-    'mobile2': FormControl<String>(value: measureSheetState.mobile2),
-    'homePhone': FormControl<String>(value: measureSheetState.homePhone),
-    'builderSuperName': FormControl<String>(
+    FormConstants.formControlCustomerName: FormControl<String>(
+        value: measureSheetState.customerName),
+    FormConstants.formControlStreetNumber: FormControl<String>(
+        value: measureSheetState.streetNumber),
+    FormConstants.formControlStreetName: FormControl<String>(
+        value: measureSheetState.streetName),
+    FormConstants.formControlLotNumber: FormControl<String>(
+        value: measureSheetState.lotNumber),
+    FormConstants.formControlCityTown: FormControl<String>(
+        value: measureSheetState.cityTown),
+    FormConstants.formControlState: FormControl<String>(
+        value: measureSheetState.state),
+    FormConstants.formControlZipCode: FormControl<String>(
+        value: measureSheetState.zipCode),
+    FormConstants.formControlPlantation: FormControl<String>(
+        value: measureSheetState.plantation),
+    FormConstants.formControlMobile1: FormControl<String>(
+        value: measureSheetState.mobile1),
+    FormConstants.formControlMobile2: FormControl<String>(
+        value: measureSheetState.mobile2),
+    FormConstants.formControlHomePhone: FormControl<String>(
+        value: measureSheetState.homePhone),
+    FormConstants.formControlBuilderSuperName: FormControl<String>(
       value: measureSheetState.builderSuperName,
     ),
-    'builderSuperPhone': FormControl<String>(
+    FormConstants.formControlBuilderSuperPhone: FormControl<String>(
       value: measureSheetState.builderSuperPhone,
     ),
   });
@@ -260,7 +271,7 @@ class _MeasureSheetGeneralInfoFormState
               customerInfoForm.markAllAsTouched();
               if (measureSheetState.id! < 1) {
                 var jobNumberToCheck = customerInfoForm
-                    .control('jobNumber')
+                    .control(FormConstants.formControlJobNumber)
                     .value;
                 if (IsarService.isarDatabase.measureSheets
                     .filter()
@@ -268,7 +279,9 @@ class _MeasureSheetGeneralInfoFormState
                     .isEmptySync()) {
                   return;
                 } else {
-                  customerInfoForm.control('jobNumber').setErrors({
+                  customerInfoForm
+                      .control(FormConstants.formControlJobNumber)
+                      .setErrors({
                     'jobNumberExists': true,
                   });
 
@@ -425,7 +438,9 @@ class _MeasureSheetGeneralInfoFormState
 
     // doSave
     if (measureSheetState.id! < 1) {
-      var jobNumberToCheck = customerInfoForm.control('jobNumber').value;
+      var jobNumberToCheck = customerInfoForm
+          .control(FormConstants.formControlJobNumber)
+          .value;
       if (IsarService.isarDatabase.measureSheets
           .filter()
           .jobNumberEqualTo(jobNumberToCheck)
@@ -437,7 +452,7 @@ class _MeasureSheetGeneralInfoFormState
           Navigator.of(context).pop();
         }
       } else {
-        customerInfoForm.control('jobNumber').setErrors({
+        customerInfoForm.control(FormConstants.formControlJobNumber).setErrors({
           'jobNumberExists': true,
         });
         ScaffoldMessenger.of(context).showSnackBar(
@@ -481,11 +496,11 @@ class _MeasureSheetGeneralInfoFormState
               runSpacing: 16.0,
               children: <Widget>[
                 ReactiveTextField<String>(
-                  formControlName: 'jobNumber',
+                  formControlName: FormConstants.formControlJobNumber,
                   maxLength: 10,
                   decoration: InputDecoration(
                     constraints: BoxConstraints.loose(Size.fromWidth(250.0)),
-                    labelText: 'Job Number',
+                    labelText: FormConstants.formLabelJobNumber,
                     border: OutlineInputBorder(),
                     counterText: '',
                     floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -504,10 +519,10 @@ class _MeasureSheetGeneralInfoFormState
                   },
                 ),
                 ReactiveTextField<String>(
-                  formControlName: 'salesRep',
+                  formControlName: FormConstants.formControlSalesRep,
                   decoration: InputDecoration(
                     constraints: BoxConstraints.loose(Size.fromWidth(500.0)),
-                    labelText: 'Sales Rep',
+                    labelText: FormConstants.formLabelSalesRep,
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -522,11 +537,11 @@ class _MeasureSheetGeneralInfoFormState
                   },
                 ),
                 ReactiveStatusListenableBuilder(
-                  formControlName: 'jobDate',
+                  formControlName: FormConstants.formControlJobDate,
                   builder: (context, control, child) {
                     measureSheetState.jobDate = control.value as DateTime?;
                     return ReactiveDateTimePicker(
-                      formControlName: 'jobDate',
+                      formControlName: FormConstants.formControlJobDate,
                       valueAccessor: DateTimeValueAccessor(
                         dateTimeFormat: DateFormat('MM/dd/yyyy'),
                       ),
@@ -534,7 +549,7 @@ class _MeasureSheetGeneralInfoFormState
                         constraints: BoxConstraints.loose(
                           Size.fromWidth(250.0),
                         ),
-                        labelText: 'Date',
+                        labelText: FormConstants.formLabelJobDate,
                         border: OutlineInputBorder(),
                         helperText: '',
                         suffixIcon: Icon(Icons.calendar_today),
@@ -543,10 +558,10 @@ class _MeasureSheetGeneralInfoFormState
                   },
                 ),
                 ReactiveTextField<String>(
-                  formControlName: 'customerName',
+                  formControlName: FormConstants.formControlCustomerName,
                   decoration: InputDecoration(
                     constraints: BoxConstraints.loose(Size.fromWidth(500.0)),
-                    labelText: 'Customer Name',
+                    labelText: FormConstants.formLabelCustomerName,
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -557,10 +572,10 @@ class _MeasureSheetGeneralInfoFormState
                   },
                 ),
                 ReactiveTextField<String>(
-                  formControlName: 'streetNumber',
+                  formControlName: FormConstants.formControlStreetNumber,
                   decoration: InputDecoration(
                     constraints: BoxConstraints.loose(Size.fromWidth(150.0)),
-                    labelText: 'Street Number',
+                    labelText: FormConstants.formLabelStreetNumber,
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -571,10 +586,10 @@ class _MeasureSheetGeneralInfoFormState
                   },
                 ),
                 ReactiveTextField<String>(
-                  formControlName: 'lotNumber',
+                  formControlName: FormConstants.formControlStreetNumber,
                   decoration: InputDecoration(
                     constraints: BoxConstraints.loose(Size.fromWidth(150.0)),
-                    labelText: 'Lot Number',
+                    labelText: FormConstants.formLabelLotNumber,
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -585,10 +600,10 @@ class _MeasureSheetGeneralInfoFormState
                   },
                 ),
                 ReactiveTextField<String>(
-                  formControlName: 'streetName',
+                  formControlName: FormConstants.formControlStreetName,
                   decoration: InputDecoration(
                     constraints: BoxConstraints.loose(Size.fromWidth(600.0)),
-                    labelText: 'Street Name',
+                    labelText: FormConstants.formLabelStreetName,
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -599,10 +614,10 @@ class _MeasureSheetGeneralInfoFormState
                   },
                 ),
                 ReactiveTextField<String>(
-                  formControlName: 'cityTown',
+                  formControlName: FormConstants.formControlCityTown,
                   decoration: InputDecoration(
                     constraints: BoxConstraints.loose(Size.fromWidth(400.0)),
-                    labelText: 'City/Town',
+                    labelText: FormConstants.formLabelCityTown,
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -613,10 +628,10 @@ class _MeasureSheetGeneralInfoFormState
                   },
                 ),
                 ReactiveTextField<String>(
-                  formControlName: 'state',
+                  formControlName: FormConstants.formControlState,
                   decoration: InputDecoration(
                     constraints: BoxConstraints.loose(Size.fromWidth(200.0)),
-                    labelText: 'State',
+                    labelText: FormConstants.formLabelState,
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -627,10 +642,10 @@ class _MeasureSheetGeneralInfoFormState
                   },
                 ),
                 ReactiveTextField<String>(
-                  formControlName: 'zipCode',
+                  formControlName: FormConstants.formControlZipCode,
                   decoration: InputDecoration(
                     constraints: BoxConstraints.loose(Size.fromWidth(200.0)),
-                    labelText: 'Zip Code',
+                    labelText: FormConstants.formLabelZipCode,
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -641,10 +656,10 @@ class _MeasureSheetGeneralInfoFormState
                   },
                 ),
                 ReactiveTextField<String>(
-                  formControlName: 'plantation',
+                  formControlName: FormConstants.formControlPlantation,
                   decoration: InputDecoration(
                     constraints: BoxConstraints.loose(Size.fromWidth(400.0)),
-                    labelText: 'Plantation',
+                    labelText: FormConstants.formLabelPlantation,
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -655,11 +670,11 @@ class _MeasureSheetGeneralInfoFormState
                   },
                 ),
                 ReactiveTextField<String>(
-                  formControlName: 'mobile1',
+                  formControlName: FormConstants.formControlMobile1,
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     constraints: BoxConstraints.loose(Size.fromWidth(250.0)),
-                    labelText: 'Mobile 1',
+                    labelText: FormConstants.formLabelMobile1,
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -670,11 +685,11 @@ class _MeasureSheetGeneralInfoFormState
                   },
                 ),
                 ReactiveTextField<String>(
-                  formControlName: 'mobile2',
+                  formControlName: FormConstants.formControlMobile2,
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     constraints: BoxConstraints.loose(Size.fromWidth(250.0)),
-                    labelText: 'Mobile 2',
+                    labelText: FormConstants.formLabelMobile2,
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -685,11 +700,11 @@ class _MeasureSheetGeneralInfoFormState
                   },
                 ),
                 ReactiveTextField<String>(
-                  formControlName: 'homePhone',
+                  formControlName: FormConstants.formControlHomePhone,
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     constraints: BoxConstraints.loose(Size.fromWidth(250.0)),
-                    labelText: 'Home Phone',
+                    labelText: FormConstants.formLabelHomePhone,
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -700,10 +715,10 @@ class _MeasureSheetGeneralInfoFormState
                   },
                 ),
                 ReactiveTextField<String>(
-                  formControlName: 'builderSuperName',
+                  formControlName: FormConstants.formControlBuilderSuperName,
                   decoration: InputDecoration(
                     constraints: BoxConstraints.loose(Size.fromWidth(400.0)),
-                    labelText: 'Builder/Super Name',
+                    labelText: FormConstants.formLabelBuilderSuperName,
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -714,11 +729,11 @@ class _MeasureSheetGeneralInfoFormState
                   },
                 ),
                 ReactiveTextField<String>(
-                  formControlName: 'builderSuperPhone',
+                  formControlName: FormConstants.formControlBuilderSuperPhone,
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     constraints: BoxConstraints.loose(Size.fromWidth(250.0)),
-                    labelText: 'Builder/Super Phone',
+                    labelText: FormConstants.formLabelBuilderSuperPhone,
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),

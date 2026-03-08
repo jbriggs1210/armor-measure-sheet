@@ -1,16 +1,6 @@
 class MeasureSheetConstants {}
 
-class FormConstants {
-  // Form errors
-  static const String jobNumberIsRequired = 'Job Number is required to continue.';
-  static const String salesRepIsRequired = 'Sales Rep is required to continue.';
-  static const String jobNumberAlreadyExists = 'Job Number already exists.';
-  static const String sidingOtherSpecificsRequired = 'Other specifics required.';
-  static const String productsOtherBrandRequired = 'Other specifics required.';
-  static const String productsPaintCodeRequired = 'Paint code required.';
-  static const String valueMustBeToQuarterInch = 'To .25';
-  static const String valueMustBeDecimal = 'Ex. 55.5';
-
+class ProductConstants {
   // Product constants
   static const String productOsb = 'OSB (O)';
   static const String productGalv = 'Galv (G)';
@@ -35,6 +25,55 @@ class FormConstants {
   static const String productArmorTrack = 'Armor Track (AT)';
   static const String productHHeader = '"H" Header (H)';
   static const String productFlatTrack = 'Flat Track (FT)';
+}
+
+class FormConstants {
+  // Form errors
+  static const String jobNumberIsRequired = 'Job Number is required to continue.';
+  static const String salesRepIsRequired = 'Sales Rep is required to continue.';
+  static const String jobNumberAlreadyExists = 'Job Number already exists.';
+  static const String sidingOtherSpecificsRequired = 'Other specifics required.';
+  static const String productsOtherBrandRequired = 'Other specifics required.';
+  static const String productsPaintCodeRequired = 'Paint code required.';
+  static const String valueMustBeToQuarterInch = 'To .25';
+  static const String valueMustBeDecimal = 'Ex. 55.5';
+
+  // Form Controls & Labels
+  static const String formControlJobNumber = 'jobNumber';
+  static const String formLabelJobNumber = 'Job Number';
+  static const String formControlSalesRep = 'salesRep';
+  static const String formLabelSalesRep = 'Sales Rep';
+  static const String formControlJobDate = 'jobDate';
+  static const String formLabelJobDate = 'Job Date';
+  static const String formControlCustomerName = 'customerName';
+  static const String formLabelCustomerName = 'Customer Name';
+
+  static const String formControlStreetNumber = 'streetNumber';
+  static const String formLabelStreetNumber = 'Street Number';
+  static const String formControlStreetName = 'streetName';
+  static const String formLabelStreetName = 'Street Name';
+  static const String formControlLotNumber = 'lotNumber';
+  static const String formLabelLotNumber = 'Lot Number';
+  static const String formControlCityTown = 'cityTown';
+  static const String formLabelCityTown = 'City/Town';
+  static const String formControlState = 'state';
+  static const String formLabelState = 'State';
+  static const String formControlZipCode = 'zipCode';
+  static const String formLabelZipCode = 'Zip Code';
+  static const String formControlPlantation = 'plantation';
+  static const String formLabelPlantation = 'Plantation';
+  static const String formControlMobile1 = 'mobile1';
+  static const String formLabelMobile1 = 'Mobile 1';
+  static const String formControlMobile2 = 'mobile2';
+  static const String formLabelMobile2 = 'Mobile 2';
+  static const String formControlHomePhone = 'homePhone';
+  static const String formLabelHomePhone = 'Home Phone';
+  static const String formControlBuilderSuperName = 'builderSuperName';
+  static const String formLabelBuilderSuperName = 'Builder/Super Name';
+  static const String formControlBuilderSuperPhone = 'builderSuperPhone';
+  static const String formLabelBuilderSuperPhone = 'Builder/Super Phone';
+
+
 }
 
 class SnackbarConstants {
