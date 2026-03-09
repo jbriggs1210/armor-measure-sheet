@@ -73,10 +73,10 @@ class _MeasureSheetGeneralInfoFormState
   });
 
   late final FormGroup homeDetailsForm = FormGroup(({
-    'tentativeInstallDate': FormControl<DateTime>(
+    FormConstants.formControlTentativeInstallDate: FormControl<DateTime>(
       value: measureSheetState.tentativeInstallDate,
     ),
-    'readyForInstall': FormControl<bool>(
+    FormConstants.formControlReadyForInstall: FormControl<bool>(
       value: measureSheetState.readyForInstall,
     ),
   }));
@@ -766,12 +766,14 @@ class _MeasureSheetGeneralInfoFormState
               runSpacing: 16.0,
               children: <Widget>[
                 ReactiveStatusListenableBuilder(
-                  formControlName: 'tentativeInstallDate',
+                  formControlName: FormConstants
+                      .formControlTentativeInstallDate,
                   builder: (context, control, child) {
                     measureSheetState.tentativeInstallDate =
                         control.value as DateTime?;
                     return ReactiveDateTimePicker(
-                      formControlName: 'tentativeInstallDate',
+                      formControlName: FormConstants
+                          .formControlTentativeInstallDate,
                       valueAccessor: DateTimeValueAccessor(
                         dateTimeFormat: DateFormat('MM/dd/yyyy'),
                       ),
@@ -779,7 +781,7 @@ class _MeasureSheetGeneralInfoFormState
                         constraints: BoxConstraints.loose(
                           Size.fromWidth(250.0),
                         ),
-                        labelText: 'Tentative Install Date',
+                        labelText: FormConstants.formLabelTentativeInstallDate,
                         border: OutlineInputBorder(),
                         helperText: '',
                         suffixIcon: Icon(Icons.calendar_today),
@@ -789,9 +791,9 @@ class _MeasureSheetGeneralInfoFormState
                 ),
                 Row(
                   children: [
-                    Text('Ready For Install'),
+                    Text(FormConstants.formLabelReadyForInstall),
                     ReactiveSwitch.adaptive(
-                      formControlName: 'readyForInstall',
+                      formControlName: FormConstants.formControlReadyForInstall,
                       activeColor: Colors.red[900],
                       onChanged: (control) {
                         measureSheetState.readyForInstall = control.value!;

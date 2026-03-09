@@ -72,8 +72,10 @@ class FormConstants {
   static const String formLabelBuilderSuperName = 'Builder/Super Name';
   static const String formControlBuilderSuperPhone = 'builderSuperPhone';
   static const String formLabelBuilderSuperPhone = 'Builder/Super Phone';
-
-
+  static const String formControlTentativeInstallDate = 'tentativeInstallDate';
+  static const String formLabelTentativeInstallDate = 'Tentative Install Date';
+  static const String formControlReadyForInstall = 'readyForInstall';
+  static const String formLabelReadyForInstall = 'Ready For Install';
 }
 
 class SnackbarConstants {
