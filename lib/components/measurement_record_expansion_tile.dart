@@ -369,6 +369,8 @@ class _MeasurementRecordExpansionTileState
             var opposite = '';
 
             switch (control.value) {
+              case '0':
+                opposite = '100';
               case '10':
                 opposite = '90';
               case '20':
@@ -391,6 +393,8 @@ class _MeasurementRecordExpansionTileState
                 opposite = '20';
               case '90':
                 opposite = '10';
+              case '100':
+                opposite = '0';
             }
 
             fg.control('rightStack').value = opposite;
@@ -431,6 +435,8 @@ class _MeasurementRecordExpansionTileState
             var opposite = '';
 
             switch (control.value) {
+              case '0':
+                opposite = '100';
               case '10':
                 opposite = '90';
               case '20':
@@ -453,6 +459,8 @@ class _MeasurementRecordExpansionTileState
                 opposite = '20';
               case '90':
                 opposite = '10';
+              case '100':
+                opposite = '0';
             }
 
             fg.control('leftStack').value = opposite;
@@ -468,6 +476,7 @@ class _MeasurementRecordExpansionTileState
 
   List<DropdownMenuItem<String>> _stackPercentageDropdownItems() {
     return [
+      '0',
       '10',
       '20',
       '25',
@@ -479,6 +488,7 @@ class _MeasurementRecordExpansionTileState
       '75',
       '80',
       '90',
+      '100',
     ].map((percentage) {
       return DropdownMenuItem(
         value: percentage,
