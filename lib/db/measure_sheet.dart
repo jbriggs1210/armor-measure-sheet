@@ -374,4 +374,22 @@ class MeasurementRecord {
     stackRight = '';
     noteReference = '';
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'openingNumber': openingNumber,
+      'openingType': openingType,
+      'level': level,
+      'product': product,
+      'spanDirection': spanDirection,
+      'span': span,
+      'nSpan': nSpan,
+      'buildOutTop': buildOutTop,
+      'buildOutSides': buildOutSides,
+      'buildOutBot': buildOutBot,
+      'stackLeft': stackLeft,
+      'stackRight': stackRight,
+      'noteReference': noteReference,
+    };
+  }
 }
