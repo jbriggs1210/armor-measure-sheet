@@ -59,6 +59,20 @@ class SidingOptions {
   bool other = false;
   String? otherSpecifics;
   String? color;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'hardie': hardie,
+      'stucco': stucco,
+      'vinyl': vinyl,
+      'stone': stone,
+      'brick': brick,
+      'concrete': concrete,
+      'other': other,
+      'otherSpecifics': otherSpecifics,
+      'color': color
+    };
+  }
 }
 
 @embedded
@@ -72,6 +86,20 @@ class TrimOptions {
   bool keystone = false;
   bool none = false;
   String? color;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'topAndBottom': topAndBottom,
+      'allAround': allAround,
+      'headerStickout': headerStickout,
+      'headerFlush': headerFlush,
+      'sillStickout': sillStickout,
+      'sillFlush': sillFlush,
+      'keystone': keystone,
+      'none': none,
+      'color': color
+    };
+  }
 }
 
 @embedded
@@ -81,6 +109,16 @@ class DoorDetails {
   bool brickStoneTileWithSandUnder = false;
   bool sillInPlace = false;
   bool brickStoneTileWithConcreteUnder = false;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'roomUnderDoor': roomUnderDoor,
+      'concreteFloor': concreteFloor,
+      'sillInPlace': sillInPlace,
+      'brickStoneTileWithSandUnder': brickStoneTileWithSandUnder,
+      'brickStoneTileWithConcreteUnder': brickStoneTileWithConcreteUnder
+    };
+  }
 }
 
 @embedded
@@ -94,9 +132,6 @@ class ProductOptions {
   bool alum = false;
   bool fabric = false;
   bool accordions = false;
-  String? leftStack;
-  String? rightStack;
-
   bool rolldown = false;
   bool clearPanels = false;
   bool screenUnder = false;
@@ -110,7 +145,6 @@ class ProductOptions {
   bool ratedBahama4Inch = false;
   bool ratedColonialLouvered = false;
   bool ratedColonialBoardAndBatten = false;
-
   bool composite = false;
   String? compositeSpecifics;
   String? cutout;
@@ -200,6 +234,39 @@ class ProductOptions {
       products.add('Flat Track (FT)');
     }
     return products;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'paintBrand': paintBrand,
+      'otherBrandSpecify': otherBrandSpecify,
+      'paintCode': paintCode,
+      'osb': osb,
+      'galv': galv,
+      'alum': alum,
+      'fabric': fabric,
+      'accordions': accordions,
+      'rolldown': rolldown,
+      'clearPanels': clearPanels,
+      'screenUnder': screenUnder,
+      'retractableScreen': retractableScreen,
+      'poolEnclosure': poolEnclosure,
+      'paintedCaps': paintedCaps,
+      'bahArticulating': bahArticulating,
+      'decoBahama': decoBahama,
+      'decoColonial': decoColonial,
+      'ratedBahama2Inch': ratedBahama2Inch,
+      'ratedBahama4Inch': ratedBahama4Inch,
+      'ratedColonialLouvered': ratedColonialLouvered,
+      'ratedColonialBoardAndBatten': ratedColonialBoardAndBatten,
+      'composite': composite,
+      'compositeSpecifics': compositeSpecifics,
+      'cutout': cutout,
+      'directMount': directMount,
+      'armorTrack': armorTrack,
+      'hHeader': hHeader,
+      'flatTrack': flatTrack,
+    };
   }
 }
 

@@ -22,6 +22,7 @@ class PdfService {
 
     var logoSvg = await rootBundle.loadString('lib/assets/logo_white.svg');
     // create first page
+
     pdf.addPage(
       pw.Page(
         orientation: pw.PageOrientation.portrait,
