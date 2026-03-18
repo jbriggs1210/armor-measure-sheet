@@ -20,55 +20,98 @@ class PdfService {
       measureSheetId,
     );
 
+    if (measureSheetFromDb == null) {
+      throw MeasureSheetNotFoundException(
+          message: 'Measure Sheet Not Found in DB');
+      ;
+    }
+
     var logoSvg = await rootBundle.loadString('lib/assets/logo_white.svg');
     // create first page
 
-    pdf.addPage(
-      pw.Page(
-        orientation: pw.PageOrientation.portrait,
-        build: (_) {
-          return pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.Header(
-                level: 0,
-                child: pw.Row(
-                  children: [
-                    pw.SvgImage(
-                      svg: logoSvg,
-                      height: 40.0,
-                      width: 600.0,
-                      colorFilter: PdfColor.fromHex('8a203f'),
-                    ),
-                  ],
-                ),
-              ),
-              _buildCustomerInformationSection(measureSheetFromDb!),
-            ],
-          );
-        },
+    // Header
+    var header = pw.Header(
+      level: 0,
+      child: pw.Row(
+        children: [
+          pw.SvgImage(
+            svg: logoSvg,
+            height: 40.0,
+            width: 600.0,
+            colorFilter: PdfColor.fromHex('8a203f'),
+          ),
+        ],
       ),
+    );
+
+    // Customer Information Section
+    var customerInformationSection = _buildCustomerInformationV2(
+        measureSheetFromDb);
+    var builderSuperSection = _buildSuperInformation(measureSheetFromDb);
+    // Home Details
+    var homeDetailsSection = _buildHomeDetailsSection(measureSheetFromDb);
+    // Siding
+    var sidingSection = _buildSidingSection(measureSheetFromDb);
+    // Trim
+    // Door Details
+    // Products
+
+    var pageOneContent = pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        header,
+        pw.Container(
+          child: customerInformationSection,
+          decoration: pw.BoxDecoration(
+              border: pw.Border.all(color: PdfColors.black),
+              borderRadius: pw.BorderRadius.circular(5)),
+          padding: pw.EdgeInsets.all(8.0),),
+        pw.Container(
+          child: builderSuperSection,
+          decoration: pw.BoxDecoration(
+              border: pw.Border.all(color: PdfColors.black),
+              borderRadius: pw.BorderRadius.circular(5)),
+          padding: pw.EdgeInsets.all(8.0),
+        ),
+        pw.Container(
+          child: pw.Column(children: [homeDetailsSection, sidingSection]),
+          decoration: pw.BoxDecoration(
+              border: pw.Border.all(color: PdfColors.black),
+              borderRadius: pw.BorderRadius.circular(5)),
+          padding: pw.EdgeInsets.all(8.0),
+        ),
+      ],
     );
 
     pdf.addPage(
       pw.Page(
         orientation: pw.PageOrientation.portrait,
         build: (_) {
-          return pw.Column(
-            children: [
-              pw.Padding(
-                padding: pw.EdgeInsets.only(top: rowVerticalPadding * 2),
-              ),
-              _buildHomeDetails(measureSheetFromDb!),
-              pw.Padding(
-                padding: pw.EdgeInsets.only(top: rowVerticalPadding * 2),
-              ),
-              _buildProducts(measureSheetFromDb!),
-            ],
-          );
+          return pageOneContent;
         },
       ),
     );
+
+    //
+    // pdf.addPage(
+    //   pw.Page(
+    //     orientation: pw.PageOrientation.portrait,
+    //     build: (_) {
+    //       return pw.Column(
+    //         children: [
+    //           pw.Padding(
+    //             padding: pw.EdgeInsets.only(top: rowVerticalPadding * 2),
+    //           ),
+    //           _buildHomeDetails(measureSheetFromDb!),
+    //           pw.Padding(
+    //             padding: pw.EdgeInsets.only(top: rowVerticalPadding * 2),
+    //           ),
+    //           _buildProducts(measureSheetFromDb!),
+    //         ],
+    //       );
+    //     },
+    //   ),
+    // );
 
     return pdf;
   }
@@ -228,7 +271,75 @@ class PdfService {
     return pw.Flex(direction: pw.Axis.vertical, children: sectionChildren);
   }
 
-  pw.Widget _buildHomeDetails(MeasureSheet measureSheet) {
+  pw.Widget _buildCustomerInformationV2(MeasureSheet measureSheet) {
+    List<pw.Widget> section = [
+      pw.Header(
+        level: 1,
+        child: pw.Row(
+          children: [pw.Center(child: pw.Text('Customer Information'))],
+        ),
+      ),
+      pw.Row(
+          children: [
+            pw.Text('Job Number: ${measureSheet.jobNumber}'),
+            pw.SizedBox(width: 10.0),
+            pw.VerticalDivider(thickness: 8.0, color: PdfColors.black),
+            pw.Text('Date: ${dateFormat.format(measureSheet.jobDate!)}'),
+            pw.SizedBox(width: 10.0),
+            pw.VerticalDivider(thickness: 8.0, color: PdfColors.black),
+            pw.Text('Sales Rep: ${measureSheet.salesRep}'),
+          ]
+      ),
+      pw.Row(
+          children: [
+            pw.Text('Customer Name: ${measureSheet.customerName}'),
+            pw.SizedBox(width: 10.0),
+          ]
+      ),
+      pw.Row(
+          children: [
+            pw.Container(child: pw.Text(
+                'Street Address: ${_buildAddress(measureSheet)}')),
+          ]
+      ),
+      pw.Row(
+          children: [
+            pw.Text('Mobile 1: ${measureSheet.mobile1}'),
+            pw.SizedBox(width: 10.0),
+            pw.VerticalDivider(thickness: 8.0, color: PdfColors.black),
+            pw.Text('Mobile 2: ${measureSheet.mobile2}'),
+            pw.SizedBox(width: 10.0),
+            pw.VerticalDivider(thickness: 8.0, color: PdfColors.black),
+            pw.Text('Home Phone: ${measureSheet.homePhone}'),
+          ]
+      )
+    ];
+
+    return pw.Column(children: section);
+  }
+
+  pw.Widget _buildSuperInformation(MeasureSheet measureSheet) {
+    var section = [
+      pw.Header(
+        level: 1,
+        child: pw.Row(
+          children: [pw.Center(child: pw.Text('Builder/Super Information'))],
+        ),
+      ),
+      pw.Row(
+          children: [
+            pw.Text('Name: ${measureSheet.builderSuperName}'),
+            pw.SizedBox(width: 10.0),
+            pw.VerticalDivider(thickness: 8.0, color: PdfColors.black),
+            pw.Text('Phone: ${measureSheet.builderSuperPhone}'),
+          ]
+      ),
+    ];
+
+    return pw.Column(children: section);
+  }
+
+  pw.Widget _buildHomeDetailsSection(MeasureSheet measureSheet) {
     List<pw.Widget> sectionChildren = [
       pw.Header(
         level: 1,
@@ -240,66 +351,19 @@ class PdfService {
       pw.Padding(padding: pw.EdgeInsets.only(top: rowVerticalPadding)),
       pw.Row(
         children: [
-          _buildLabelAndValue(
-            'Tentative Install Date',
-            dateFormat.format(measureSheet.tentativeInstallDate as DateTime),
-          ),
-          rowHorizontalSizedBoxWidget,
-          _buildLabelAndCheckmark(
-            'Ready For Install',
-            measureSheet.readyForInstall == 'Yes',
-          ),
+          pw.Text('Tentative Install Date: ${dateFormat.format(
+              measureSheet.tentativeInstallDate as DateTime)}'),
+          if (measureSheet.readyForInstall)
+            ... [
+              pw.SizedBox(width: 10.0),
+              pw.VerticalDivider(thickness: 8.0, color: PdfColors.black),
+              pw.Text('Ready For Install: X'),
+            ]
         ],
       ),
-      pw.Padding(padding: pw.EdgeInsets.only(top: rowVerticalPadding)),
-      pw.Header(
-        level: 2,
-        child: pw.Row(
-          children: [
-            pw.Center(
-              child: pw.Text(
-                'Siding',
-                style: pw.TextStyle(decoration: pw.TextDecoration.underline),
-              ),
-            ),
-          ],
-        ),
-      ),
-      pw.Padding(padding: pw.EdgeInsets.only(top: rowVerticalPadding)),
-      _buildSidingBoxes(measureSheet.sidingOptions),
-      pw.Padding(padding: pw.EdgeInsets.only(top: rowVerticalPadding)),
-      pw.Header(
-        level: 2,
-        child: pw.Row(
-          children: [
-            pw.Center(
-              child: pw.Text(
-                'Trim',
-                style: pw.TextStyle(decoration: pw.TextDecoration.underline),
-              ),
-            ),
-          ],
-        ),
-      ),
-      _buildTrimBoxes(measureSheet.trimOptions),
-      pw.Padding(padding: pw.EdgeInsets.only(top: rowVerticalPadding)),
-      pw.Header(
-        level: 2,
-        child: pw.Row(
-          children: [
-            pw.Center(
-              child: pw.Text(
-                'Door Details',
-                style: pw.TextStyle(decoration: pw.TextDecoration.underline),
-              ),
-            ),
-          ],
-        ),
-      ),
-      _buildDoorDetailsBoxes(measureSheet.doorDetails),
     ]);
 
-    return pw.Flex(direction: pw.Axis.vertical, children: sectionChildren);
+    return pw.Column(children: sectionChildren);
   }
 
   pw.Widget _buildProducts(MeasureSheet measureSheet) {
@@ -493,4 +557,54 @@ class PdfService {
 
     return pw.Wrap(spacing: 12.0, runSpacing: 6.0, children: widgetsToWrap);
   }
+
+  String _buildAddress(MeasureSheet measureSheet) {
+    var streetNumber = measureSheet.streetNumber;
+    var streetName = measureSheet.streetName;
+    var lotNumber = measureSheet.lotNumber ?? "";
+    var plantation = measureSheet.plantation ?? "";
+    var cityTown = measureSheet.cityTown ?? "";
+    var state = measureSheet.state ?? "";
+    var zipCode = measureSheet.zipCode ?? "";
+
+    return
+      """$streetNumber $streetName $lotNumber $plantation\n$cityTown $state, $zipCode
+    """;
+  }
+
+  pw.Widget _buildSidingSection(MeasureSheet measureSheet) {
+    var section = [
+      pw.Header(
+          level: 2,
+          child: pw.Row(children: [
+            pw.Text('Siding',
+                style: pw.TextStyle(decoration: pw.TextDecoration.underline))
+          ])
+      ),
+      pw.Row(
+          children: [
+            _buildSidingRowContent(measureSheet.sidingOptions),
+          ]
+      ),
+    ];
+    return pw.Column(
+        children: section
+    );
+  }
+
+  pw.Widget _buildSidingRowContent(SidingOptions sidingOptions) {
+    String content = '';
+    var sidingMap = sidingOptions.toMap();
+    content = sidingMap.entries
+        .where((entry) => entry.value != false)
+        .map((entry) => entry.key)
+        .join(", ");
+    return pw.Text(content);
+  }
+}
+
+class MeasureSheetNotFoundException implements Exception {
+  final String? message;
+
+  MeasureSheetNotFoundException({this.message});
 }

@@ -586,7 +586,7 @@ class _MeasureSheetGeneralInfoFormState
                   },
                 ),
                 ReactiveTextField<String>(
-                  formControlName: FormConstants.formControlStreetNumber,
+                  formControlName: FormConstants.formControlLotNumber,
                   decoration: InputDecoration(
                     constraints: BoxConstraints.loose(Size.fromWidth(150.0)),
                     labelText: FormConstants.formLabelLotNumber,

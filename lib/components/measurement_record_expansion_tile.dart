@@ -44,7 +44,6 @@ class _MeasurementRecordExpansionTileState
             ReactiveValueListenableBuilder(
                 formControl: widget.formArray.control(_index.toString()),
                 builder: (context, control, builder) {
-                  print('inside listener');
                   Color statusColor = _buildStatusColor(control);
 
                   return SizedBox(
@@ -100,6 +99,7 @@ class _MeasurementRecordExpansionTileState
               flex: 1,
               child: ReactiveDropdownField<String>(
                 formControlName: '${_index.toString()}.level',
+                isExpanded: true,
                 decoration: InputDecoration(
                   helperText: '',
                   labelText: 'Level',
@@ -338,7 +338,8 @@ class _MeasurementRecordExpansionTileState
     ActiveLevels activeLevels,
   ) {
     return activeLevels.levelsForMeasure().map((pTM) {
-      return DropdownMenuItem(value: pTM, child: Text(pTM));
+      return DropdownMenuItem(
+          value: pTM, child: Text(pTM, overflow: TextOverflow.ellipsis,));
     }).toList();
   }
 
