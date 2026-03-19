@@ -73,6 +73,19 @@ class SidingOptions {
       'color': color
     };
   }
+
+
+  static Map<String, String> sidingFieldsToDisplayMap = {
+    'hardie': 'Hardie',
+    'stucco': 'Stucco',
+    'vinyl': 'Vinyl',
+    'stone': 'Stone',
+    'brick': 'Brick',
+    'concrete': 'Concrete',
+    'other': 'Other',
+    'otherSpecifics': 'Other Specifics',
+    'color': 'Color'
+  };
 }
 
 @embedded
@@ -100,6 +113,18 @@ class TrimOptions {
       'color': color
     };
   }
+
+  static Map<String, String> trimFieldsToDisplayMap = {
+    'topAndBottom': 'Top And Bottom',
+    'allAround': 'All Around',
+    'headerStickout': 'Header Stickout',
+    'headerFlush': 'Header Flush',
+    'sillStickout': 'Sill Stickout',
+    'sillFlush': 'Sill Flush',
+    'keystone': 'Keystone',
+    'none': 'None',
+    'color': 'Color'
+  };
 }
 
 @embedded
@@ -119,6 +144,14 @@ class DoorDetails {
       'brickStoneTileWithConcreteUnder': brickStoneTileWithConcreteUnder
     };
   }
+
+  static Map<String, String> doorDetailsFieldsToDisplayMap = {
+    'roomUnderDoor': 'Room Under Door',
+    'concreteFloor': 'Concrete Floor',
+    'sillInPlace': 'Sill In Place',
+    'brickStoneTileWithSandUnder': 'Brick/Stone/Tile With Sand Under',
+    'brickStoneTileWithConcreteUnder': 'Brick/Stone/Tile With Concrete Under'
+  };
 }
 
 @embedded
@@ -157,6 +190,32 @@ class ProductOptions {
   static bool requiresLeftRightStack(String productToCheck) {
     return productToCheck == 'Accordions (Ac)';
   }
+
+  static Map<String, String> productsFieldNameToDisplayMap = {
+    'osb': 'OSB (O)',
+    'galv': 'Galv (G)',
+    'alum': 'Alum (Al)',
+    'fabric': 'Fabric (F)',
+    'accordions': 'Accordions (Ac)',
+    'rolldown': 'Rolldown (R)',
+    'clearPanels': 'Clear Panels',
+    'screenUnder': 'Screen Under',
+    'retractableScreen': 'Retractable Screen',
+    'poolEnclosure': 'Pool Enclosure',
+    'paintedCaps': 'Painted Caps',
+    'bahArticulating': 'Bah Articulating (BA)',
+    'decoBahama': 'Deco Bahama',
+    'decoColonial': 'Deco Colonial',
+    'ratedBahama2Inch': 'Rate Bahama 2"',
+    'ratedBahama4Inch': 'Rate Bahama 4"',
+    'ratedColonialLouvered': 'Rated Colonial Louvered',
+    'ratedColonialBoardAndBatten': 'Rated Colonial B&B',
+    'composite': 'Composite',
+    'directMount': 'Direct Mount (DM)',
+    'armorTrack': 'Armor Track (AT)',
+    'hHeader': '"H" Header (H)',
+    'flatTrack': 'Flat Track (FT)',
+  };
 
   List<String> productsToMeasure() {
     List<String> products = [];

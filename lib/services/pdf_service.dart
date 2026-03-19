@@ -466,7 +466,8 @@ class PdfService {
         .where((entry) =>
     entry.value != false &&
         !['other', 'color', 'otherSpecifics'].contains(entry.key))
-        .map((entry) => entry.key)
+        .map((entry) =>
+    SidingOptions.sidingFieldsToDisplayMap[entry.key] ?? entry.key)
         .join(", ");
 
     // add other and color if necessary
@@ -475,14 +476,14 @@ class PdfService {
       if (prefixComma) {
         content += ', ';
       }
-      content += 'other: ${sidingMap['otherSpecifics']}';
+      content += 'Other: ${sidingMap['otherSpecifics']}';
     }
     if ((sidingMap['color'] as String).isNotEmpty) {
       var prefixComma = !content.endsWith(',');
       if (prefixComma) {
         content += ', ';
       }
-      content += 'color: ${sidingMap['color']}';
+      content += 'Color: ${sidingMap['color']}';
     }
 
     return pw.Text(content);
@@ -494,7 +495,8 @@ class PdfService {
     content = trimMap.entries
         .where((entry) =>
     entry.value != false && !['color'].contains(entry.key))
-        .map((entry) => entry.key)
+        .map((entry) =>
+    TrimOptions.trimFieldsToDisplayMap[entry.key] ?? entry.key)
         .join(", ");
 
     if ((trimMap['color'] as String).isNotEmpty) {
@@ -502,7 +504,7 @@ class PdfService {
       if (prefixComma) {
         content += ', ';
       }
-      content += 'color: ${trimMap['color']}';
+      content += 'Color: ${trimMap['color']}';
     }
 
     return pw.Text(content, softWrap: true);
@@ -513,7 +515,8 @@ class PdfService {
     var ddMap = doorDetails.toMap();
     content = ddMap.entries
         .where((entry) => entry.value)
-        .map((entry) => entry.key)
+        .map((entry) =>
+    DoorDetails.doorDetailsFieldsToDisplayMap[entry.key] ?? entry.key)
         .join(", ");
 
     return pw.Text(content, softWrap: true);
@@ -531,9 +534,9 @@ class PdfService {
       'composite',
       'compositeSpecifics',
       'cutout',
-      'Null'
     ].contains(entry.key))
-        .map((entry) => entry.key)
+        .map((entry) =>
+    ProductOptions.productsFieldNameToDisplayMap[entry.key] ?? entry.key)
         .join(", ");
 
     if (productsMap['paintBrand'] == 'Other') {
@@ -541,21 +544,21 @@ class PdfService {
       if (prefixComma) {
         content += ', ';
       }
-      content += 'paint brand: ${productsMap['otherBrandSpecify']}';
+      content += 'Paint Brand: ${productsMap['otherBrandSpecify']}';
     }
     if ((productsMap['paintCode'] as String).isNotEmpty) {
       var prefixComma = !content.endsWith(',');
       if (prefixComma) {
         content += ', ';
       }
-      content += 'paint code: ${productsMap['paintCode']}';
+      content += 'Paint Code: ${productsMap['paintCode']}';
     }
     if (productsMap['composite']) {
       var prefixComma = !content.endsWith(',');
       if (prefixComma) {
         content += ', ';
       }
-      content += 'composite: ${productsMap['compositeSpecifics']}';
+      content += 'Composite: ${productsMap['compositeSpecifics']}';
     }
     if (productsMap['cutout'] != null &&
         (productsMap['cutout'] as String).isNotEmpty) {
@@ -563,7 +566,7 @@ class PdfService {
       if (prefixComma) {
         content += ', ';
       }
-      content += 'cutout: ${productsMap['cutout']}';
+      content += 'Cutout: ${productsMap['cutout']}';
     }
     return pw.Text(content, softWrap: true);
   }
