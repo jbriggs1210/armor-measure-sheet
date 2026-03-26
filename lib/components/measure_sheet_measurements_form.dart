@@ -40,9 +40,6 @@ class _MeasureSheetMeasurementsFormState
     'salesInfoAccurate': FormControl<bool>(
       value: measureSheetState.salesInfoAccurate,
     ),
-    'activeLevelsLower': FormControl<bool>(
-      value: measureSheetState.activeLevels.lowerLevel,
-    ),
     'activeLevelsFirst': FormControl<bool>(
       value: measureSheetState.activeLevels.first,
     ),
@@ -56,8 +53,8 @@ class _MeasureSheetMeasurementsFormState
       value: measureSheetState.activeLevels.raised,
     ),
     'notes': FormArray<String>(_buildNotesInitial()),
-    'addOnMeasurements': FormControl<bool>(
-      value: measureSheetState.measurementInfo.addOnMeasurements,
+    'addonMeasurementsOverride': FormControl<bool>(
+      value: measureSheetState.measurementInfo.addonMeasurementsOverride,
     ),
     'measurements': FormArray<Map<String, dynamic>>(
       _buildMeasurementsInitial(),
@@ -171,6 +168,22 @@ class _MeasureSheetMeasurementsFormState
       return;
     }
 
+    // todo: there is definitely a better way to handle this
+    // handle the case if a new opening is created
+    // update if addonMeasurementsOverride is selected and product needs it
+    if (measureSheetState.measurementInfo.addonMeasurementsOverride) {
+      measureSheetState.measurementInfo.measurementRecords
+          .where((record) =>
+          ProductConstants.productsToCollectAddonMeasurements.contains(
+              record.product))
+          .forEach((record) =>
+      record.addOnMeasurement =
+          measureSheetState.measurementInfo.addonMeasurementsOverride);
+    }
+
+    // clean up other data based on product and required fields???
+    measureSheetState.measurementInfo.measurementRecords
+        .forEach((record) => _cleanDataUpBeforeSave(record));
     await IsarService.isarDatabase.writeTxn(
       () => IsarService.isarDatabase.measureSheets.put(measureSheetState),
     );
@@ -303,22 +316,6 @@ class _MeasureSheetMeasurementsFormState
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Lower Level'),
-                    ReactiveSwitch.adaptive(
-                      formControlName: 'activeLevelsLower',
-                      activeColor: Colors.red[900],
-                      onChanged: (control) {
-                        setState(() {
-                          measureSheetState.activeLevels.lowerLevel =
-                              control.value!;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
                     Text('First Level'),
                     ReactiveSwitch.adaptive(
                       formControlName: 'activeLevelsFirst',
@@ -365,7 +362,7 @@ class _MeasureSheetMeasurementsFormState
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Raised Level'),
+                    Text('Raised'),
                     ReactiveSwitch.adaptive(
                       formControlName: 'activeLevelsRaised',
                       activeColor: Colors.red[900],
@@ -435,7 +432,7 @@ class _MeasureSheetMeasurementsFormState
 
   Step _measurementsStep() {
     return Step(
-      title: Text('Measurements'),
+      title: Text('Openings'),
       content: ReactiveForm(
         formGroup: measurementInfoForm,
         child: Wrap(
@@ -446,13 +443,16 @@ class _MeasureSheetMeasurementsFormState
             Row(
               children: [
                 Text(
-                  'Measurements reflect add-on dimensions for Rolldown and Accordions.',
+                  'Measurements reflect add-on dimensions.',
                 ),
                 ReactiveCheckbox(
-                  formControlName: 'addOnMeasurements',
+                  formControlName: 'addonMeasurementsOverride',
                   onChanged: (control) {
-                      measureSheetState.measurementInfo.addOnMeasurements =
-                          control.value!;
+                    setState(() {
+                      measureSheetState.measurementInfo
+                          .addonMeasurementsOverride =
+                      control.value!;
+                    });
                   },
                 ),
               ],
@@ -616,7 +616,6 @@ class _MeasureSheetMeasurementsFormState
 
   List<AbstractControl<String>> _buildNotesInitial() {
     List<FormControl<String>> fcToReturn = [];
-    // if notes are saved we need to build the actual ui otherwise it's empty
     if (measureSheetState.measurementInfo.notes.isNotEmpty) {
       for (final (note) in measureSheetState.measurementInfo.notes) {
         fcToReturn.add(FormControl(value: note));
@@ -649,12 +648,17 @@ class _MeasureSheetMeasurementsFormState
           value: record.span, validators: [ _ValueMustBeDivisibleByPoint25()]),
       'nSpan': FormControl<String>(
           value: record.nSpan, validators: [ _ValueMustBeDivisibleByPoint25()]),
+      'width': FormControl<String>(value: record.width),
+      'height': FormControl<String>(value: record.height),
       'leftStack': FormControl<String>(value: record.stackLeft),
       'rightStack': FormControl<String>(value: record.stackRight),
       'buildOutTop': FormControl<String>(value: record.buildOutTop),
       'buildOutSides': FormControl<String>(value: record.buildOutSides),
       'buildOutBot': FormControl<String>(value: record.buildOutBot),
       'noteReference': FormControl<String>(value: record.noteReference),
+      'addOnMeasurement': FormControl<bool>(
+        value: record.addOnMeasurement,
+      ),
     }, validators: [_IfAccordionStacksMustNotBeNullOrEmpty()]);
   }
 
@@ -698,6 +702,19 @@ class _MeasureSheetMeasurementsFormState
           curve: Curves.easeInOut,
         );
       });
+    }
+  }
+
+  void _cleanDataUpBeforeSave(MeasurementRecord record) {
+    var product = record.product;
+    if (!ProductConstants.productsToCollectAddonMeasurements.contains(
+        product)) {
+      record.addOnMeasurement = false;
+      record.width = null;
+      record.height = null;
+    } else {
+      record.span = null;
+      record.nSpan = null;
     }
   }
 }

@@ -23,7 +23,6 @@ class PdfService {
     if (measureSheetFromDb == null) {
       throw MeasureSheetNotFoundException(
           message: 'Measure Sheet Not Found in DB');
-      ;
     }
 
     var logoSvg = await rootBundle.loadString('lib/assets/logo_white.svg');
@@ -45,7 +44,7 @@ class PdfService {
     );
 
     // Customer Information Section
-    var customerInformationSection = _buildCustomerInformationV2(
+    var customerInformationSection = _buildCustomerInformationSection(
         measureSheetFromDb);
     var builderSuperSection = _buildSuperInformation(measureSheetFromDb);
     // Home Details
@@ -58,8 +57,11 @@ class PdfService {
     var doorDetailsSection = _buildDoorDetailsSection(measureSheetFromDb);
     // Products
     var productsSection = _buildProductsSection(measureSheetFromDb);
+    // Measure Information
+    var measureInformationSection = _buildMeasureInformationSection(
+        measureSheetFromDb);
 
-    var pageOneContent = pw.Column(
+    var pageContent = pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
         header,
@@ -92,25 +94,41 @@ class PdfService {
           padding: pw.EdgeInsets.all(8.0),
         ),
         pw.Container(
-          child: pw.Column(children: [
-            productsSection,
-          ]),
+          child: productsSection,
           decoration: pw.BoxDecoration(
               border: pw.Border.all(color: PdfColors.black),
               borderRadius: pw.BorderRadius.circular(5)),
           padding: pw.EdgeInsets.all(8.0),
         ),
+        pw.Container(
+          child: measureInformationSection,
+          decoration: pw.BoxDecoration(
+              border: pw.Border.all(color: PdfColors.black),
+              borderRadius: pw.BorderRadius.circular(5)),
+          padding: pw.EdgeInsets.all(8.0),),
       ],
     );
 
     pdf.addPage(
-      pw.Page(
+      pw.MultiPage(
         orientation: pw.PageOrientation.portrait,
-        build: (_) {
-          return pageOneContent;
-        },
+          build: (pw.Context context) => <pw.Widget>[pageContent]
       ),
     );
+
+    // new page for landscape
+    var landscapePage = pw.MultiPage(
+        orientation: pw.PageOrientation.landscape,
+        build: (pw.Context context) =>
+        <pw.Widget>[
+          _buildMeasurementRecordsTable(
+              measureSheetFromDb.measurementInfo.measurementRecords),
+          //todo: how to show notes ? do we show notes separate from records?
+          // _buildReferenceNotes(measureSheetFromDb.measurementInfo.notes);
+        ]
+    );
+
+    pdf.addPage(landscapePage);
 
     return pdf;
   }
@@ -122,162 +140,13 @@ class PdfService {
     return file.writeAsBytes(await pdf.save());
   }
 
-  pw.Widget _buildLabelAndValue(String label, Object value, {double? width}) {
-    if (value is String? && value.toString().isEmpty) {
-      return pw.Container();
-    }
-    return pw.Row(
-      crossAxisAlignment: pw.CrossAxisAlignment.start,
-      mainAxisSize: pw.MainAxisSize.min,
-      mainAxisAlignment: pw.MainAxisAlignment.start,
-      children: [
-        pw.Container(child: pw.Text('$label:')),
-        pw.SizedBox(width: 10.0),
-        pw.Container(
-          width: width,
-          margin: pw.EdgeInsets.only(bottom: 2.0),
-          padding: pw.EdgeInsets.all(2.0),
-          decoration: pw.BoxDecoration(border: pw.Border.all()),
-          child: pw.Text('$value'),
-        ),
-      ],
-    );
-  }
-
-  pw.Widget _buildLabelAndCheckmark(
-    String label,
-    bool? isChecked, {
-    double? width,
-  }) {
-    if (isChecked == null || !isChecked) {
-      return pw.Container();
-    }
-    return pw.Row(
-      crossAxisAlignment: pw.CrossAxisAlignment.start,
-      mainAxisSize: pw.MainAxisSize.min,
-      mainAxisAlignment: pw.MainAxisAlignment.start,
-      children: [
-        pw.Container(child: pw.Text('$label:')),
-        pw.SizedBox(width: 10.0),
-        pw.Container(
-          width: width,
-          margin: pw.EdgeInsets.only(bottom: 2.0),
-          padding: pw.EdgeInsets.all(2.0),
-          decoration: pw.BoxDecoration(border: pw.Border.all()),
-          child: pw.Checkbox(
-            value: isChecked,
-            name: label,
-            activeColor: PdfColors.white,
-            checkColor: PdfColors.black,
-            height: 10,
-            width: 10,
-          ),
-        ),
-      ],
-    );
-  }
-
   pw.Widget _buildCustomerInformationSection(MeasureSheet measureSheet) {
-    List<pw.Widget> sectionChildren = [
-      pw.Header(
-        level: 1,
-        child: pw.Row(
-          children: [pw.Center(child: pw.Text('Customer Information'))],
-        ),
-      ),
-      pw.Padding(padding: pw.EdgeInsets.only(top: rowVerticalPadding)),
-      pw.Row(
-        children: [
-          _buildLabelAndValue(
-            'Date',
-            dateFormat.format(measureSheet.jobDate as DateTime),
-          ),
-          rowHorizontalSizedBoxWidget,
-          _buildLabelAndValue('Job Number', measureSheet.jobNumber as String),
-          rowHorizontalSizedBoxWidget,
-          _buildLabelAndValue('Sales Rep', measureSheet.salesRep as String),
-        ],
-      ),
-      pw.Padding(padding: pw.EdgeInsets.only(top: rowVerticalPadding)),
-      pw.Row(
-        children: [
-          _buildLabelAndValue('Customer Name', measureSheet.customerName ?? ''),
-        ],
-      ),
-      pw.Padding(padding: pw.EdgeInsets.only(top: rowVerticalPadding)),
-      pw.Row(
-        children: [
-          _buildLabelAndValue('Street Number', measureSheet.streetNumber ?? ''),
-          _buildLabelAndValue('Lot Number', measureSheet.lotNumber ?? ''),
-        ],
-      ),
-      pw.Padding(padding: pw.EdgeInsets.only(top: rowVerticalPadding)),
-      pw.Row(
-        children: [
-          _buildLabelAndValue('Street Name', measureSheet.streetName ?? ''),
-        ],
-      ),
-      pw.Padding(padding: pw.EdgeInsets.only(top: rowVerticalPadding)),
-      pw.Row(
-        children: [
-          _buildLabelAndValue('City/Town', measureSheet.cityTown ?? ''),
-          rowHorizontalSizedBoxWidget,
-          _buildLabelAndValue('State', measureSheet.state ?? ''),
-        ],
-      ),
-      pw.Padding(padding: pw.EdgeInsets.only(top: rowVerticalPadding)),
-      pw.Row(
-        children: [_buildLabelAndValue('Zip Code', measureSheet.zipCode ?? '')],
-      ),
-      pw.Padding(padding: pw.EdgeInsets.only(top: rowVerticalPadding)),
-      pw.Row(
-        children: [
-          _buildLabelAndValue('Plantation', measureSheet.plantation ?? ''),
-          rowHorizontalSizedBoxWidget,
-          _buildLabelAndValue('Mobile 1', measureSheet.mobile1 ?? ''),
-          rowHorizontalSizedBoxWidget,
-          _buildLabelAndValue('Mobile 2', measureSheet.mobile2 ?? ''),
-        ],
-      ),
-    ];
-
-    if (measureSheet.builderSuperName != null ||
-        measureSheet.builderSuperPhone != null) {
-      sectionChildren.add(
-        pw.Padding(padding: pw.EdgeInsets.only(top: rowVerticalPadding)),
-      );
-      sectionChildren.add(
-        pw.Header(
-          level: 1,
-          child: pw.Row(
-            children: [pw.Center(child: pw.Text('Builder/Super Information'))],
-          ),
-        ),
-      );
-      sectionChildren.add(
-        pw.Padding(padding: pw.EdgeInsets.only(top: rowVerticalPadding)),
-      );
-      sectionChildren.add(
-        pw.Row(
-          children: [
-            _buildLabelAndValue('Name', measureSheet.builderSuperName ?? ''),
-            rowHorizontalSizedBoxWidget,
-            _buildLabelAndValue('Phone', measureSheet.builderSuperPhone ?? ''),
-          ],
-        ),
-      );
-    }
-    return pw.Flex(direction: pw.Axis.vertical, children: sectionChildren);
-  }
-
-  pw.Widget _buildCustomerInformationV2(MeasureSheet measureSheet) {
     var section = [
       pw.Header(
         level: 1,
-        child: pw.Row(
-          children: [pw.Center(child: pw.Text('Customer Information'))],
-        ),
+        child: pw.Center(child: pw.Text('Customer Information')),
       ),
+      pw.SizedBox(height: 10.0),
       pw.Row(
           children: [
             pw.Text('Job Number: ${measureSheet.jobNumber}'),
@@ -289,18 +158,21 @@ class PdfService {
             pw.Text('Sales Rep: ${measureSheet.salesRep}'),
           ]
       ),
+      pw.SizedBox(height: 10.0),
       pw.Row(
           children: [
             pw.Text('Customer Name: ${measureSheet.customerName}'),
             pw.SizedBox(width: 10.0),
           ]
       ),
+      pw.SizedBox(height: 10.0),
       pw.Row(
           children: [
             pw.Container(child: pw.Text(
                 'Street Address: ${_buildAddress(measureSheet)}')),
           ]
       ),
+      pw.SizedBox(height: 10.0),
       pw.Row(
           children: [
             pw.Text('Mobile 1: ${measureSheet.mobile1}'),
@@ -321,10 +193,8 @@ class PdfService {
     var section = [
       pw.Header(
         level: 1,
-        child: pw.Row(
-          children: [pw.Center(child: pw.Text('Builder/Super Information'))],
+        child: pw.Center(child: pw.Text('Builder/Super Information')),
         ),
-      ),
       pw.Row(
           children: [
             pw.Text('Name: ${measureSheet.builderSuperName}'),
@@ -342,7 +212,7 @@ class PdfService {
     List<pw.Widget> sectionChildren = [
       pw.Header(
         level: 1,
-        child: pw.Row(children: [pw.Center(child: pw.Text('Home Details'))]),
+        child: pw.Center(child: pw.Text('Home Details')),
       ),
     ];
 
@@ -442,9 +312,7 @@ class PdfService {
     var section = [
       pw.Header(
           level: 1,
-          child: pw.Row(children: [
-            pw.Text('Products')
-          ])
+        child: pw.Center(child: pw.Text('Products')),
       ),
       pw.Row(
           children: [
@@ -454,6 +322,115 @@ class PdfService {
       ),
     ];
 
+    return pw.Column(
+        children: section
+    );
+  }
+
+  pw.Widget _buildMeasureInformationSection(MeasureSheet measureSheet) {
+    var section = <pw.Widget>[
+      pw.Header(
+          level: 1,
+          child: pw.Center(child: pw.Text('Measure Information'))
+      ),
+      if (measureSheet.measurer != null || measureSheet.measureDate != null)
+        pw.Row(
+            children: [
+              if (measureSheet.measurer != null)
+                pw.Expanded(
+                    flex: 1,
+                    child: pw.Text('Measurer: ${measureSheet.measurer}')
+                ),
+              if (measureSheet.measureDate != null)
+                pw.Expanded(
+                    flex: 1,
+                    child: pw.Text('Measure Date: ${dateFormat.format(
+                        measureSheet.measureDate!)}')
+                ),
+            ]
+        ),
+      if (measureSheet.measurer != null || measureSheet.measureDate != null)
+        pw.SizedBox(height: 10.0),
+      pw.Header(
+          level: 2,
+          child: pw.Row(children: [
+            pw.Text('Active Levels',
+                style: pw.TextStyle(
+                    decoration: pw.TextDecoration.underline))
+          ])
+      ),
+      pw.Row(children: [pw.Expanded(
+          child: _buildActiveLevelsContent(measureSheet.activeLevels)
+      ),
+      ]),
+      pw.Header(
+          level: 2,
+          child: pw.Row(children: [
+            pw.Text('Safety Equipment',
+                style: pw.TextStyle(
+                    decoration: pw.TextDecoration.underline))
+          ])
+      ),
+      pw.Row(children: [pw.Expanded(
+          child: _buildEquipmentContent(measureSheet.safetyEquipment)),
+      ]),
+      pw.Header(
+          level: 2,
+          child: pw.Row(children: [
+            pw.Text('Ladders/Lifts',
+                style: pw.TextStyle(
+                    decoration: pw.TextDecoration.underline))
+          ])
+      ),
+      pw.Row(children: [pw.Expanded(
+          child: buildLaddersLiftsContent(measureSheet.laddersLifts)),
+      ]),
+      pw.Header(
+          level: 2,
+          child: pw.Row(children: [
+            pw.Text('Tools',
+                style: pw.TextStyle(
+                    decoration: pw.TextDecoration.underline))
+          ])
+      ),
+      pw.Row(children: [pw.Expanded(
+          child: _buildToolsContent(measureSheet.tools)),
+      ]),
+    ];
+    return pw.Column(children: section);
+  }
+
+  pw.Widget _buildEquipmentSection(MeasureSheet measureSheet) {
+    var section = <pw.Widget>[
+      pw.Header(
+          level: 1,
+          child: pw.Row(children: [
+            pw.Text('Equipment')
+          ])
+      ),
+      pw.Row(
+          children: [
+            pw.Expanded(
+                child: _buildEquipmentContent(measureSheet.safetyEquipment)),
+          ]
+      ),
+    ];
+    return pw.Column(children: section);
+  }
+
+  pw.Widget _buildActiveLevelsSection(MeasureSheet measureSheet) {
+    var section = <pw.Widget>[
+      pw.Row(children: [
+        pw.Text('Active Levels',
+            style: pw.TextStyle(decoration: pw.TextDecoration.underline)),
+      ]),
+      pw.Row(
+          children: [
+            pw.Expanded(
+                child: _buildActiveLevelsContent(measureSheet.activeLevels))
+          ]
+      )
+    ];
     return pw.Column(
         children: section
     );
@@ -569,6 +546,112 @@ class PdfService {
       content += 'Cutout: ${productsMap['cutout']}';
     }
     return pw.Text(content, softWrap: true);
+  }
+
+  pw.Widget _buildEquipmentContent(SafetyEquipment safetyEquipment) {
+    String content = '';
+    var sEMap = safetyEquipment.toMap();
+    content = sEMap.entries
+        .where((entry) => entry.value)
+        .map((entry) =>
+    SafetyEquipment.safetyEquipmentFieldsToDisplayMap[entry.key] ?? entry.key)
+        .join(", ");
+
+    return pw.Text(content, softWrap: true);
+  }
+
+  pw.Widget _buildActiveLevelsContent(ActiveLevels activeLevels) {
+    String content = '';
+    var aLMap = activeLevels.toMap();
+    content = aLMap.entries
+        .where((entry) => entry.value)
+        .map((entry) =>
+    ActiveLevels.activeLevelsFieldsToDisplayMap[entry.key] ?? entry.key)
+        .join(", ");
+
+    return pw.Text(content, softWrap: true);
+  }
+
+  pw.Widget buildLaddersLiftsContent(LaddersLifts laddersLifts) {
+    String content = '';
+    var lLMap = laddersLifts.toMap();
+    content = lLMap.entries
+        .where((entry) => entry.value)
+        .map((entry) =>
+    LaddersLifts.laddersLiftsFieldsToDisplayMap[entry.key] ?? entry.key)
+        .join(", ");
+
+    return pw.Text(content, softWrap: true);
+  }
+
+  pw.Widget _buildToolsContent(Tools tools) {
+    String content = '';
+    var tMap = tools.toMap();
+    content = tMap.entries
+        .where((entry) => entry.value)
+        .map((entry) =>
+    Tools.toolsFieldsToDisplayMap[entry.key] ?? entry.key)
+        .join(", ");
+
+    return pw.Text(content, softWrap: true);
+  }
+
+  pw.Widget _buildMeasurementRecordsTable(
+      List<MeasurementRecord> measurementRecords) {
+    var table = pw.Table(
+        border: pw.TableBorder.all(
+            color: PdfColors.black, width: .5, style: pw.BorderStyle()),
+        children: [
+          pw.TableRow(
+              children: [
+                pw.Text('Opening #'),
+                pw.Text('Type'),
+                pw.Text('Level'),
+                pw.Text('Product'),
+                pw.Text('Span / Width'),
+                pw.Text('Non-Span / Height'),
+                pw.Text('Overall'),
+                pw.Text('L Stack'),
+                pw.Text('R Stack'),
+                pw.Text('BO Top'),
+                pw.Text('BO Side'),
+                pw.Text('BO Bottom'),
+                pw.Text('Note'),
+              ]
+          ),
+          ...buildTableRowsForMeasurementRecord(measurementRecords),
+        ]
+    );
+
+    return pw.Container(
+        child: table
+    );
+  }
+
+  List<pw.TableRow> buildTableRowsForMeasurementRecord(
+      List<MeasurementRecord> measurementRecords) {
+    return List.generate(measurementRecords.length, (index) {
+      var record = measurementRecords.elementAt(index);
+      var spanWidthCell = record.span ?? record.width;
+      var nSpanHeightCell = record.nSpan ?? record.height;
+      return pw.TableRow(
+          children: [
+            pw.Text('${record.openingNumber}'),
+            pw.Text('${record.openingType}'),
+            pw.Text('${record.level}'),
+            pw.Text('${record.product}'),
+            pw.Text('${spanWidthCell}'),
+            pw.Text('${nSpanHeightCell}'),
+            pw.Text(record.addOnMeasurement ? ' X ' : ''),
+            pw.Text('${record.stackLeft}'),
+            pw.Text('${record.stackRight}'),
+            pw.Text('${record.buildOutTop}'),
+            pw.Text('${record.buildOutSides}'),
+            pw.Text('${record.buildOutBot}'),
+            pw.Text('${record.noteReference}'),
+          ]
+      );
+    });
   }
 
 }

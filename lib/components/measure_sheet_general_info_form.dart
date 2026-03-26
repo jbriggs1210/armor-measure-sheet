@@ -203,11 +203,17 @@ class _MeasureSheetGeneralInfoFormState
     ), 'ratedColonialBoardAndBatten': FormControl<bool>(
       value: measureSheetState.productOptions.ratedColonialBoardAndBatten,
     ),
-      'composite': FormControl<bool>(
-        value: measureSheetState.productOptions.composite,
+      'compositeBAndB': FormControl<bool>(
+        value: measureSheetState.productOptions.compositeBandB,
       ),
-      'compositeSpecifics': FormControl<String>(
-        value: measureSheetState.productOptions.compositeSpecifics,
+      'compositeLouver': FormControl<bool>(
+        value: measureSheetState.productOptions.compositeLouver,
+      ),
+      'compositeRaisedPanel': FormControl<bool>(
+        value: measureSheetState.productOptions.compositeRaisedPanel,
+      ),
+      'compositeShaker': FormControl<bool>(
+        value: measureSheetState.productOptions.compositeShaker,
       ),
       'cutout': FormControl<String>(
         value: measureSheetState.productOptions.cutout,
@@ -1622,73 +1628,66 @@ class _MeasureSheetGeneralInfoFormState
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('Composite'),
+                        Text(ProductConstants.productCompositeBAndB),
                         ReactiveSwitch.adaptive(
-                          formControlName: 'composite',
+                          formControlName: 'compositeBAndB',
                           activeColor: Colors.red[900],
                           onChanged: (control) {
                             setState(() {
-                              measureSheetState.productOptions.composite =
+                              measureSheetState.productOptions.compositeBandB =
                                   control.value!;
                             });
                           },
                         ),
-                        ReactiveValueListenableBuilder(
-                          formControlName: 'composite',
-                          builder: (context, control, child) {
-                            if (control.value == true) {
-                              var compositeSpecifics =
-                                  ReactiveDropdownField<String>(
-                                    formControlName: 'compositeSpecifics',
-                                    items: [
-                                      DropdownMenuItem(
-                                        value: 'N/A',
-                                        child: Text('N/A'),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: 'Board & Batten',
-                                        child: Text('Board & Batten (BB)'),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: 'Louver',
-                                        child: Text('Louver (CL)'),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: 'Raised Panel',
-                                        child: Text('Raised Panel (CR)'),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: 'Shaker',
-                                        child: Text('Shaker (CS)'),
-                                      ),
-                                    ],
-                                    decoration: InputDecoration(
-                                      constraints: BoxConstraints.loose(
-                                        Size.fromWidth(250.0),
-                                      ),
-                                      labelText: '(Specify)',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                    onChanged: (control) {
-                                      setState(() {
-                                        measureSheetState
-                                                .productOptions
-                                                .compositeSpecifics =
-                                            control.value;
-                                      });
-                                    },
-                                  );
-
-                              compositeSpecifics.formControl
-                                  ?.markAllAsTouched();
-                              return compositeSpecifics;
-                            } else {
-                              return Container();
-                            }
-                          },
-                        ),
-                      ],
-                    ),
+                      ]),
+                    Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(ProductConstants.productCompositeLouver),
+                          ReactiveSwitch.adaptive(
+                            formControlName: 'compositeLouver',
+                            activeColor: Colors.red[900],
+                            onChanged: (control) {
+                              setState(() {
+                                measureSheetState.productOptions
+                                    .compositeLouver =
+                                control.value!;
+                              });
+                            },
+                          ),
+                        ]),
+                    Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(ProductConstants.productCompositeRaisedPanel),
+                          ReactiveSwitch.adaptive(
+                            formControlName: 'compositeRaisedPanel',
+                            activeColor: Colors.red[900],
+                            onChanged: (control) {
+                              setState(() {
+                                measureSheetState.productOptions
+                                    .compositeRaisedPanel =
+                                control.value!;
+                              });
+                            },
+                          ),
+                        ]),
+                    Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(ProductConstants.productCompositeShaker),
+                          ReactiveSwitch.adaptive(
+                            formControlName: 'compositeShaker',
+                            activeColor: Colors.red[900],
+                            onChanged: (control) {
+                              setState(() {
+                                measureSheetState.productOptions
+                                    .compositeShaker =
+                                control.value!;
+                              });
+                            },
+                          ),
+                        ]),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -1842,9 +1841,6 @@ class _ProductOptionsValidator extends Validator<dynamic> {
     var otherBrandSpecify =
         fg?.control('otherBrandSpecify') as FormControl<String?>;
     var paintCode = fg?.control('paintCode') as FormControl<String?>;
-    var composite = fg?.control('composite') as FormControl<bool>;
-    var compositeSpecifics =
-        fg?.control('compositeSpecifics') as FormControl<String>;
 
     if (paintBrand.value != null && paintBrand.value!.isNotEmpty) {
       if (paintBrand.value == 'Other') {
@@ -1869,22 +1865,6 @@ class _ProductOptionsValidator extends Validator<dynamic> {
         paintCode.removeError(ValidationMessage.required, markAsDirty: true);
       }
     }
-    if (composite.value == true) {
-      if (compositeSpecifics.value == null) {
-        compositeSpecifics.setErrors({ValidationMessage.required: true});
-      }
-      // return {
-      //   ValidationMessage.required: 'This error message doesn\'t matter.',
-      // };
-    }
-
-    if (compositeSpecifics.errors[ValidationMessage.required] == true) {
-      compositeSpecifics.removeError(
-        ValidationMessage.required,
-        markAsDirty: true,
-      );
-    }
-
     return null;
   }
 }

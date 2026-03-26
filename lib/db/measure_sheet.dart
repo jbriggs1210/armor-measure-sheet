@@ -1,5 +1,7 @@
 import 'package:isar/isar.dart';
 
+import '../components/measure_sheet_constants.dart';
+
 part 'measure_sheet.g.dart';
 
 @collection
@@ -178,8 +180,10 @@ class ProductOptions {
   bool ratedBahama4Inch = false;
   bool ratedColonialLouvered = false;
   bool ratedColonialBoardAndBatten = false;
-  bool composite = false;
-  String? compositeSpecifics;
+  bool compositeBandB = false;
+  bool compositeLouver = false;
+  bool compositeRaisedPanel = false;
+  bool compositeShaker = false;
   String? cutout;
   bool directMount = false;
   bool armorTrack = false;
@@ -188,7 +192,12 @@ class ProductOptions {
 
   // For opening info
   static bool requiresLeftRightStack(String productToCheck) {
-    return productToCheck == 'Accordions (Ac)';
+    return productToCheck == ProductConstants.productAccordions;
+  }
+
+  static bool requiresWidthHeight(String productToCheck) {
+    return ProductConstants.productsToCollectAddonMeasurements.contains(
+        productToCheck);
   }
 
   static Map<String, String> productsFieldNameToDisplayMap = {
@@ -210,7 +219,10 @@ class ProductOptions {
     'ratedBahama4Inch': 'Rate Bahama 4"',
     'ratedColonialLouvered': 'Rated Colonial Louvered',
     'ratedColonialBoardAndBatten': 'Rated Colonial B&B',
-    'composite': 'Composite',
+    'compositeBandB': 'Composite - Board and Batten',
+    'compositeLouver': 'Composite - Louver',
+    'compositeRaisedPanel': 'Composite - Raised Panel',
+    'compositeShaker': 'Composite - Shaker',
     'directMount': 'Direct Mount (DM)',
     'armorTrack': 'Armor Track (AT)',
     'hHeader': '"H" Header (H)',
@@ -221,76 +233,85 @@ class ProductOptions {
     List<String> products = [];
 
     if (osb) {
-      products.add('OSB (O)');
+      products.add(ProductConstants.productOsb);
     }
     if (galv) {
-      products.add('Galv (G)');
+      products.add(ProductConstants.productGalv);
     }
     if (alum) {
-      products.add('Alum (Al)');
+      products.add(ProductConstants.productAlum);
     }
     if (fabric) {
-      products.add('Fabric (F)');
+      products.add(ProductConstants.productFabric);
     }
     if (accordions) {
-      products.add('Accordions (Ac)');
+      products.add(ProductConstants.productAccordions);
     }
     if (rolldown) {
-      products.add('Rolldown (R)');
+      products.add(ProductConstants.productRolldown);
     }
     if (clearPanels) {
-      products.add('Clear Panels');
+      products.add(ProductConstants.productClearPanels);
     }
     if (screenUnder) {
-      products.add('Screen Under');
+      products.add(ProductConstants.productScreenUnder);
     }
     if (retractableScreen) {
-      products.add('Retractable Screen');
+      products.add(ProductConstants.productRetractableScreen);
     }
     if (poolEnclosure) {
-      products.add('Pool Enclosure');
+      products.add(ProductConstants.productPoolEnclosure);
     }
     if (paintedCaps) {
-      products.add('Painted Caps');
+      products.add(ProductConstants.productPaintedCaps);
     }
     if (bahArticulating) {
-      products.add('Bah Articulating (BA)');
+      products.add(ProductConstants.productBahArticulating);
     }
     if (decoBahama) {
-      products.add('Deco Bahama');
+      products.add(ProductConstants.productDecoBahama);
     }
     if (decoColonial) {
-      products.add('Deco Colonial');
+      products.add(ProductConstants.productDecoColonial);
     }
     if (ratedBahama2Inch) {
-      products.add('Rated Bahama 2"');
+      products.add(ProductConstants.productRatedBahama2Inch);
     }
     if (ratedBahama4Inch) {
-      products.add('Rated Bahama 4"');
+      products.add(ProductConstants.productRatedBahama4Inch);
     }
     if (ratedColonialLouvered) {
-      products.add('Rated Colonial Louvered');
+      products.add(ProductConstants.productRatedColonialLouvered);
     }
     if (ratedColonialBoardAndBatten) {
-      products.add('Rated Colonial B&B');
+      products.add(ProductConstants.productRatedColonialBandB);
     }
-    if (composite) {
-      products.add('Composite - $compositeSpecifics');
+    if (compositeBandB) {
+      products.add(ProductConstants.productCompositeBAndB);
+    }
+    if (compositeLouver) {
+      products.add(ProductConstants.productCompositeLouver);
+    }
+    if (compositeRaisedPanel) {
+      products.add(ProductConstants.productCompositeRaisedPanel);
+    }
+    if (compositeShaker) {
+      products.add(ProductConstants.productCompositeShaker);
     }
     if (cutout != null) {
       products.add(cutout!);
     }
     if (directMount) {
-      products.add('Direct Mount (DM)');
+      products.add(ProductConstants.productDirectMount);
     }
     if (armorTrack) {
-      products.add('Armor Track (AT)');
+      products.add(ProductConstants.productArmorTrack);
     }
     if (hHeader) {
-      products.add('"H" Header (H)');
+      products.add(ProductConstants.productHHeader);
     }
     if (flatTrack) {
-      products.add('Flat Track (FT)');
+      products.add(ProductConstants.productFlatTrack);
     }
     return products;
   }
@@ -318,8 +339,10 @@ class ProductOptions {
       'ratedBahama4Inch': ratedBahama4Inch,
       'ratedColonialLouvered': ratedColonialLouvered,
       'ratedColonialBoardAndBatten': ratedColonialBoardAndBatten,
-      'composite': composite,
-      'compositeSpecifics': compositeSpecifics,
+      'compositeBAndB': compositeBandB,
+      'compositeLouver': compositeLouver,
+      'compositeRaisedPanel': compositeRaisedPanel,
+      'compositeShaker': compositeShaker,
       'cutout': cutout,
       'directMount': directMount,
       'armorTrack': armorTrack,
@@ -331,7 +354,6 @@ class ProductOptions {
 
 @embedded
 class ActiveLevels {
-  bool lowerLevel = false;
   bool first = false;
   bool second = false;
   bool third = false;
@@ -340,9 +362,6 @@ class ActiveLevels {
   List<String> levelsForMeasure() {
     List<String> levels = [];
 
-    if (lowerLevel) {
-      levels.add('LL');
-    }
     if (first) {
       levels.add('First');
     }
@@ -352,11 +371,28 @@ class ActiveLevels {
     if (third) {
       levels.add('Third');
     }
-    if (raised) {
-      levels.add('Raised');
-    }
+    // if (raised) {
+    //   levels.add('Raised');
+    // }
 
     return levels;
+  }
+
+  static Map<String, String> activeLevelsFieldsToDisplayMap = {
+    'lowerLevel': 'Lower Level',
+    'first': 'First',
+    'second': 'Second',
+    'third': 'Third',
+    'raised': 'Raised'
+  };
+
+  Map<String, dynamic> toMap() {
+    return {
+      'first': first,
+      'second': second,
+      'third': third,
+      'raised': raised,
+    };
   }
 }
 
@@ -375,6 +411,40 @@ class LaddersLifts {
   bool scaffolding = false;
   bool boomLift = false;
   bool ladderLift = false;
+
+  static Map<String, String> laddersLiftsFieldsToDisplayMap = {
+    'sixFt': '6 Foot',
+    'eightFt': '8 Foot',
+    'tenFt': '10 Foot',
+    'twelveFt': '12 Foot',
+    'twentyFourFtExten': '24 Foot Extension',
+    'thirtyTwoFtExten': '32 Foot Extension',
+    'fourtyFiveFtExten': '45 Foot Extension',
+    'littleGiant': 'Little Giant',
+    'standOff': 'Stand Off',
+    'walkingBoard': 'Walking Board',
+    'scaffolding': 'Scaffolding',
+    'boomLift': 'Boom Lift',
+    'ladderLift': 'Ladder lift',
+  };
+
+  Map<String, dynamic> toMap() {
+    return {
+      'sixFt': sixFt,
+      'eightFt': eightFt,
+      'tenFt': tenFt,
+      'twelveFt': twelveFt,
+      'twentyFourFtExten': twentyFourFtExten,
+      'thirtyTwoFtExten': thirtyTwoFtExten,
+      'fourtyFiveFtExten': fourtyFiveFtExten,
+      'littleGiant': littleGiant,
+      'standOff': standOff,
+      'walkingBoard': walkingBoard,
+      'scaffolding': scaffolding,
+      'boomLift': boomLift,
+      'ladderLift': ladderLift,
+    };
+  }
 }
 
 @embedded
@@ -383,6 +453,22 @@ class Tools {
   bool sawzall = false;
   bool circularSaw = false;
   bool combinationSaw = false;
+
+  static Map<String, String> toolsFieldsToDisplayMap = {
+    'sdsSaw': 'SDS Saw',
+    'sawzall': 'Sawzall',
+    'circularSaw': 'Circular Saw',
+    'combinationSaw': 'Combination Saw',
+  };
+
+  Map<String, dynamic> toMap() {
+    return {
+      'sdsSaw': sdsSaw,
+      'sawzall': sawzall,
+      'circularSaw': circularSaw,
+      'combinationSaw': combinationSaw,
+    };
+  }
 }
 
 @embedded
@@ -393,13 +479,33 @@ class SafetyEquipment {
   bool safetyGlasses = false;
   bool pants = false;
   bool safetyVest = false;
+
+  static Map<String, String> safetyEquipmentFieldsToDisplayMap = {
+    'fallProtection': 'Fall Protection',
+    'hardHat': 'Hard Hat',
+    'gloves': 'Gloves',
+    'safetyGlasses': 'Safety Glasses',
+    'pants': 'Pants',
+    'safetyVest': 'Safety Vest',
+  };
+
+  Map<String, dynamic> toMap() {
+    return {
+      'fallProtection': fallProtection,
+      'hardHat': hardHat,
+      'gloves': gloves,
+      'safetyGlasses': safetyGlasses,
+      'pants': pants,
+      'safetyVest': safetyVest,
+    };
+  }
 }
 
 @embedded
 class MeasurementInfo {
   List<String> notes = [];
-  bool addOnMeasurements = false;
   List<MeasurementRecord> measurementRecords = [];
+  bool addonMeasurementsOverride = false;
 }
 
 @embedded
@@ -411,12 +517,15 @@ class MeasurementRecord {
   String? spanDirection;
   String? span;
   String? nSpan;
+  String? width;
+  String? height;
   String? buildOutTop;
   String? buildOutSides;
   String? buildOutBot;
   String? stackLeft;
   String? stackRight;
   String? noteReference;
+  bool addOnMeasurement = false;
 
   MeasurementRecord();
 
@@ -427,8 +536,11 @@ class MeasurementRecord {
     product = '';
     span = '';
     nSpan = '';
+    width = '';
+    height = '';
     buildOutTop = '';
     buildOutSides = '';
+    buildOutBot = '';
     stackLeft = '';
     stackRight = '';
     noteReference = '';
@@ -443,6 +555,8 @@ class MeasurementRecord {
       'spanDirection': spanDirection,
       'span': span,
       'nSpan': nSpan,
+      'width': width,
+      'height': height,
       'buildOutTop': buildOutTop,
       'buildOutSides': buildOutSides,
       'buildOutBot': buildOutBot,
@@ -451,4 +565,5 @@ class MeasurementRecord {
       'noteReference': noteReference,
     };
   }
+
 }

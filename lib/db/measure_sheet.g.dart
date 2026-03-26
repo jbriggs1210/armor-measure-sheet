@@ -5877,118 +5877,128 @@ const ProductOptionsSchema = Schema(
       name: r'clearPanels',
       type: IsarType.bool,
     ),
-    r'composite': PropertySchema(
+    r'compositeBandB': PropertySchema(
       id: 5,
-      name: r'composite',
+      name: r'compositeBandB',
       type: IsarType.bool,
     ),
-    r'compositeSpecifics': PropertySchema(
+    r'compositeLouver': PropertySchema(
       id: 6,
-      name: r'compositeSpecifics',
-      type: IsarType.string,
+      name: r'compositeLouver',
+      type: IsarType.bool,
+    ),
+    r'compositeRaisedPanel': PropertySchema(
+      id: 7,
+      name: r'compositeRaisedPanel',
+      type: IsarType.bool,
+    ),
+    r'compositeShaker': PropertySchema(
+      id: 8,
+      name: r'compositeShaker',
+      type: IsarType.bool,
     ),
     r'cutout': PropertySchema(
-      id: 7,
+      id: 9,
       name: r'cutout',
       type: IsarType.string,
     ),
     r'decoBahama': PropertySchema(
-      id: 8,
+      id: 10,
       name: r'decoBahama',
       type: IsarType.bool,
     ),
     r'decoColonial': PropertySchema(
-      id: 9,
+      id: 11,
       name: r'decoColonial',
       type: IsarType.bool,
     ),
     r'directMount': PropertySchema(
-      id: 10,
+      id: 12,
       name: r'directMount',
       type: IsarType.bool,
     ),
     r'fabric': PropertySchema(
-      id: 11,
+      id: 13,
       name: r'fabric',
       type: IsarType.bool,
     ),
     r'flatTrack': PropertySchema(
-      id: 12,
+      id: 14,
       name: r'flatTrack',
       type: IsarType.bool,
     ),
     r'galv': PropertySchema(
-      id: 13,
+      id: 15,
       name: r'galv',
       type: IsarType.bool,
     ),
     r'hHeader': PropertySchema(
-      id: 14,
+      id: 16,
       name: r'hHeader',
       type: IsarType.bool,
     ),
     r'osb': PropertySchema(
-      id: 15,
+      id: 17,
       name: r'osb',
       type: IsarType.bool,
     ),
     r'otherBrandSpecify': PropertySchema(
-      id: 16,
+      id: 18,
       name: r'otherBrandSpecify',
       type: IsarType.string,
     ),
     r'paintBrand': PropertySchema(
-      id: 17,
+      id: 19,
       name: r'paintBrand',
       type: IsarType.string,
     ),
     r'paintCode': PropertySchema(
-      id: 18,
+      id: 20,
       name: r'paintCode',
       type: IsarType.string,
     ),
     r'paintedCaps': PropertySchema(
-      id: 19,
+      id: 21,
       name: r'paintedCaps',
       type: IsarType.bool,
     ),
     r'poolEnclosure': PropertySchema(
-      id: 20,
+      id: 22,
       name: r'poolEnclosure',
       type: IsarType.bool,
     ),
     r'ratedBahama2Inch': PropertySchema(
-      id: 21,
+      id: 23,
       name: r'ratedBahama2Inch',
       type: IsarType.bool,
     ),
     r'ratedBahama4Inch': PropertySchema(
-      id: 22,
+      id: 24,
       name: r'ratedBahama4Inch',
       type: IsarType.bool,
     ),
     r'ratedColonialBoardAndBatten': PropertySchema(
-      id: 23,
+      id: 25,
       name: r'ratedColonialBoardAndBatten',
       type: IsarType.bool,
     ),
     r'ratedColonialLouvered': PropertySchema(
-      id: 24,
+      id: 26,
       name: r'ratedColonialLouvered',
       type: IsarType.bool,
     ),
     r'retractableScreen': PropertySchema(
-      id: 25,
+      id: 27,
       name: r'retractableScreen',
       type: IsarType.bool,
     ),
     r'rolldown': PropertySchema(
-      id: 26,
+      id: 28,
       name: r'rolldown',
       type: IsarType.bool,
     ),
     r'screenUnder': PropertySchema(
-      id: 27,
+      id: 29,
       name: r'screenUnder',
       type: IsarType.bool,
     )
@@ -6005,12 +6015,6 @@ int _productOptionsEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  {
-    final value = object.compositeSpecifics;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
   {
     final value = object.cutout;
     if (value != null) {
@@ -6049,29 +6053,31 @@ void _productOptionsSerialize(
   writer.writeBool(offsets[2], object.armorTrack);
   writer.writeBool(offsets[3], object.bahArticulating);
   writer.writeBool(offsets[4], object.clearPanels);
-  writer.writeBool(offsets[5], object.composite);
-  writer.writeString(offsets[6], object.compositeSpecifics);
-  writer.writeString(offsets[7], object.cutout);
-  writer.writeBool(offsets[8], object.decoBahama);
-  writer.writeBool(offsets[9], object.decoColonial);
-  writer.writeBool(offsets[10], object.directMount);
-  writer.writeBool(offsets[11], object.fabric);
-  writer.writeBool(offsets[12], object.flatTrack);
-  writer.writeBool(offsets[13], object.galv);
-  writer.writeBool(offsets[14], object.hHeader);
-  writer.writeBool(offsets[15], object.osb);
-  writer.writeString(offsets[16], object.otherBrandSpecify);
-  writer.writeString(offsets[17], object.paintBrand);
-  writer.writeString(offsets[18], object.paintCode);
-  writer.writeBool(offsets[19], object.paintedCaps);
-  writer.writeBool(offsets[20], object.poolEnclosure);
-  writer.writeBool(offsets[21], object.ratedBahama2Inch);
-  writer.writeBool(offsets[22], object.ratedBahama4Inch);
-  writer.writeBool(offsets[23], object.ratedColonialBoardAndBatten);
-  writer.writeBool(offsets[24], object.ratedColonialLouvered);
-  writer.writeBool(offsets[25], object.retractableScreen);
-  writer.writeBool(offsets[26], object.rolldown);
-  writer.writeBool(offsets[27], object.screenUnder);
+  writer.writeBool(offsets[5], object.compositeBandB);
+  writer.writeBool(offsets[6], object.compositeLouver);
+  writer.writeBool(offsets[7], object.compositeRaisedPanel);
+  writer.writeBool(offsets[8], object.compositeShaker);
+  writer.writeString(offsets[9], object.cutout);
+  writer.writeBool(offsets[10], object.decoBahama);
+  writer.writeBool(offsets[11], object.decoColonial);
+  writer.writeBool(offsets[12], object.directMount);
+  writer.writeBool(offsets[13], object.fabric);
+  writer.writeBool(offsets[14], object.flatTrack);
+  writer.writeBool(offsets[15], object.galv);
+  writer.writeBool(offsets[16], object.hHeader);
+  writer.writeBool(offsets[17], object.osb);
+  writer.writeString(offsets[18], object.otherBrandSpecify);
+  writer.writeString(offsets[19], object.paintBrand);
+  writer.writeString(offsets[20], object.paintCode);
+  writer.writeBool(offsets[21], object.paintedCaps);
+  writer.writeBool(offsets[22], object.poolEnclosure);
+  writer.writeBool(offsets[23], object.ratedBahama2Inch);
+  writer.writeBool(offsets[24], object.ratedBahama4Inch);
+  writer.writeBool(offsets[25], object.ratedColonialBoardAndBatten);
+  writer.writeBool(offsets[26], object.ratedColonialLouvered);
+  writer.writeBool(offsets[27], object.retractableScreen);
+  writer.writeBool(offsets[28], object.rolldown);
+  writer.writeBool(offsets[29], object.screenUnder);
 }
 
 ProductOptions _productOptionsDeserialize(
@@ -6086,29 +6092,31 @@ ProductOptions _productOptionsDeserialize(
   object.armorTrack = reader.readBool(offsets[2]);
   object.bahArticulating = reader.readBool(offsets[3]);
   object.clearPanels = reader.readBool(offsets[4]);
-  object.composite = reader.readBool(offsets[5]);
-  object.compositeSpecifics = reader.readStringOrNull(offsets[6]);
-  object.cutout = reader.readStringOrNull(offsets[7]);
-  object.decoBahama = reader.readBool(offsets[8]);
-  object.decoColonial = reader.readBool(offsets[9]);
-  object.directMount = reader.readBool(offsets[10]);
-  object.fabric = reader.readBool(offsets[11]);
-  object.flatTrack = reader.readBool(offsets[12]);
-  object.galv = reader.readBool(offsets[13]);
-  object.hHeader = reader.readBool(offsets[14]);
-  object.osb = reader.readBool(offsets[15]);
-  object.otherBrandSpecify = reader.readStringOrNull(offsets[16]);
-  object.paintBrand = reader.readStringOrNull(offsets[17]);
-  object.paintCode = reader.readStringOrNull(offsets[18]);
-  object.paintedCaps = reader.readBool(offsets[19]);
-  object.poolEnclosure = reader.readBool(offsets[20]);
-  object.ratedBahama2Inch = reader.readBool(offsets[21]);
-  object.ratedBahama4Inch = reader.readBool(offsets[22]);
-  object.ratedColonialBoardAndBatten = reader.readBool(offsets[23]);
-  object.ratedColonialLouvered = reader.readBool(offsets[24]);
-  object.retractableScreen = reader.readBool(offsets[25]);
-  object.rolldown = reader.readBool(offsets[26]);
-  object.screenUnder = reader.readBool(offsets[27]);
+  object.compositeBandB = reader.readBool(offsets[5]);
+  object.compositeLouver = reader.readBool(offsets[6]);
+  object.compositeRaisedPanel = reader.readBool(offsets[7]);
+  object.compositeShaker = reader.readBool(offsets[8]);
+  object.cutout = reader.readStringOrNull(offsets[9]);
+  object.decoBahama = reader.readBool(offsets[10]);
+  object.decoColonial = reader.readBool(offsets[11]);
+  object.directMount = reader.readBool(offsets[12]);
+  object.fabric = reader.readBool(offsets[13]);
+  object.flatTrack = reader.readBool(offsets[14]);
+  object.galv = reader.readBool(offsets[15]);
+  object.hHeader = reader.readBool(offsets[16]);
+  object.osb = reader.readBool(offsets[17]);
+  object.otherBrandSpecify = reader.readStringOrNull(offsets[18]);
+  object.paintBrand = reader.readStringOrNull(offsets[19]);
+  object.paintCode = reader.readStringOrNull(offsets[20]);
+  object.paintedCaps = reader.readBool(offsets[21]);
+  object.poolEnclosure = reader.readBool(offsets[22]);
+  object.ratedBahama2Inch = reader.readBool(offsets[23]);
+  object.ratedBahama4Inch = reader.readBool(offsets[24]);
+  object.ratedColonialBoardAndBatten = reader.readBool(offsets[25]);
+  object.ratedColonialLouvered = reader.readBool(offsets[26]);
+  object.retractableScreen = reader.readBool(offsets[27]);
+  object.rolldown = reader.readBool(offsets[28]);
+  object.screenUnder = reader.readBool(offsets[29]);
   return object;
 }
 
@@ -6132,13 +6140,13 @@ P _productOptionsDeserializeProp<P>(
     case 5:
       return (reader.readBool(offset)) as P;
     case 6:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 7:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 8:
       return (reader.readBool(offset)) as P;
     case 9:
-      return (reader.readBool(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 10:
       return (reader.readBool(offset)) as P;
     case 11:
@@ -6152,15 +6160,15 @@ P _productOptionsDeserializeProp<P>(
     case 15:
       return (reader.readBool(offset)) as P;
     case 16:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 17:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 18:
       return (reader.readStringOrNull(offset)) as P;
     case 19:
-      return (reader.readBool(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 20:
-      return (reader.readBool(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 21:
       return (reader.readBool(offset)) as P;
     case 22:
@@ -6174,6 +6182,10 @@ P _productOptionsDeserializeProp<P>(
     case 26:
       return (reader.readBool(offset)) as P;
     case 27:
+      return (reader.readBool(offset)) as P;
+    case 28:
+      return (reader.readBool(offset)) as P;
+    case 29:
       return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -6233,165 +6245,41 @@ extension ProductOptionsQueryFilter
   }
 
   QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
-      compositeEqualTo(bool value) {
+      compositeBandBEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'composite',
+        property: r'compositeBandB',
         value: value,
       ));
     });
   }
 
   QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
-      compositeSpecificsIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'compositeSpecifics',
-      ));
-    });
-  }
-
-  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
-      compositeSpecificsIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'compositeSpecifics',
-      ));
-    });
-  }
-
-  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
-      compositeSpecificsEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+      compositeLouverEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'compositeSpecifics',
+        property: r'compositeLouver',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
-      compositeSpecificsGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'compositeSpecifics',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
-      compositeSpecificsLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'compositeSpecifics',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
-      compositeSpecificsBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'compositeSpecifics',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
-      compositeSpecificsStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'compositeSpecifics',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
-      compositeSpecificsEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'compositeSpecifics',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
-      compositeSpecificsContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'compositeSpecifics',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
-      compositeSpecificsMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'compositeSpecifics',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
-      compositeSpecificsIsEmpty() {
+      compositeRaisedPanelEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'compositeSpecifics',
-        value: '',
+        property: r'compositeRaisedPanel',
+        value: value,
       ));
     });
   }
 
   QueryBuilder<ProductOptions, ProductOptions, QAfterFilterCondition>
-      compositeSpecificsIsNotEmpty() {
+      compositeShakerEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'compositeSpecifics',
-        value: '',
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'compositeShaker',
+        value: value,
       ));
     });
   }
@@ -7198,23 +7086,18 @@ const ActiveLevelsSchema = Schema(
       name: r'first',
       type: IsarType.bool,
     ),
-    r'lowerLevel': PropertySchema(
-      id: 1,
-      name: r'lowerLevel',
-      type: IsarType.bool,
-    ),
     r'raised': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'raised',
       type: IsarType.bool,
     ),
     r'second': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'second',
       type: IsarType.bool,
     ),
     r'third': PropertySchema(
-      id: 4,
+      id: 3,
       name: r'third',
       type: IsarType.bool,
     )
@@ -7241,10 +7124,9 @@ void _activeLevelsSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeBool(offsets[0], object.first);
-  writer.writeBool(offsets[1], object.lowerLevel);
-  writer.writeBool(offsets[2], object.raised);
-  writer.writeBool(offsets[3], object.second);
-  writer.writeBool(offsets[4], object.third);
+  writer.writeBool(offsets[1], object.raised);
+  writer.writeBool(offsets[2], object.second);
+  writer.writeBool(offsets[3], object.third);
 }
 
 ActiveLevels _activeLevelsDeserialize(
@@ -7255,10 +7137,9 @@ ActiveLevels _activeLevelsDeserialize(
 ) {
   final object = ActiveLevels();
   object.first = reader.readBool(offsets[0]);
-  object.lowerLevel = reader.readBool(offsets[1]);
-  object.raised = reader.readBool(offsets[2]);
-  object.second = reader.readBool(offsets[3]);
-  object.third = reader.readBool(offsets[4]);
+  object.raised = reader.readBool(offsets[1]);
+  object.second = reader.readBool(offsets[2]);
+  object.third = reader.readBool(offsets[3]);
   return object;
 }
 
@@ -7277,8 +7158,6 @@ P _activeLevelsDeserializeProp<P>(
       return (reader.readBool(offset)) as P;
     case 3:
       return (reader.readBool(offset)) as P;
-    case 4:
-      return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -7291,16 +7170,6 @@ extension ActiveLevelsQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'first',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<ActiveLevels, ActiveLevels, QAfterFilterCondition>
-      lowerLevelEqualTo(bool value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'lowerLevel',
         value: value,
       ));
     });
@@ -7957,9 +7826,9 @@ const MeasurementInfoSchema = Schema(
   name: r'MeasurementInfo',
   id: -222654696263155363,
   properties: {
-    r'addOnMeasurements': PropertySchema(
+    r'addonMeasurementsOverride': PropertySchema(
       id: 0,
-      name: r'addOnMeasurements',
+      name: r'addonMeasurementsOverride',
       type: IsarType.bool,
     ),
     r'measurementRecords': PropertySchema(
@@ -8011,7 +7880,7 @@ void _measurementInfoSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeBool(offsets[0], object.addOnMeasurements);
+  writer.writeBool(offsets[0], object.addonMeasurementsOverride);
   writer.writeObjectList<MeasurementRecord>(
     offsets[1],
     allOffsets,
@@ -8028,7 +7897,7 @@ MeasurementInfo _measurementInfoDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = MeasurementInfo();
-  object.addOnMeasurements = reader.readBool(offsets[0]);
+  object.addonMeasurementsOverride = reader.readBool(offsets[0]);
   object.measurementRecords = reader.readObjectList<MeasurementRecord>(
         offsets[1],
         MeasurementRecordSchema.deserialize,
@@ -8067,10 +7936,10 @@ P _measurementInfoDeserializeProp<P>(
 extension MeasurementInfoQueryFilter
     on QueryBuilder<MeasurementInfo, MeasurementInfo, QFilterCondition> {
   QueryBuilder<MeasurementInfo, MeasurementInfo, QAfterFilterCondition>
-      addOnMeasurementsEqualTo(bool value) {
+      addonMeasurementsOverrideEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'addOnMeasurements',
+        property: r'addonMeasurementsOverride',
         value: value,
       ));
     });
@@ -8408,69 +8277,84 @@ const MeasurementRecordSchema = Schema(
   name: r'MeasurementRecord',
   id: -4550302318673754836,
   properties: {
-    r'buildOutBot': PropertySchema(
+    r'addOnMeasurement': PropertySchema(
       id: 0,
+      name: r'addOnMeasurement',
+      type: IsarType.bool,
+    ),
+    r'buildOutBot': PropertySchema(
+      id: 1,
       name: r'buildOutBot',
       type: IsarType.string,
     ),
     r'buildOutSides': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'buildOutSides',
       type: IsarType.string,
     ),
     r'buildOutTop': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'buildOutTop',
       type: IsarType.string,
     ),
+    r'height': PropertySchema(
+      id: 4,
+      name: r'height',
+      type: IsarType.string,
+    ),
     r'level': PropertySchema(
-      id: 3,
+      id: 5,
       name: r'level',
       type: IsarType.string,
     ),
     r'nSpan': PropertySchema(
-      id: 4,
+      id: 6,
       name: r'nSpan',
       type: IsarType.string,
     ),
     r'noteReference': PropertySchema(
-      id: 5,
+      id: 7,
       name: r'noteReference',
       type: IsarType.string,
     ),
     r'openingNumber': PropertySchema(
-      id: 6,
+      id: 8,
       name: r'openingNumber',
       type: IsarType.long,
     ),
     r'openingType': PropertySchema(
-      id: 7,
+      id: 9,
       name: r'openingType',
       type: IsarType.string,
     ),
     r'product': PropertySchema(
-      id: 8,
+      id: 10,
       name: r'product',
       type: IsarType.string,
     ),
     r'span': PropertySchema(
-      id: 9,
+      id: 11,
       name: r'span',
       type: IsarType.string,
     ),
     r'spanDirection': PropertySchema(
-      id: 10,
+      id: 12,
       name: r'spanDirection',
       type: IsarType.string,
     ),
     r'stackLeft': PropertySchema(
-      id: 11,
+      id: 13,
       name: r'stackLeft',
       type: IsarType.string,
     ),
     r'stackRight': PropertySchema(
-      id: 12,
+      id: 14,
       name: r'stackRight',
+      type: IsarType.string,
+    ),
+    r'width': PropertySchema(
+      id: 15,
+      name: r'width',
       type: IsarType.string,
     )
   },
@@ -8500,6 +8384,12 @@ int _measurementRecordEstimateSize(
   }
   {
     final value = object.buildOutTop;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.height;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -8558,6 +8448,12 @@ int _measurementRecordEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.width;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -8567,19 +8463,22 @@ void _measurementRecordSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.buildOutBot);
-  writer.writeString(offsets[1], object.buildOutSides);
-  writer.writeString(offsets[2], object.buildOutTop);
-  writer.writeString(offsets[3], object.level);
-  writer.writeString(offsets[4], object.nSpan);
-  writer.writeString(offsets[5], object.noteReference);
-  writer.writeLong(offsets[6], object.openingNumber);
-  writer.writeString(offsets[7], object.openingType);
-  writer.writeString(offsets[8], object.product);
-  writer.writeString(offsets[9], object.span);
-  writer.writeString(offsets[10], object.spanDirection);
-  writer.writeString(offsets[11], object.stackLeft);
-  writer.writeString(offsets[12], object.stackRight);
+  writer.writeBool(offsets[0], object.addOnMeasurement);
+  writer.writeString(offsets[1], object.buildOutBot);
+  writer.writeString(offsets[2], object.buildOutSides);
+  writer.writeString(offsets[3], object.buildOutTop);
+  writer.writeString(offsets[4], object.height);
+  writer.writeString(offsets[5], object.level);
+  writer.writeString(offsets[6], object.nSpan);
+  writer.writeString(offsets[7], object.noteReference);
+  writer.writeLong(offsets[8], object.openingNumber);
+  writer.writeString(offsets[9], object.openingType);
+  writer.writeString(offsets[10], object.product);
+  writer.writeString(offsets[11], object.span);
+  writer.writeString(offsets[12], object.spanDirection);
+  writer.writeString(offsets[13], object.stackLeft);
+  writer.writeString(offsets[14], object.stackRight);
+  writer.writeString(offsets[15], object.width);
 }
 
 MeasurementRecord _measurementRecordDeserialize(
@@ -8589,19 +8488,22 @@ MeasurementRecord _measurementRecordDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = MeasurementRecord();
-  object.buildOutBot = reader.readStringOrNull(offsets[0]);
-  object.buildOutSides = reader.readStringOrNull(offsets[1]);
-  object.buildOutTop = reader.readStringOrNull(offsets[2]);
-  object.level = reader.readStringOrNull(offsets[3]);
-  object.nSpan = reader.readStringOrNull(offsets[4]);
-  object.noteReference = reader.readStringOrNull(offsets[5]);
-  object.openingNumber = reader.readLongOrNull(offsets[6]);
-  object.openingType = reader.readStringOrNull(offsets[7]);
-  object.product = reader.readStringOrNull(offsets[8]);
-  object.span = reader.readStringOrNull(offsets[9]);
-  object.spanDirection = reader.readStringOrNull(offsets[10]);
-  object.stackLeft = reader.readStringOrNull(offsets[11]);
-  object.stackRight = reader.readStringOrNull(offsets[12]);
+  object.addOnMeasurement = reader.readBool(offsets[0]);
+  object.buildOutBot = reader.readStringOrNull(offsets[1]);
+  object.buildOutSides = reader.readStringOrNull(offsets[2]);
+  object.buildOutTop = reader.readStringOrNull(offsets[3]);
+  object.height = reader.readStringOrNull(offsets[4]);
+  object.level = reader.readStringOrNull(offsets[5]);
+  object.nSpan = reader.readStringOrNull(offsets[6]);
+  object.noteReference = reader.readStringOrNull(offsets[7]);
+  object.openingNumber = reader.readLongOrNull(offsets[8]);
+  object.openingType = reader.readStringOrNull(offsets[9]);
+  object.product = reader.readStringOrNull(offsets[10]);
+  object.span = reader.readStringOrNull(offsets[11]);
+  object.spanDirection = reader.readStringOrNull(offsets[12]);
+  object.stackLeft = reader.readStringOrNull(offsets[13]);
+  object.stackRight = reader.readStringOrNull(offsets[14]);
+  object.width = reader.readStringOrNull(offsets[15]);
   return object;
 }
 
@@ -8613,7 +8515,7 @@ P _measurementRecordDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
@@ -8625,11 +8527,11 @@ P _measurementRecordDeserializeProp<P>(
     case 5:
       return (reader.readStringOrNull(offset)) as P;
     case 6:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 9:
       return (reader.readStringOrNull(offset)) as P;
     case 10:
@@ -8638,6 +8540,12 @@ P _measurementRecordDeserializeProp<P>(
       return (reader.readStringOrNull(offset)) as P;
     case 12:
       return (reader.readStringOrNull(offset)) as P;
+    case 13:
+      return (reader.readStringOrNull(offset)) as P;
+    case 14:
+      return (reader.readStringOrNull(offset)) as P;
+    case 15:
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -8645,6 +8553,16 @@ P _measurementRecordDeserializeProp<P>(
 
 extension MeasurementRecordQueryFilter
     on QueryBuilder<MeasurementRecord, MeasurementRecord, QFilterCondition> {
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      addOnMeasurementEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'addOnMeasurement',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
       buildOutBotIsNull() {
     return QueryBuilder.apply(this, (query) {
@@ -9102,6 +9020,160 @@ extension MeasurementRecordQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'buildOutTop',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      heightIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'height',
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      heightIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'height',
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      heightEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'height',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      heightGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'height',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      heightLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'height',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      heightBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'height',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      heightStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'height',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      heightEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'height',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      heightContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'height',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      heightMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'height',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      heightIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'height',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      heightIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'height',
         value: '',
       ));
     });
@@ -10562,6 +10634,160 @@ extension MeasurementRecordQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'stackRight',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      widthIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'width',
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      widthIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'width',
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      widthEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'width',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      widthGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'width',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      widthLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'width',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      widthBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'width',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      widthStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'width',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      widthEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'width',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      widthContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'width',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      widthMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'width',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      widthIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'width',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<MeasurementRecord, MeasurementRecord, QAfterFilterCondition>
+      widthIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'width',
         value: '',
       ));
     });

@@ -19,12 +19,28 @@ class ProductConstants {
   static const String productRatedBahama2Inch = 'Rate Bahama 2"';
   static const String productRatedBahama4Inch = 'Rate Bahama 4"';
   static const String productRatedColonialLouvered = 'Rated Colonial Louvered';
-  static const String productRatedColonialBandB = 'Rated Colonial B&B';
-  static const String productComposite = 'Composite';
+  static const String productRatedColonialBandB =
+      'Rated Colonial Board and Batten';
+  static const String productCompositeBAndB = 'Composite - Board and Batten';
+  static const String productCompositeLouver = 'Composite - Louver';
+  static const String productCompositeRaisedPanel = 'Composite - Raised Panel';
+  static const String productCompositeShaker = 'Composite - Shaker';
   static const String productDirectMount = 'Direct Mount (DM)';
   static const String productArmorTrack = 'Armor Track (AT)';
   static const String productHHeader = '"H" Header (H)';
   static const String productFlatTrack = 'Flat Track (FT)';
+
+  static const List<String> productsToCollectAddonMeasurements = [
+    productAccordions,
+    productRolldown,
+    productCompositeBAndB,
+    productCompositeLouver,
+    productCompositeRaisedPanel,
+    productCompositeShaker,
+    productDecoColonial,
+    productRatedColonialLouvered,
+    productRatedColonialBandB,
+  ];
 }
 
 class FormConstants {
