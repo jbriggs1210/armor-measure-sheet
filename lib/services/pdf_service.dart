@@ -123,8 +123,6 @@ class PdfService {
         <pw.Widget>[
           _buildMeasurementRecordsTable(
               measureSheetFromDb.measurementInfo.measurementRecords),
-          //todo: how to show notes ? do we show notes separate from records?
-          // _buildReferenceNotes(measureSheetFromDb.measurementInfo.notes);
         ]
     );
 

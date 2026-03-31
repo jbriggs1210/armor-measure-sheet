@@ -181,8 +181,6 @@ class _MeasurementRecordExpansionTileState
         icon: Icon(Icons.delete_sharp, color: Colors.red[900]),
       ),
       children: [
-        // todo: only show if span / nspan are collected
-        // if (doShowSpans)
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -481,14 +479,6 @@ class _MeasurementRecordExpansionTileState
             ],
           ),
         ),
-        // todo: if Rolldown or Accordions or Composites or Colonials is product for an opening span / Nspan are not collected
-        // Composite could be
-        // Collect width x height
-        // 1. if it's in the list of products above we collect Width and Height instead of Span and NSpan
-        // todo: 2. if it's in the list of products above we show this checkbox
-        // todo: 3. if the "master" override above the openings for this checkbox is selected it applies to
-        // todo: 3cont. all openings that have a product selected in the above list and does not display this checkbox
-        // todo: 4. update pdf for width / height AND add column for Overall Measurement
         if (doShowAddonMeasurement)
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -597,9 +587,9 @@ class _MeasurementRecordExpansionTileState
         ProductConstants.productsToCollectAddonMeasurements.contains(
             measurementRecord.product);
 
-    print('addonMeasurementOverride: $addonMeasurementOverride');
-    print('product: ${measurementRecord.product}');
-    print('doShowAddonMeasurement: $doShowAddonMeasurement');
+    // print('addonMeasurementOverride: $addonMeasurementOverride');
+    // print('product: ${measurementRecord.product}');
+    // print('doShowAddonMeasurement: $doShowAddonMeasurement');
 
     return doShowAddonMeasurement;
   }
@@ -667,7 +657,6 @@ class _MeasurementRecordExpansionTileState
   Color _buildStatusColor(AbstractControl<dynamic> control) {
     var fg = control as FormGroup;
 
-    // todo: also if form is incomplete for product type return red
     // must be filled in always
     var product = fg
         .control('product')
