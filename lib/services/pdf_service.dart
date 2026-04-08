@@ -474,7 +474,7 @@ class PdfService {
     TrimOptions.trimFieldsToDisplayMap[entry.key] ?? entry.key)
         .join(", ");
 
-    if ((trimMap['color'] as String).isNotEmpty) {
+    if (trimMap['color'] != null && (trimMap['color'] as String).isNotEmpty) {
       var prefixComma = !content.endsWith(',');
       if (prefixComma) {
         content += ', ';
@@ -506,34 +506,25 @@ class PdfService {
       'paintBrand',
       'otherBrandSpecify',
       'paintCode',
-      'composite',
-      'compositeSpecifics',
       'cutout',
     ].contains(entry.key))
         .map((entry) =>
     ProductOptions.productsFieldNameToDisplayMap[entry.key] ?? entry.key)
         .join(", ");
 
-    if (productsMap['paintBrand'] == 'Other') {
+    if (productsMap['paintBrand'] != null && productsMap['paintBrand'] == 'Other') {
       var prefixComma = !content.endsWith(',');
       if (prefixComma) {
         content += ', ';
       }
       content += 'Paint Brand: ${productsMap['otherBrandSpecify']}';
     }
-    if ((productsMap['paintCode'] as String).isNotEmpty) {
+    if (productsMap['paintCode'] != null && (productsMap['paintCode'] as String).isNotEmpty) {
       var prefixComma = !content.endsWith(',');
       if (prefixComma) {
         content += ', ';
       }
       content += 'Paint Code: ${productsMap['paintCode']}';
-    }
-    if (productsMap['composite']) {
-      var prefixComma = !content.endsWith(',');
-      if (prefixComma) {
-        content += ', ';
-      }
-      content += 'Composite: ${productsMap['compositeSpecifics']}';
     }
     if (productsMap['cutout'] != null &&
         (productsMap['cutout'] as String).isNotEmpty) {
