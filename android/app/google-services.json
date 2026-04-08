@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "305811516886",
+    "project_id": "armor-measure-sheet",
+    "storage_bucket": "armor-measure-sheet.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305811516886:android:3e3a88fec3e81e21f08877",
+        "android_client_info": {
+          "package_name": "com.armorbldgsolutions.ap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiVLNGfhi8PZMl-v6qyk9xNjXlpUYLooQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
