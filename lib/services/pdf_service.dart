@@ -446,14 +446,14 @@ class PdfService {
         .join(", ");
 
     // add other and color if necessary
-    if (sidingMap['other']) {
+    if (sidingMap['other'] != null && sidingMap['other']) {
       var prefixComma = !content.endsWith(',');
       if (prefixComma) {
         content += ', ';
       }
       content += 'Other: ${sidingMap['otherSpecifics']}';
     }
-    if ((sidingMap['color'] as String).isNotEmpty) {
+    if (sidingMap['color'] != null && (sidingMap['color'] as String).isNotEmpty) {
       var prefixComma = !content.endsWith(',');
       if (prefixComma) {
         content += ', ';
