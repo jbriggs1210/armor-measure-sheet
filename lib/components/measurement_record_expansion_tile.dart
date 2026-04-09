@@ -104,14 +104,16 @@ class _MeasurementRecordExpansionTileState
             // todo: Will be dropdown after Dad supplies list of items
             Flexible(
               flex: 1,
-              child: ReactiveTextField<String>(
+              child: ReactiveDropdownField<String>(
                 formControlName: '${_index.toString()}.openingType',
+                isExpanded: true,
                 decoration: InputDecoration(
                   helperText: '',
                   labelText: 'Opening Type',
                   border: OutlineInputBorder(),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                 ),
+                items: _buildOpeningTypesDropdown(OpeningType.values),
                 onChanged: (control) {
                   _measurementRecord.openingType = control.value!;
                 },
@@ -632,28 +634,15 @@ class _MeasurementRecordExpansionTileState
     }).toList();
   }
 
-  /**
-   * 'openingNumber': FormControl<int>(value: record.openingNumber),
-      'openingType': FormControl<String>(value: record.openingType),
-      'level': FormControl<String>(value: record.level),
-      'product': FormControl<String>(value: record.product),
-      'spanDirection': FormControl<String>(value: record.spanDirection),
-      'span': FormControl<String>(
-      value: record.span, validators: [ _ValueMustBeDivisibleByPoint25()]),
-      'nSpan': FormControl<String>(
-      value: record.nSpan, validators: [ _ValueMustBeDivisibleByPoint25()]),
-      'width': FormControl<String>(value: record.width),
-      'height': FormControl<String>(value: record.height),
-      'leftStack': FormControl<String>(value: record.stackLeft),
-      'rightStack': FormControl<String>(value: record.stackRight),
-      'buildOutTop': FormControl<String>(value: record.buildOutTop),
-      'buildOutSides': FormControl<String>(value: record.buildOutSides),
-      'buildOutBot': FormControl<String>(value: record.buildOutBot),
-      'noteReference': FormControl<String>(value: record.noteReference),
-      'addOnMeasurement': FormControl<bool>(
-      value: record.addOnMeasurement,
-      ),
-   */
+  List<DropdownMenuItem<String>> _buildOpeningTypesDropdown(
+      List<OpeningType> openingTypes) {
+    return openingTypes.map((type) {
+      return DropdownMenuItem<String>(
+        value: type.display,
+        child: Text(type.display, softWrap: true),
+      );
+    }).toList();
+  }
   Color _buildStatusColor(AbstractControl<dynamic> control) {
     var fg = control as FormGroup;
 

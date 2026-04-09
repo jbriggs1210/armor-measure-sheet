@@ -531,7 +531,7 @@ class MeasurementRecord {
 
   MeasurementRecord.defaults() {
     openingNumber = 0;
-    openingType = '';
+    openingType = OpeningType.nA.display;
     level = '';
     product = '';
     span = '';
@@ -565,5 +565,23 @@ class MeasurementRecord {
       'noteReference': noteReference,
     };
   }
+
+}
+
+enum OpeningType {
+  nA(display: 'N/A'),
+  door(display: 'Door'),
+  doorWithSidlites(display: 'Door w/ Sidlites'),
+  double(display: 'Double'),
+  fixed(display: 'Fixed'),
+  frenchDoor(display: 'French Door'),
+  quadruple(display: 'Quadruple'),
+  round(display: 'Round'),
+  single(display: 'Single'),
+  slider(display: 'Slider');
+
+  final String display;
+
+  const OpeningType({required this.display});
 
 }
