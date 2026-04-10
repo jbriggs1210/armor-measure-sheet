@@ -371,9 +371,6 @@ class ActiveLevels {
     if (third) {
       levels.add('Third');
     }
-    // if (raised) {
-    //   levels.add('Raised');
-    // }
 
     return levels;
   }
@@ -584,4 +581,43 @@ enum OpeningType {
 
   const OpeningType({required this.display});
 
+}
+
+enum ProductType {
+  accordions(display: 'Accordions (Ac)', abbreviation: '(Ac)'),
+  alum(display: 'Alum (Al)', abbreviation: '(Al)'),
+  armorTrack(display: 'Armor Track (AT)', abbreviation: '(AT)'),
+  bahArticulating(display: 'Bah Articulating (BA)', abbreviation: '(BA)'),
+  clearPanels(display: 'Clear Panels (CP)', abbreviation: '(CP)'),
+  compositeBandB(display: 'Composite - Board and Batten',
+      abbreviation: 'Composite - (BB)'),
+  compositeLouver(
+      display: 'Composite - Louver', abbreviation: 'Composite - (L)'),
+  compositeRaisedPanel(
+      display: 'Composite: Raised Panel', abbreviation: 'Composite (RP)'),
+  compositeShaker(display: 'Composite: Shaker', abbreviation: 'Composite (S)'),
+  decoBahama(display: 'Deco Bahama', abbreviation: 'Deco (B)'),
+  decoColonial(display: 'Deco Colonial', abbreviation: 'Deco (C)'),
+  directMount(display: 'Direct Mount (DM)', abbreviation: '(DM)'),
+  fabric(display: 'Fabric (F)', abbreviation: '(F)'),
+  flatTrack(display: 'Flat Track (FT)', abbreviation: '(FT)'),
+  galv(display: 'Galv (G)', abbreviation: '(G)'),
+  hHeader(display: '"H" Header (H)', abbreviation: '(H)'),
+  osb(display: 'OSB (O)', abbreviation: '(O)'),
+  paintedCaps(display: 'Painted Caps', abbreviation: '(PC)'),
+  poolEnclosure(display: 'Pool Enclosure', abbreviation: '(PE)'),
+  ratedBahama2Inch(display: 'Rated Bahama 2"', abbreviation: 'Rated (B2")'),
+  ratedBahama4Inch(display: 'Rated Bahama 4"', abbreviation: 'Rated (B4")'),
+  ratedColonialLouvered(
+      display: 'Rated Colonial Louvered', abbreviation: 'Rated (CL)'),
+  ratedColonialBoardAndBatten(
+      display: 'Rated Colonial B&B', abbreviation: 'Rated (CBB)'),
+  retractableScreen(display: 'Retractable Screen', abbreviation: '(RS)'),
+  rolldown(display: 'Rolldown (R)', abbreviation: '(R)'),
+  screenUnder(display: 'Screen Under (SU)', abbreviation: '(SU)');
+
+  final String display;
+  final String abbreviation;
+
+  const ProductType({required this.display, required this.abbreviation});
 }
