@@ -47,6 +47,7 @@ dependencies:
   flutter_file_dialog: ^3.0.3
   flutter_launcher_icons: ^0.14.4
   firebase_auth: ^6.3.0
+  firebase_core: ^4.6.0
 
 dev_dependencies:
   flutter_test:

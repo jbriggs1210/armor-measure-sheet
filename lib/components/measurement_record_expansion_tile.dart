@@ -101,7 +101,6 @@ class _MeasurementRecordExpansionTileState
                 },
               ),
             ),
-            // todo: Will be dropdown after Dad supplies list of items
             Flexible(
               flex: 1,
               child: ReactiveDropdownField<String>(
