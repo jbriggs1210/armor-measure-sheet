@@ -60,4 +60,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'armor-measure-sheet.firebasestorage.app',
     iosBundleId: 'com.armorbldgsolutions.armor-measure-sheet',
   );
+
 }

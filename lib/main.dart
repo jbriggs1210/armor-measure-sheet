@@ -18,7 +18,6 @@ Future<void> _setup() async {
       options: DefaultFirebaseOptions.currentPlatform
   );
   var user = await signInWithMicrosoft();
-  print(user.user!.email);
 }
 
 Future<UserCredential> signInWithMicrosoft() async {
